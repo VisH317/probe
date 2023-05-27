@@ -2,18 +2,20 @@
 #define __NETWORK_H__
 
 #include <torch/torch.h>
+#include <iterator>
+#include <vector>
 
 class Network {
     private:
         std::vector<torch::nn::Linear> layers;
 
     public:
-        Network();
+        Network() {};
         Network(std::vector<torch::nn::Linear> v);
-        ~Network();
+        ~Network() = default;
 
         void addLayer(torch::nn::Linear layer);
-        bool checkValid();
+        // bool checkValid();
         // probe method
 };
 
