@@ -22,5 +22,5 @@ std::pair<torch::Tensor, std::string> Layer::getNeuron(int num) {
     torch::Tensor ret = neuronWeights.index(num);
     std::string uuid = id[num];
 
-    // return {ret, uuid};
+    return {ret, uuid};
 }
