@@ -11,7 +11,7 @@ class Layer {
     public: 
         Layer();
         ~Layer();
-
-}
+        // probe method
+};
 
 #endif
