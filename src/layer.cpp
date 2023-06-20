@@ -21,10 +21,15 @@ torch::nn::Linear& Layer::getLayer() {
     return layer;
 }
 
-std::pair<torch::Tensor, std::string> Layer::getNeuron(int num) {
+std::pair<std::string, torch::Tensor, torch::Tensor> Layer::getNeuronWeight(int num) {
     torch::Tensor neuronWeights = layer->weight;
     torch::Tensor ret = neuronWeights.select(0, num);
+    
+    torch::Tensor neuronBiases = layer->bias;
+    torch::Tensor b = neuronBiases.select(0, num);
+
     std::string uuid = id[num];
 
-    return {ret, uuid};
+    return {uuid, ret, b};
 }
+
