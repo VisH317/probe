@@ -11,7 +11,7 @@ class Network {
 
     public:
         Network() {};
-        Network(std::vector<torch::nn::Linear> v);
+        Network(std::vector<torch::nn::Linear>& v);
         ~Network() = default;
 
         void addLayer(torch::nn::Linear layer);

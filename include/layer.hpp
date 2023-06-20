@@ -9,8 +9,10 @@ class Layer {
         torch::nn::Linear layer;
         std::vector<std::string> id;
         std::string generateId();
+        int in;
+        int out;
 
-        static long long curId = 0;
+        static long long curId;
 
     public: 
         Layer(int in, int out); // divide by out features: determines how much of each in feature

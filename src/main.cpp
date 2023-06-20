@@ -1,10 +1,14 @@
 #include "main.hpp"
 #include <torch/torch.h>
 #include <iostream>
+#include "layer.hpp"
+#include "network.hpp"
 
 int main() {
-    torch::Tensor tensor = torch::rand({2, 3});
-    std::cout << tensor << std::endl;
+    Layer one(100, 50);
+    Layer two(50, 1);
+    std::vector<Layer> layers = { one, two };
+    Network net(layers)
 }
 
 // structure planning

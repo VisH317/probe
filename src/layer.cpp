@@ -1,6 +1,10 @@
 #include "layer.hpp"
 
+long long Layer::curId = 0
+
 Layer::Layer(int in, int out) {
+    this->in = in;
+    this->out = out;
     layer = torch::nn::Linear(in, out);
     for(int i=0;i<out;i++) {
         std::string uuid = generateId();
