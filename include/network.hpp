@@ -12,10 +12,10 @@ class Network {
 
     public:
         Network() {};
-        Network(std::vector<torch::nn::Linear>& v);
+        Network(std::vector<Layer>& l);
         ~Network() = default;
 
-        void addLayer(torch::nn::Linear layer);
+        void addLayer(Layer layer);
         Layer getLayer(int idx);
         torch::Tensor forward(torch::Tensor input);
         bool checkValid();

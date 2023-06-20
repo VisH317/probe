@@ -1,6 +1,6 @@
 #include "layer.hpp"
 
-long long Layer::curId = 0
+long long Layer::curId = 0;
 
 Layer::Layer(int in, int out) {
     this->in = in;
@@ -21,7 +21,7 @@ torch::nn::Linear& Layer::getLayer() {
     return layer;
 }
 
-std::pair<std::string, torch::Tensor, torch::Tensor> Layer::getNeuronWeight(int num) {
+std::tuple<std::string, torch::Tensor, torch::Tensor> Layer::getNeuron(int num) {
     torch::Tensor neuronWeights = layer->weight;
     torch::Tensor ret = neuronWeights.select(0, num);
     

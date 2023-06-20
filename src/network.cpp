@@ -1,13 +1,13 @@
 #include "network.hpp"
 
-Network::Network(std::vector<torch::nn::Linear> l) {
-    std::vector<torch::nn::Linear>::iterator ptr;
-    for(ptr = l.begin(), ptr<l.end(); ptr++) {
-        layers.push_back(std::move(*ptr));
+Network::Network(std::vector<Layer>& l) {
+    std::vector<Layer>::iterator ptr;
+    for(ptr = l.begin(); ptr<l.end(); ptr++) {
+        layers.push_back(*ptr);
     }
 }
 
-void Network::addLayer(torch::nn::Linear l) {
+void Network::addLayer(Layer l) {
     layers.push_back(l);
 }
 

@@ -6,7 +6,7 @@
 
 class Layer {
     private:
-        torch::nn::Linear layer;
+        torch::nn::Linear layer = nullptr;
         std::vector<std::string> id;
         std::string generateId();
         int in;
