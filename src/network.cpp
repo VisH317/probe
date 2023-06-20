@@ -26,5 +26,14 @@ bool Network::checkValid() {
         check = check && layers[i].getDims().second == layers[i+1].getDims().first;
     }
 
-    return check
+    return check;
 })
+
+torch::Tensor Network::forward(torch::Tensor input) {
+    torch::Tensor* cur = input;
+    for(Layer& l : layers) {
+        *cur = l(*cur);
+    }
+
+    return *cur;
+}
