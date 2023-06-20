@@ -33,3 +33,6 @@ std::tuple<std::string, torch::Tensor, torch::Tensor> Layer::getNeuron(int num) 
     return {uuid, ret, b};
 }
 
+std::pair<int, int> Layer::getDims() {
+    return { in, out }
+}

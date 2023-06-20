@@ -21,6 +21,7 @@ class Layer {
         torch::nn::Linear& getLayer();
 
         std::tuple<std::string, torch::Tensor, torch::Tensor> getNeuron(int num);
+        std::pair<int, int> getDims();
         // probe method
 };
 

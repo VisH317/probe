@@ -18,3 +18,13 @@ Layer Network::getLayer(int idx) {
         std::cerr<<"Your selected layer index is out of bounds"<<std::endl;
     }
 }
+
+bool Network::checkValid() {
+    if(layers.size()==1) return true;
+    bool check = true;
+    for(int i=0;i<layers.size()-1;i++) {
+        check = check && layers[i].getDims().second == layers[i+1].getDims().first;
+    }
+
+    return check
+})
