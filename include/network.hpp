@@ -4,10 +4,11 @@
 #include <torch/torch.h>
 #include <iterator>
 #include <vector>
+#include "layer.hpp"
 
 class Network {
     private:
-        std::vector<torch::nn::Linear> layers;
+        std::vector<Layer> layers;
 
     public:
         Network() {};
@@ -15,7 +16,9 @@ class Network {
         ~Network() = default;
 
         void addLayer(torch::nn::Linear layer);
-        // bool checkValid();
+        Layer getLayer(int idx);
+        torch::Tensor forward(torch::Tensor input);
+        bool checkValid();
         // probe method
 };
 

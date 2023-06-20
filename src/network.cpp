@@ -10,3 +10,11 @@ Network::Network(std::vector<torch::nn::Linear> l) {
 void Network::addLayer(torch::nn::Linear l) {
     layers.push_back(l);
 }
+
+Layer Network::getLayer(int idx) {
+    try {
+        return layers[idx];
+    } catch(...) {
+        std::cerr<<"Your selected layer index is out of bounds"<<std::endl;
+    }
+}
