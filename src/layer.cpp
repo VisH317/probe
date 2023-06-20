@@ -18,8 +18,8 @@ torch::nn::Linear& Layer::getLayer() {
 }
 
 std::pair<torch::Tensor, std::string> Layer::getNeuron(int num) {
-    torch::Tensor neuronWeights = layer.get().weight;
-    torch::Tensor ret = neuronWeights.index(num);
+    torch::Tensor neuronWeights = layer->weight;
+    torch::Tensor ret = neuronWeights.select(0, num);
     std::string uuid = id[num];
 
     return {ret, uuid};
