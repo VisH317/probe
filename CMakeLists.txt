@@ -16,7 +16,11 @@ set_property(TARGET torch-uuid PROPERTY CXX_STANDARD 17)
 
 
 #tests
-# add_executable()
+
+add_executable(uuid-test "test/testMain.cpp")
+add_test(NAME maintest COMMAND uuid-test)
+
+add_executable(Test )
 
 
 # The following code block is suggested to be used on Windows.
