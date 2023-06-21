@@ -11,6 +11,7 @@ namespace Test {
     int layerConstructor();
     int layerUUID();
     int layerDiffUUID();
+    int diffLayerDiffUUID();
 
     // network
     int networkConstructor();
