@@ -7,6 +7,13 @@ Network::Network(std::vector<Layer>& l) {
     }
 }
 
+Network::Network(std::vector<Layer>&& l) {
+    std::vector<Layer>::iterator ptr;
+    for(ptr = l.begin(); ptr<l.end(); ptr++) {
+        layers.push_back(*ptr);
+    }
+}
+
 void Network::addLayer(Layer l) {
     layers.push_back(l);
 }

@@ -13,11 +13,15 @@ class Network {
     public:
         Network() {};
         Network(std::vector<Layer>& l);
+        Network(std::vector<Layer>&& l);
         ~Network() = default;
 
         void addLayer(Layer layer);
         Layer getLayer(int idx);
+
         torch::Tensor forward(torch::Tensor input);
+        torch::Tensor operator() (torch::Tensor input) { forward(input); };
+
         bool checkValid();
         // probe method
 };
