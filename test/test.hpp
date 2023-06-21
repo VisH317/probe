@@ -18,6 +18,7 @@ namespace Test {
     int networkConstructor();
     int networkForward();
     int networkValid();
+    int networkDimensionMismatch();
 }
 
 
