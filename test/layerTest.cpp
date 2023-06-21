@@ -29,3 +29,14 @@ int Test::diffLayerDiffUUID() {
     if(std::strcmp(std::get<0>(info).c_str(), std::get<0>(info2).c_str())==0) return 1;
     return 0;
 }
+
+int Test::layerOutOfBoundsTest() {
+    Layer l(100, 50);
+    try {
+        auto info = l.getNeuron(52);
+    } catch (...) {
+        return 0;
+    }
+
+    return 1;
+}
