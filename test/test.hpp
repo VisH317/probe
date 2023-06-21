@@ -12,6 +12,7 @@ namespace Test {
     int layerUUID();
     int layerDiffUUID();
     int diffLayerDiffUUID();
+    int layerOutOfBoundsTest();
 
     // network
     int networkConstructor();

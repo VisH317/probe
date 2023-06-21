@@ -17,4 +17,15 @@ int Test::layerDiffUUID() {
     Layer l(100, 50);
     auto info = l.getNeuron(0);
     auto info2 = l.getNeuron(1);
+    if(std::strcmp(std::get<0>(info).c_str(), std::get<0>(info2).c_str())==0) return 1;
+    return 0;
+}
+
+int Test::diffLayerDiffUUID() {
+    Layer l(100, 50);
+    Layer l2(50, 5);
+    auto info = l.getNeuron(0);
+    auto info2 = l2.getNeuron(0);
+    if(std::strcmp(std::get<0>(info).c_str(), std::get<0>(info2).c_str())==0) return 1;
+    return 0;
 }
