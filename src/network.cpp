@@ -27,12 +27,13 @@ bool Network::checkValid() {
     }
 
     return check;
-})
+}
 
 torch::Tensor Network::forward(torch::Tensor input) {
-    torch::Tensor* cur = input;
+    torch::Tensor* cur = &input;
     for(Layer& l : layers) {
-        *cur = l(*cur);
+        *cur = l.getLayer()->forward(*cur);
+        torch::nn::Linear x(100, 50);
     }
 
     return *cur;
