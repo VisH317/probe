@@ -17,10 +17,10 @@ class Network {
         ~Network() = default;
 
         void addLayer(Layer layer);
-        Layer getLayer(int idx);
+        std::optional<Layer> getLayer(int idx);
 
         torch::Tensor forward(torch::Tensor input);
-        torch::Tensor operator() (torch::Tensor input) { forward(input); };
+        torch::Tensor operator() (torch::Tensor input) { return forward(input); };
 
         bool checkValid();
         // probe method

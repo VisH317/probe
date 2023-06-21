@@ -16,7 +16,10 @@ int main() {
 
     torch::Tensor input = torch::ones(100);
 
-    
+    torch::Tensor out;
+    out = n.forward(input)
+
+    std::cout << out << std::endl;
 }
 
 // structure planning

@@ -18,11 +18,12 @@ void Network::addLayer(Layer l) {
     layers.push_back(l);
 }
 
-Layer Network::getLayer(int idx) {
+std::optional<Layer> Network::getLayer(int idx) {
     try {
         return layers[idx];
     } catch(...) {
         std::cerr<<"Your selected layer index is out of bounds"<<std::endl;
+        return std::nullopt;
     }
 }
 
