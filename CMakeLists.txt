@@ -1,4 +1,5 @@
 cmake_minimum_required(VERSION 3.0 FATAL_ERROR)
+include(CTest)
 project(torch-uuid)
 
 find_package(Torch REQUIRED)
@@ -12,6 +13,11 @@ set_target_properties(torch-uuid PROPERTIES LINKER_LANGUAGE CXX)
 target_include_directories(torch-uuid PRIVATE include)  
 target_link_libraries(torch-uuid "${TORCH_LIBRARIES}")
 set_property(TARGET torch-uuid PROPERTY CXX_STANDARD 17)
+
+
+#tests
+# add_executable()
+
 
 # The following code block is suggested to be used on Windows.
 # According to https://github.com/pytorch/pytorch/issues/25457,
