@@ -39,7 +39,7 @@ bool Network::checkValid() {
 
 torch::Tensor Network::forward(torch::Tensor input) {
 
-    if(layers[0].getDims().first!=input.squeeze().size(0)) throw std::out_of_range("Input tensor dimension mismatch");
+    if(layers[0].getDims().first!=input.squeeze().size(0) || !checkValid()) throw std::out_of_range("Input tensor dimension mismatch");
 
     torch::Tensor* cur = &input;
     for(Layer& l : layers) {
