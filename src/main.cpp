@@ -1,4 +1,3 @@
-#include "main.hpp"
 #include <torch/torch.h>
 #include <iostream>
 #include "layer.hpp"

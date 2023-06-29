@@ -7,16 +7,17 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${TORCH_CXX_FLAGS}")
 
 file(GLOB SOURCES "src/*.cpp")
 
-add_executable(torch-uuid ${SOURCES})
-set_target_properties(torch-uuid PROPERTIES LINKER_LANGUAGE CXX)
+# old test executable (not needed anymore)
+# add_executable(torch-uuid ${SOURCES})
+# set_target_properties(torch-uuid PROPERTIES LINKER_LANGUAGE CXX)
 
-target_include_directories(torch-uuid PRIVATE include)  
-target_link_libraries(torch-uuid "${TORCH_LIBRARIES}")
-set_property(TARGET torch-uuid PROPERTY CXX_STANDARD 17)
+# target_include_directories(torch-uuid PRIVATE include)  
+# target_link_libraries(torch-uuid "${TORCH_LIBRARIES}")
+# set_property(TARGET torch-uuid PROPERTY CXX_STANDARD 17)
 
 #library setup
 
-add_library(torch-probe SHARED src/layer.cpp src/main.cpp src/network.cpp)
+add_library(torch-probe SHARED src/layer.cpp src/network.cpp)
 set_target_properties(torch-probe PROPERTIES SOVERSION 1)
 set_target_properties(torch-probe PROPERTIES LINKER_LANGUAGE CXX)
 set_property(TARGET torch-probe PROPERTY CXX_STANDARD 17)
