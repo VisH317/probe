@@ -5,7 +5,7 @@ include(CTest)
 find_package(Torch REQUIRED)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${TORCH_CXX_FLAGS}")
 
-file(GLOB SOURCES "src/*.cpp")
+file(GLOB SOURCES CONFIGURE_DEPENDS "src/*.cpp" "src/jitter/*.cpp")
 
 # old test executable (not needed anymore)
 # add_executable(torch-uuid ${SOURCES})
@@ -17,7 +17,7 @@ file(GLOB SOURCES "src/*.cpp")
 
 #library setup
 
-add_library(torch-probe SHARED src/*.cpp src/jitter/*.cpp)
+add_library(torch-probe SHARED ${SOURCES})
 set_target_properties(torch-probe PROPERTIES SOVERSION 1)
 set_target_properties(torch-probe PROPERTIES LINKER_LANGUAGE CXX)
 set_property(TARGET torch-probe PROPERTY CXX_STANDARD 17)
