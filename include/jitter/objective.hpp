@@ -13,7 +13,7 @@ class Objective {
     public:
         Objective();
         // void test();
-}
+};
 
 
 

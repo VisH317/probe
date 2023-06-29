@@ -17,13 +17,14 @@ file(GLOB SOURCES "src/*.cpp")
 
 #library setup
 
-add_library(torch-probe SHARED src/layer.cpp src/network.cpp)
+add_library(torch-probe SHARED src/*.cpp src/jitter/*.cpp)
 set_target_properties(torch-probe PROPERTIES SOVERSION 1)
 set_target_properties(torch-probe PROPERTIES LINKER_LANGUAGE CXX)
 set_property(TARGET torch-probe PROPERTY CXX_STANDARD 17)
 
 target_link_libraries(torch-probe "${TORCH_LIBRARIES}")
 target_include_directories(torch-probe PRIVATE include)
+target_include_directories(torch-probe PRIVATE include/jitter)
 
 
 # setup installation
