@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.0 FATAL_ERROR)
-include(CTest)
 project(torch-uuid)
+include(CTest)
 
 find_package(Torch REQUIRED)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${TORCH_CXX_FLAGS}")
@@ -14,13 +14,27 @@ target_include_directories(torch-uuid PRIVATE include)
 target_link_libraries(torch-uuid "${TORCH_LIBRARIES}")
 set_property(TARGET torch-uuid PROPERTY CXX_STANDARD 17)
 
+#library setup
+
+add_library(torch-probe SHARED src/layer.cpp src/main.cpp src/network.cpp)
+set_target_properties(torch-probe PROPERTIES SOVERSION 1)
+set_target_properties(torch-probe PROPERTIES LINKER_LANGUAGE CXX)
+set_property(TARGET torch-probe PROPERTY CXX_STANDARD 17)
+
+target_link_libraries(torch-probe "${TORCH_LIBRARIES}")
+target_include_directories(torch-probe PRIVATE include)
+
+
+# setup installation
+include(GNUInstallDirs)
+install(TARGETS torch-probe LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR} PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
 
 #tests
 
-add_executable(uuid-test "test/testMain.cpp")
-add_test(NAME maintest COMMAND uuid-test)
+# add_executable(uuid-test "test/testMain.cpp")
+# add_test(NAME maintest COMMAND uuid-test)
 
-add_executable(Test )
+# add_executable(Test)
 
 
 # The following code block is suggested to be used on Windows.
