@@ -5,6 +5,7 @@
 #include "network.hpp"
 #include <iostream>
 #include <vector>
+#include <stdexcept>
 
 // functor object that takes in a network pointer as a parameter, computes new objective function (distance from original), keeps track of all objective values
 
@@ -19,13 +20,22 @@ class Objective {
         torch::Tensor input;
 
         /** Concatenated list of all outputs based on the required output neurons being observed */
-        std::vector<torch::Tensor> outputs;  
+        std::vector<torch::Tensor> outputs; 
+
+        std::vector<double> losses;
+
+        double desiredValue;
+
+        torch::Tensor evaluateOutput();
+
+        constexpr double computeAvgLoss(torch::Tensor in, torch::Tensor start);
 
     public:
-        Objective(Network* net, std::vector<int>& idxs, torch::Tensor input) : net(net), idxs(idxs), input(input) {};
+        Objective(Network* net, std::vector<int>& idxs, torch::Tensor input, double desiredValue);
 
-        double loss();
-        // void test();
+        std::pair<double, bool> loss();
+        
+        void reset();
 };
 
 
