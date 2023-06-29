@@ -34,9 +34,13 @@ std::pair<double, bool> Objective::loss() {
     return { out, std::abs(out)>(losses.size()<=2 ? 0 : std::abs(losses[losses.size()-2])) }
 }
 
-double computeAvgLoss(torch::Tensor in, torch::Tensor start) {
+double Objective::computeAvgLoss(torch::Tensor in, torch::Tensor start) {
     torch::Tensor differences = start - in;
     return torch::mean(differences);
+}
+
+double Objective::getDiff() {
+    return desiredValue - losses[losses.size()-1];
 }
 
 void Objective::reset() {

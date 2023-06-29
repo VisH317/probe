@@ -36,6 +36,8 @@ class Objective {
         std::pair<double, bool> loss();
         
         void reset();
+
+        double getDiff();
 };
 
 
