@@ -18,3 +18,8 @@ void Metrics::updateDist(std::string uuid, float lossUpdate, float prevAlpha, to
     std::pair<float, float>& orig = dist[uuid];
     dist[uuid] = { orig.first+update, orig.second-update };
 }
+
+void Metrics::sample(std::string uuid) {
+    const std::pair<float, float>& params = dist[uuid];
+    
+}
