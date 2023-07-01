@@ -16,10 +16,18 @@ void Metrics::updateDist(std::string uuid, float lossUpdate, float prevAlpha, to
 
     const float update = lambda2 * avg * prevAlpha * randomChange;
     std::pair<float, float>& orig = dist[uuid];
-    dist[uuid] = { orig.first+update, orig.second-update };
+
+    float one = orig.first+update;
+    float two = orig.second-update;
+    one += one<=1 ? 1 : one>=99 ? -1 : 0;
+    two += two<=1 ? 1 : two>=99 ? -1 : 0;
+
+    dist[uuid] = { one, orig.second-update };
 }
 
 void Metrics::sample(std::string uuid) {
     const std::pair<float, float>& params = dist[uuid];
-    
+    boost::math::beta_distribution d(params.first, params.second);
+    double rand = d.quantile();
+    return temperature * rand;
 }

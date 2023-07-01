@@ -4,7 +4,7 @@
 #include <map>
 #include <string>
 #include <utility>
-#include <torch/torch.h>
+#include <torch/torch>
 #include <boost/math/distributions/beta.hpp>
 
 // utility metrics for the jitter algorithm - includes hashmap of all neurons and their respective distributions, new distribution calculation, distribution shifting, change maker and evaluator per neuron
@@ -20,10 +20,13 @@ class Metrics {
         /** distribution shift scaler between neurons */
         float lambda2;
 
+        /** scalar value - maximum change magnitude */
+        float temperature;
+
 
     public:
 
-        Metrics(float lambda1, float lambda2) : lambda1(lambda1), lambda2(lambda2) {};
+        Metrics(float lambda1, float lambda2, float temperature) : lambda1(lambda1), lambda2(lambda2), temperature(temperature) {};
 
         /**
          * @brief creates a new neuron instance in the hashmap with the default alpha/beta parameters (50/50)
