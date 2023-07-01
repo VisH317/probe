@@ -19,6 +19,7 @@ Implementation:
  * step 1: initialize dp (kinda?) with map of neuron uuids to distribution parameters
  * step 2: for input: sample random parameter change and measure objective change (log the change)
    * if positive: shift distribution by alpha parameter (dont go past 1 to keep bell curve)
+     * alpha += 
    * move to future node:
      * calculate new distribution params:
        * alpha = previous alpha + coming alpha * weight (avg for now) * lambda (limiter param)

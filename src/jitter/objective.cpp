@@ -36,7 +36,7 @@ std::pair<double, bool> Objective::loss() {
 
 double Objective::computeAvgLoss(torch::Tensor in, torch::Tensor start) {
     torch::Tensor differences = start - in;
-    return torch::mean(differences);
+    return torch::mean(differences).item();
 }
 
 double Objective::getDiff() {
