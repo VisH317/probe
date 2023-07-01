@@ -5,6 +5,7 @@
 #include <string>
 #include <utility>
 #include <torch/torch.h>
+#include <boost/math/distributions/beta.hpp>
 
 // utility metrics for the jitter algorithm - includes hashmap of all neurons and their respective distributions, new distribution calculation, distribution shifting, change maker and evaluator per neuron
 
