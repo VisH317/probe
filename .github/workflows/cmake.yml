@@ -31,3 +31,13 @@ jobs:
         run: cmake -DCMAKE_PREFIX_PATH=../lib/libtorch/share/cmake ../ -GNinja -DCMAKE_BUILD_TYPE=Release -Wno-dev
 
       - name: Create Artifact
+        run: |
+          mkdir release
+          cp build/libtorch-probe.so release/libtorch-probe.so
+          cp build/libtorch-probe.so.1 release/libtorch-probe.so.1
+      
+      - name: Publish Artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: torch-probe release
+          path: release
