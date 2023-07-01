@@ -21,7 +21,7 @@ Implementation:
    * if positive: shift distribution by alpha parameter (dont go past 1 to keep bell curve)
    * move to future node:
      * calculate new distribution params:
-       * alpha = previous alpha * weight (avg for now) * lambda (limiter param)
+       * alpha = previous alpha + coming alpha * weight (avg for now) * lambda (limiter param)
        * beta is same equation
      * sample new distribution, make change, log, and measure
      * continue moving through each future node if change works
