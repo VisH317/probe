@@ -31,9 +31,9 @@ class Metrics {
          */
         void addDist(std::string uuid);
 
-        void updateDist(std::string uuid, float lossUpdate);
+        void updateDist(std::string uuid, float lossUpdate, float randomChange);
 
-        void updateDist(std::string uuid, float prevAlpha, torch::Tensor weight);
+        void updateDist(std::string uuid, float prevAlpha, torch::Tensor weight, float randomChange);
 
         double sample(std::string uuid); // might need to use torch multiprocessing
 
