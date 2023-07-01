@@ -11,13 +11,23 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: install deps
+      - name: Install deps
         run: |
           sudo apt-get update -qq
           sudo apt-get install -y gcc-multilib curl zip unzip
           sudo apt-get install -y build-essential libboost-system-dev libboost-thread-dev libboost-program-options-dev libboost-test-dev libboost-filesystem-dev
       
-      - name: setup torch
+      - name: Setup torch
         run: |
-          wget https://download.pytorch.org/libtorch/nightly/cpu/libtorch-shared-with-deps-latest.zip -P ${{github.workspace}}/lib
-          
+          curl https://download.pytorch.org/libtorch/nightly/cpu/libtorch-shared-with-deps-latest.zip --create-dirs -o ./lib/torch.zip
+          unzip ${{github.workspace}}/lib/torch.zip
+          rm -rf ${{github.workspace}}/lib/torch.zip
+      
+      - name: Create build folder
+        run: mkdir build
+
+      - name: Configure cmake
+        working-directory: ./build
+        run: cmake -DCMAKE_PREFIX_PATH=../lib/libtorch/share/cmake ../ -GNinja -DCMAKE_BUILD_TYPE=Release -Wno-dev
+
+      - name: Create Artifact

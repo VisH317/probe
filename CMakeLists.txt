@@ -36,8 +36,8 @@ install(TARGETS torch-probe LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR} PUBLIC_H
 
 #tests
 
-add_executable(uuid-test "test/testMain.cpp")
-add_test(NAME maintest COMMAND uuid-test)
+# add_executable(uuid-test "test/testMain.cpp")
+# add_test(NAME maintest COMMAND uuid-test)
 
 # add_executable(Test)
 

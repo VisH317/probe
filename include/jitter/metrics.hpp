@@ -4,7 +4,7 @@
 #include <map>
 #include <string>
 #include <utility>
-#include <torch/torch>
+#include <torch/torch.h>
 #include <boost/math/distributions/beta.hpp>
 
 // utility metrics for the jitter algorithm - includes hashmap of all neurons and their respective distributions, new distribution calculation, distribution shifting, change maker and evaluator per neuron
@@ -39,7 +39,7 @@ class Metrics {
 
         void updateDist(std::string uuid, float prevAlpha, torch::Tensor weight, float randomChange);
 
-        double sample(std::string uuid); // might need to use torch multiprocessing
+        float sample(std::string uuid); // might need to use torch multiprocessing
 
 }
 

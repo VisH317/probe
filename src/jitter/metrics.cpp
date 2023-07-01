@@ -34,9 +34,9 @@ void Metrics::updateDist(std::string uuid, float lossUpdate, float prevAlpha, to
 }
 
 
-void Metrics::sample(std::string uuid) {
+float Metrics::sample(std::string uuid) {
     const std::pair<float, float>& params = dist[uuid];
     boost::math::beta_distribution d(params.first, params.second);
     double rand = d.quantile();
-    return temperature * rand;
+    return temperature * static_cast<float>(rand);
 }

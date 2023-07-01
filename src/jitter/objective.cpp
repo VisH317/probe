@@ -2,7 +2,7 @@
 
 
 Objective::Objective(Network* net, std::vector<int>& idxs, torch::Tensor input, double desiredValue) : net(net), idxs(idxs), input(input), desiredValue(desiredValue) {
-    evaluateOutput()
+    evaluateOutput();
 }
 
 void Objective::evaluteOutput() {
