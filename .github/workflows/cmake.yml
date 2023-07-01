@@ -1,0 +1,23 @@
+name: CI
+
+on:
+  push: 
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: install deps
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y gcc-multilib curl zip unzip
+          sudo apt-get install -y build-essential libboost-system-dev libboost-thread-dev libboost-program-options-dev libboost-test-dev libboost-filesystem-dev
+      
+      - name: setup torch
+        run: |
+          wget https://download.pytorch.org/libtorch/nightly/cpu/libtorch-shared-with-deps-latest.zip -P ${{github.workspace}}/lib
+          

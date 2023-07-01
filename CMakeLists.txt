@@ -3,7 +3,7 @@ project(torch-uuid)
 include(CTest)
 
 find_package(Torch REQUIRED)
-find_package(Boost 1.82.0 COMPONENTS program_options REQUIRED)
+find_package(Boost COMPONENTS program_options REQUIRED)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${TORCH_CXX_FLAGS}")
 
