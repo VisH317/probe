@@ -37,11 +37,11 @@ class Metrics {
 
         void updateDist(std::string uuid, float lossUpdate, float randomChange);
 
-        void updateDist(std::string uuid, float prevAlpha, torch::Tensor weight, float randomChange);
+        void updateDist(std::string uuid, float lossUpdate, float prevAlpha, torch::Tensor weight, float randomChange);
 
         float sample(std::string uuid); // might need to use torch multiprocessing
 
-}
+};
 
 // things to include in main loop function: tree search, calling input vs nested neuron, finding weight values, evaluating loss, pushing network changes
 
