@@ -31,10 +31,10 @@ void Objective::evaluteOutput() {
 std::pair<double, bool> Objective::loss() {
     evaluateOutput();
     double out = losses[losses.size()-1];
-    return { out, std::abs(out)>(losses.size()<=2 ? 0 : std::abs(losses[losses.size()-2])) }
+    return { out, std::abs(out)>(losses.size()<=2 ? 0 : std::abs(losses[losses.size()-2])) };
 }
 
-double Objective::computeAvgLoss(torch::Tensor in, torch::Tensor start) {
+constexpr double Objective::computeAvgLoss(torch::Tensor in, torch::Tensor start) {
     torch::Tensor differences = start - in;
     return torch::mean(differences).item();
 }

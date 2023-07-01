@@ -26,7 +26,7 @@ class Objective {
 
         double desiredValue;
 
-        torch::Tensor evaluateOutput();
+        void evaluateOutput();
 
         constexpr double computeAvgLoss(torch::Tensor in, torch::Tensor start);
 
