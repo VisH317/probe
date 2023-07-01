@@ -28,7 +28,7 @@ class Objective {
 
         void evaluateOutput();
 
-        constexpr double computeAvgLoss(torch::Tensor in, torch::Tensor start);
+        double computeAvgLoss(torch::Tensor in, torch::Tensor start);
 
     public:
         Objective(Network* net, std::vector<int>& idxs, torch::Tensor input, double desiredValue);

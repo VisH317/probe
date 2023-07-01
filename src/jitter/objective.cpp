@@ -5,21 +5,21 @@ Objective::Objective(Network* net, std::vector<int>& idxs, torch::Tensor input, 
     evaluateOutput();
 }
 
-void Objective::evaluteOutput() {
+void Objective::evaluateOutput() {
+
+    torch::Tensor netOut;
 
     try {
-        torch::Tensor netOut = this->net->forward(this->input);
+        netOut = this->net->forward(this->input);
     } catch(...) {
         throw std::out_of_range("Dimension mismatch: Input and network dimension mismatch");
     }
 
     std::vector<torch::Tensor> tensors;
     try {
-        for(int& idx : idxs) {
-            tensors.push_back(netOut.index({idx}));
-        }
+        for(int& idx : idxs) tensors.push_back(netOut.index({idx}));
     } catch(...) {
-        throw std::out_of_range("Torch Index out of bounds - choose index values within the boundaries of the output tensor")
+        throw std::out_of_range("Torch Index out of bounds - choose index values within the boundaries of the output tensor");
     }
     
     torch::Tensor out = torch::stack(tensors);
@@ -34,9 +34,10 @@ std::pair<double, bool> Objective::loss() {
     return { out, std::abs(out)>(losses.size()<=2 ? 0 : std::abs(losses[losses.size()-2])) };
 }
 
-constexpr double Objective::computeAvgLoss(torch::Tensor in, torch::Tensor start) {
-    torch::Tensor differences = start - in;
-    return torch::mean(differences).item();
+double Objective::computeAvgLoss(torch::Tensor in, torch::Tensor start) {
+    torch::Tensor differences = torch::sub(start, in);
+    torch::Tensor ten = torch::mean(differences);
+    return ten.item<double>();
 }
 
 double Objective::getDiff() {
