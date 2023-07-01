@@ -3,6 +3,8 @@ project(torch-uuid)
 include(CTest)
 
 find_package(Torch REQUIRED)
+find_package(Boost 1.82.0 COMPONENTS program_options REQUIRED)
+
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${TORCH_CXX_FLAGS}")
 
 file(GLOB SOURCES CONFIGURE_DEPENDS "src/*.cpp" "src/jitter/*.cpp")
@@ -22,6 +24,7 @@ set_target_properties(torch-probe PROPERTIES SOVERSION 1)
 set_target_properties(torch-probe PROPERTIES LINKER_LANGUAGE CXX)
 set_property(TARGET torch-probe PROPERTY CXX_STANDARD 17)
 
+target_link_libraries(torch-probe Boost::program_options)
 target_link_libraries(torch-probe "${TORCH_LIBRARIES}")
 target_include_directories(torch-probe PRIVATE include)
 target_include_directories(torch-probe PRIVATE include/jitter)
