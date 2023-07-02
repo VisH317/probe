@@ -31,7 +31,7 @@ jobs:
 
       - name: Configure cmake
         working-directory: ./build
-        run: cmake -DCMAKE_PREFIX_PATH=../lib/libtorch/share/cmake ../ -GNinja -DCMAKE_BUILD_TYPE=Release -Wno-dev
+        run: cmake -DCMAKE_PREFIX_PATH=${{ github.workspace }}/lib/libtorch/share/cmake ../ -GNinja -DCMAKE_BUILD_TYPE=Release -Wno-dev
 
       - name: Create Artifact
         run: |
