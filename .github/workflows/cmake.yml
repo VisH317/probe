@@ -36,8 +36,8 @@ jobs:
       - name: Create Artifact
         run: |
           mkdir release
-          cp build/libtorch-probe.so release/libtorch-probe.so
-          cp build/libtorch-probe.so.1 release/libtorch-probe.so.1
+          cp ${{ github.workspace }}/build/libtorch-probe.so release/libtorch-probe.so
+          cp ${{ github.workspace }}/build/libtorch-probe.so.1 release/libtorch-probe.so.1
       
       - name: Publish Artifact
         uses: actions/upload-artifact@v2
