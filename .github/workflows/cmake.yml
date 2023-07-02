@@ -33,6 +33,10 @@ jobs:
         working-directory: ./build
         run: cmake -DCMAKE_PREFIX_PATH=${{ github.workspace }}/lib/libtorch/share/cmake ../ -GNinja -DCMAKE_BUILD_TYPE=Release -Wno-dev
 
+      - name: Build
+        working-directory: ./build
+        run: ninja
+
       - name: Create Artifact
         run: |
           mkdir release
