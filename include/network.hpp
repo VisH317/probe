@@ -4,6 +4,9 @@
 #include <torch/torch.h>
 #include <iterator>
 #include <vector>
+#include <optional>
+#include <iostream>
+#include <stdexcept>
 #include "layer.hpp"
 
 /**

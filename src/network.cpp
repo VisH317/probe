@@ -22,7 +22,7 @@ std::optional<Layer> Network::getLayer(int idx) {
     try {
         return layers[idx];
     } catch(...) {
-        std::cerr<<"Your selected layer index is out of bounds"<<std::endl;
+        throw std::out_of_range("Layer index out of range");
         return std::nullopt;
     }
 }

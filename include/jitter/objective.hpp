@@ -6,6 +6,7 @@
 #include <iostream>
 #include <vector>
 #include <stdexcept>
+#include <cmath>
 
 // functor object that takes in a network pointer as a parameter, computes new objective function (distance from original), keeps track of all objective values
 

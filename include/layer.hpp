@@ -3,6 +3,9 @@
 
 #include <torch/torch.h>
 #include <utility>
+#include <vector>
+#include <string>
+#include <tuple>
 
 /**
  * @brief wrapper around torch::nn::Linear to provide probing mechanisms with uuids for specific neuron analysis
