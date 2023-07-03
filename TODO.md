@@ -2,7 +2,7 @@
 
 **JITTER:**
  * [X] Set up objective function
- * [ ] set up random selection
+ * [X] set up random selection
  * [ ] set up tree search
 
 **PROBE:**
