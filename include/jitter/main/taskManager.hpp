@@ -7,6 +7,7 @@
 #include <algorithm>
 #include <string>
 #include <tuple>
+#include <stdexcept>
 
 // current task distribution algorithm based on round robin
 
@@ -22,12 +23,11 @@ class TaskManager {
     public:
         TaskManager(int numProcesses, Layer* inputLayer);
 
-        ProcessState getProcessInfo();
-        NeuronState getNeuronInfo();
+        ProcessState getProcessInfo(int id);
+        NeuronState getNeuronInfo(std::string id);
 
-        void setNewProcessState();
-        void setNewProcessSearch();
-        void processFinished();
+        std::string setNewProcessState(int pid);
+        void setNewProcessSearch(int pid, int layer);
 
 };
 

@@ -14,7 +14,6 @@ struct NeuronState {
 struct ProcessState {
     int pidx;
     int currentSearchlayer;
-    std::string currentSearchId;
     std::string currentState;
 };
 
