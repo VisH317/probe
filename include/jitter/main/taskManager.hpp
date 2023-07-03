@@ -4,6 +4,9 @@
 #include "taskUtils.hpp"
 #include "layer.hpp"
 #include <vector>
+#include <algorithm>
+#include <string>
+#include <tuple>
 
 // current task distribution algorithm based on round robin
 

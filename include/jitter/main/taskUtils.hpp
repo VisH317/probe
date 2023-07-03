@@ -13,7 +13,8 @@ struct NeuronState {
 
 struct ProcessState {
     int pidx;
-    std::string currentSearch;
+    int currentSearchlayer;
+    std::string currentSearchId;
     std::string currentState;
 };
 
