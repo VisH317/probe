@@ -1,0 +1,23 @@
+#ifndef __WORKER_QUEUE_H__
+#define __WORKER_QUEUE_H__
+
+#include <queue>
+#include <thread>
+#include <mutex>
+#include "message.hpp"
+
+class WorkerQueue {
+    private:
+        std::queue<Message> queue;
+        std::mutex m;
+
+    public:
+        WorkerQueue(std::queue<Message>&& queue) : queue(queue) {};
+
+        void push();
+        void pop();
+
+
+}
+
+#endif
