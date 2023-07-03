@@ -7,7 +7,7 @@ find_package(Boost COMPONENTS program_options REQUIRED)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${TORCH_CXX_FLAGS}")
 
-file(GLOB SOURCES CONFIGURE_DEPENDS "src/*.cpp" "src/jitter/*.cpp")
+file(GLOB SOURCES CONFIGURE_DEPENDS "src/*.cpp" "src/jitter/*.cpp", "src/jitter/main/*.cpp", "src/jitter/worker/*.cpp", "src/jitter/messages/*.cpp")
 
 # old test executable (not needed anymore)
 # add_executable(torch-uuid ${SOURCES})
@@ -28,6 +28,9 @@ target_link_libraries(torch-probe Boost::program_options)
 target_link_libraries(torch-probe "${TORCH_LIBRARIES}")
 target_include_directories(torch-probe PRIVATE include)
 target_include_directories(torch-probe PRIVATE include/jitter)
+target_include_directories(torch-probe PRIVATE include/jitter/main)
+target_include_directories(torch-probe PRIVATE include/jitter/messages)
+target_include_directories(torch-probe PRIVATE include/jitter/worker)
 
 
 # setup installation
