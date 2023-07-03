@@ -14,8 +14,8 @@ class WorkerQueue {
     public:
         WorkerQueue(std::queue<Message>&& queue) : queue(queue) {};
 
-        void push();
-        void pop();
+        void push(Message message);
+        Message pop();
 
 
 }
