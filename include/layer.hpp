@@ -72,7 +72,8 @@ class Layer {
          * @return std::pair<int, int> pair of input features, output feature
          */
         std::pair<int, int> getDims();
-        // probe method
+        
+        int getLength();
 };
 
 #endif

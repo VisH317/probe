@@ -38,3 +38,7 @@ std::tuple<std::string, torch::Tensor, torch::Tensor> Layer::getNeuron(int num) 
 std::pair<int, int> Layer::getDims() {
     return { in, out };
 }
+
+int Layer::getLength() {
+    return layer->weight.sizes()[1];
+}

@@ -3,6 +3,7 @@
 
 #include "taskUtils.hpp"
 #include "layer.hpp"
+#include <vector>
 
 // current task distribution algorithm based on round robin
 
@@ -12,14 +13,17 @@ class TaskManager {
         const int numProcesses;
         int currentSearchIndex;
 
-        NeuronState[] neurons;
-        ProcessState[] processes;
+        std::vector<NeuronState> neurons;
+        std::vector<ProcessState> processes;
 
     public:
         TaskManager(int numProcesses, Layer* inputLayer);
 
-        void createProcess();
+        ProcessState getProcessInfo();
+        NeuronState getNeuronInfo();
+
         void setNewProcessState();
+        void setNewProcessSearch();
         void processFinished();
 
 };
