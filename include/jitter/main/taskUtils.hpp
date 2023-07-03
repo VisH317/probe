@@ -12,7 +12,7 @@ struct NeuronState {
 };
 
 struct ProcessState {
-    std::string pid;
+    int pidx;
     std::string currentSearch;
     std::string currentState;
 };
