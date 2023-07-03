@@ -12,9 +12,9 @@ class LockManager {
         LockManager();
         LockManager(LockManager&&) = default;
 
-        void setLock();
-        void removeLock();
-        void checkLock();
-}
+        void setLock(std::string id);
+        void removeLock(std::string id);
+        void checkLock(std::string id);
+};
 
 #endif
