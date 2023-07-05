@@ -4,11 +4,13 @@
 #include <queue>
 #include <thread>
 #include <mutex>
+#include <memory>
+#include <utility>
 #include "message.hpp"
 
 class WorkerQueue {
     private:
-        std::queue<Message> queue;
+        std::queue<std::unique_ptr<Message>> queue;
         std::mutex m;
 
     public:

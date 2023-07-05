@@ -2,12 +2,12 @@
 
 void WorkerQueue::push(Message message) {
     std::lock_guard<std::mutex> lock(m);
-    queue.push(message);
+    queue.push(std::make_unique<Message>(message));
 }
 
-Message WorkerQueue::pop() {
+std::unique_ptr<Message> WorkerQueue::pop() {
     std::lock_guard<std::mutex> lock(m);
-    Message ret = queue.front();
+    std::unique_ptr<Message> ret = std::move(queue.front());
     queue.pop();
-    return ret;
+    return std::move(ret);
 }
