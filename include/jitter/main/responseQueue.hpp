@@ -4,12 +4,15 @@
 #include <queue>
 #include <mutex>
 #include <memory>
+#include <utility>
+#include <mutex>
 #include "responseMessages.hpp"
 
 
 class ResponseQueue {
     private:
         std::queue<std::unique_ptr<ResponseMessage>> queue;
+        std::mutex m;
 
     public:
         ResponseQueue() = default;
