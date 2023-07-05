@@ -5,6 +5,7 @@
 #include <future>
 #include <string>
 #include "network.hpp"
+#include <boost/math/distributions/beta.hpp>
 
 class Evaluator {
     private: 
@@ -21,7 +22,9 @@ class Evaluator {
 
         void updateNetParams();
 
-        std::tuple<int, std::string, torch::Tensor> jitter(int layer, std::string id);
+        double jitter(int layer, std::string id, std::pair<float, float> dist);
+
+        double sample(std::pair<float, float> dist);
 
 }
 
