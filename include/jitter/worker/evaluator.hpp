@@ -4,7 +4,10 @@
 #include <thread>
 #include <future>
 #include <string>
+#include <memory>
+#include <utility>
 #include "network.hpp"
+#include "config.hpp"
 #include <boost/math/distributions/beta.hpp>
 
 class Evaluator {
@@ -14,11 +17,15 @@ class Evaluator {
         int currentNetIteration;
 
         torch::Tensor input;
+
+        torch::Tensor initialOutput;
         
-        std::vector<int> outputs;
+        std::vector<int> outputIds;
+
+        std::shared_ptr<Config> config;
 
     public:
-        Evaluator(Network net, torch::Tensor input, std::vector<int> outputs) : currentNet(net), input(input), outputs(outputs) {};
+        Evaluator(Network net, torch::Tensor input, std::vector<int> outputs);
 
         void updateNetParams();
 
