@@ -29,7 +29,7 @@ class Evaluator {
 
         void updateNetParams();
 
-        double jitter(int layer, std::string id, std::pair<float, float> dist);
+        double jitter(Network net, int layer, std::string id, std::pair<float, float> dist);
 
         double sample(std::pair<float, float> dist);
 

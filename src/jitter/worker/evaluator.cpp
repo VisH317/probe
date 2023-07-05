@@ -5,7 +5,9 @@ Evaluator::Evaluator(Network net, torch::Tensor input, std::vector<int> outputs)
 }
 
 
-double Evaluator::jitter(int layer, std::string id, std::pair<float, float> dist) {
+double Evaluator::jitter(Network net, int layer, std::string id, std::pair<float, float> dist) {
+    
+    currentNet = std::move(net);
     torch::Tensor netOut;
 
     try {
@@ -31,7 +33,7 @@ double Evaluator::jitter(int layer, std::string id, std::pair<float, float> dist
 
 double Evaluator::sample(std::pair<float, float> dist) {
     double r = std::rand() / double(RAND_MAX);
-    boost::math::beta_distribution d(params.first, params.second);
+    boost::math::beta_distribution d(dist.first, dist.second);
     double rand = boost::math::quantile(d, r);
     return config.get()->temperature * static_cast<float>(rand);
 }
