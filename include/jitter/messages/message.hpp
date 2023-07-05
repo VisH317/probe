@@ -3,6 +3,7 @@
 
 #include <string>
 #include <utility>
+#include "network.hpp"
 
 enum MessageType {
     START,
@@ -10,6 +11,10 @@ enum MessageType {
     STOP
 };
 
+// design question: should new networks be passed through messages each time or can the message calling be centralized to one manager
+// message passing: need to control move semantics and creation/deletion of other parameters
+// // important to have separate copies to prevent updates being run while a worker is running a forward on the thing
+// centralized manager has to manage both and both have similar memory requirements, since each worker still has to hold their own copy of the network
 
 struct Message {
     int pid;
@@ -19,6 +24,7 @@ struct Message {
 struct StartSearchMessage : public virtual Message {
     std::string neuronID;
     std::pair<float, float> dist;
+    Network net;
     MessageType getType() override { return START; };
 };
 
@@ -26,6 +32,7 @@ struct UpdateSearchMessage : Message {
     std::string neuronID;
     std::pair<float, float> dist;
     int layerNum;
+    Network net;
     MessageType getType() override { return UPDATE; };
 };
 
