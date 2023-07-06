@@ -5,6 +5,7 @@
 #include <utility>
 #include <string>
 #include <torch/torch.h>
+#include <thread>
 #include "responseQueue.hpp"
 #include "evaluator.hpp"
 #include "workerQueue.hpp"
@@ -21,6 +22,8 @@ class Worker {
 
         std::shared_ptr<Config> config;
 
+        std::thread thread;
+
         std::shared_ptr<ResponseQueue> responseQueue;
 
         WorkerQueue queue;
@@ -33,7 +36,7 @@ class Worker {
 
     public:
         Worker(int id, std::shared_ptr<Config> config, std::shared_ptr<ResponseQueue> responseQueue, torch::Tensor input, std::vector<int> outputs);
-        ~Worker() = default;
+        ~Worker();
 
         // queue
         void addTask(Message m);

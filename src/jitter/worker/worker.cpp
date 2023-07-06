@@ -82,3 +82,14 @@ void Worker::main() {
         if(isEnd) break;
     }
 }
+
+
+void Worker::start() {
+    thread = std::thread(main);
+}
+
+Worker::~Worker() {
+    std::unique_ptr<Message> stop = std::make_unique<Message>(StopMessage{});
+    queue.push(stop);
+    thread.join();
+}
