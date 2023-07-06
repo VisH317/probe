@@ -3,12 +3,13 @@
 Evaluator::Evaluator(torch::Tensor input, std::vector<int> outputs) : input(input), outputIds(outputs) {}
 
 
-double Evaluator::jitter(Network currentNet, int layer, std::string id, std::pair<float, float> dist) {
+double Evaluator::jitter(Network currentNet, int layer, std::string id, std::pair<float, float> dist, torch::Tensor weight) {
     
     torch::Tensor initialOutput = currentNet.forward(this->input);
     torch::Tensor netOut;
 
     try {
+        currentNet.getLayer(layer)->getNeuron()
         netOut = currentNet.forward(this->input);
     } catch(...) {
         throw std::out_of_range("Dimension mismatch: Input and network dimension mismatch");

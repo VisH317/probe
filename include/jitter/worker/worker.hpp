@@ -24,7 +24,9 @@ class Worker {
 
         Evaluator evaluator;
 
-        Network net;
+        // Network net;
+
+        int netIteration;
 
     public:
         Worker(std::shared_ptr<Config> config, std::shared_ptr<ResponseQueue> responseQueue, torch::Tensor input, std::vector<int> outputs);

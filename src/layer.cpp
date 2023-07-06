@@ -45,6 +45,12 @@ std::tuple<int, torch::Tensor, torch::Tensor> Layer::getNeuron(std::string uuid)
     return { idx, std::get<1>(neuronInfo), std::get<2>(neuronInfo) };
 }
 
+void Layer::changeNeuronWeight(std::string uuid, torch::Tensor update) {
+    torch::Tensor* neuronWeight = &(layer->weight);
+    std::tuple<int, torch::Tensor, torch::Tensor> neuron = getNeuron(uuid);
+    neuronWeight->index_put_({std::get<0>(neuron)}, update);
+}
+
 std::pair<int, int> Layer::getDims() {
     return { in, out };
 }
