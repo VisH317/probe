@@ -18,12 +18,14 @@ struct ResponseUpdateMessage : ResponseMessage {
     int layerNum;
     double loss;
     double randomChange;
-    ResponseType getType() override { return UPDATE; };
+    double update;
+    ResponseUpdateMessage(int workerId, std::string uuid, int layerNum, double loss, double randomChange, double update) : workerId(workerId), uuid(uuid), layerNum(layerNum), loss(loss), randomChange(randomChange), update(update) {};
+    ResponseType getType() override { return ResponseType::UPDATE; };
 };
 
 struct ResponseDoneMessage : ResponseMessage {
     int workerId;
-    ResponseType getType() override { return DONE; };
+    ResponseType getType() override { return ResponseType::DONE; };
 };
 
 

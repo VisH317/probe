@@ -20,5 +20,7 @@ void Worker::startJitter(StartSearchMessage m) {
 
     double update = evaluator.updateDist(out.first, out.second);
 
-    ResponseUpdateMessage res{this->id, };
+    ResponseUpdateMessage res{this->id, m.neuronID, 0, out.first, out.second, update};
+
+    responseQueue->push(res);
 }
