@@ -32,6 +32,7 @@ struct StartSearchMessage : public virtual Message {
 
 struct UpdateSearchMessage : Message {
     std::string neuronID;
+    std::string prevNeuronID;
     std::pair<float, float> dist;
     int layerNum;
     Network net;

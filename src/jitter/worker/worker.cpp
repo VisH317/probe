@@ -24,3 +24,18 @@ void Worker::startJitter(StartSearchMessage m) {
 
     responseQueue->push(res);
 }
+
+void Worker::updateJitter(UpdateSearchMessage m) {
+    this->netIteration = m.netIteration;
+
+    std::tuple<int, torch::Tensor, torch::Tensor> neuronInfo = m.net.getLayer(0)->getNeuron(m.neuronID);
+    std::tuple<int, torch::Tensor, torch::Tensor> prevNeuronInfo = m.net.getLayer(0)->getNeuron(m.prevNeuronID);
+
+    std::pair<double, double> out = evaluator.jitter(m.net, m.layerNum, m.neuronID, m.dist, std::get<1>(neuronInfo));
+
+    double update = evaluator.updateDist(out.first, out.second, std::get<1>(prevNeuronInfo));
+
+    ResponseUpdateMessage res{this->id, m.neuronID, layerNum, out.first, out.second, update};
+
+    responseQueue->push(res);
+}
