@@ -38,30 +38,17 @@ double Evaluator::sample(std::pair<float, float> dist) {
     return config.get()->temperature * static_cast<float>(rand);
 }
 
-void Evaluator::updateDist(float lossUpdate, float randomChange) {
+double Evaluator::updateDist(float lossUpdate, float randomChange) {
     std::pair<float, float>& orig = dist[uuid];
-    const float update = lossUpdate * randomChange * lambda1;
-
-    float one = orig.first+update;
-    float two = orig.second-update;
-    one += one<=1 ? 1 : one>=99 ? -1 : 0;
-    two += two<=1 ? 1 : two>=99 ? -1 : 0;
-
-    dist[uuid] = { one, two };
+    const float update = lossUpdate * randomChange * config.get()->lambda1;
+    return update;
 }
 
 
-void Evaluator::updateDist(float lossUpdate, float prevAlpha, torch::Tensor weight, float randomChange) {
+double Evaluator::updateDist(float lossUpdate, float prevAlpha, torch::Tensor weight, float randomChange) {
     torch::Tensor avgTen = torch::mean(weight, 0);
     const float avg = avgTen.item<float>();
 
-    const float update = lambda2 * avg * lossUpdate * randomChange;
-    std::pair<float, float>& orig = dist[uuid];
-
-    float one = orig.first+update;
-    float two = orig.second-update;
-    one += one<=1 ? 1 : one>=99 ? -1 : 0;
-    two += two<=1 ? 1 : two>=99 ? -1 : 0;
-
-    dist[uuid] = { one, two };
+    const float update = config.get()->lambda2 * avg * lossUpdate * randomChange;
+    return update;
 }
