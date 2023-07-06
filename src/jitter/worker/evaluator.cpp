@@ -1,6 +1,6 @@
 #include "evaluator.hpp"
 
-Evaluator::Evaluator(Network net, torch::Tensor input, std::vector<int> outputs) : input(input), outputIds(outputs) {}
+Evaluator::Evaluator(torch::Tensor input, std::vector<int> outputs) : input(input), outputIds(outputs) {}
 
 
 double Evaluator::jitter(Network currentNet, int layer, std::string id, std::pair<float, float> dist) {
