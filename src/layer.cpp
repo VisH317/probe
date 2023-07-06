@@ -58,3 +58,7 @@ std::pair<int, int> Layer::getDims() {
 int Layer::getLength() {
     return layer->weight.sizes()[1];
 }
+
+std::vector<std::string> Layer::getAllNeuronIds() {
+    return id;
+}

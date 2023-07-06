@@ -13,6 +13,7 @@ void Worker::addTask(Message m) {
 
 void Worker::startJitter(StartSearchMessage m) {
     this->netIteration = m.netIteration;
+    this->net = m.net;
 
     std::tuple<int, torch::Tensor, torch::Tensor> neuronInfo = m.net.getLayer(0)->getNeuron(m.neuronID);
 
@@ -27,6 +28,7 @@ void Worker::startJitter(StartSearchMessage m) {
 
 void Worker::updateJitter(UpdateSearchMessage m) {
     this->netIteration = m.netIteration;
+    this->net = m.net;
 
     std::tuple<int, torch::Tensor, torch::Tensor> neuronInfo = m.net.getLayer(0)->getNeuron(m.neuronID);
     std::tuple<int, torch::Tensor, torch::Tensor> prevNeuronInfo = m.net.getLayer(0)->getNeuron(m.prevNeuronID);

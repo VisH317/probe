@@ -27,7 +27,7 @@ class Worker {
 
         Evaluator evaluator;
 
-        // Network net;
+        Network net;
 
         int netIteration;
 
