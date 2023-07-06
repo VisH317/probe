@@ -89,7 +89,7 @@ void Worker::start() {
 }
 
 Worker::~Worker() {
-    std::unique_ptr<Message> stop = std::make_unique<Message>(StopMessage{});
+    StopMessage stop;
     queue.push(stop);
     thread.join();
 }
