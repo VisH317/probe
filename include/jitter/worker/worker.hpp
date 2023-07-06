@@ -7,6 +7,7 @@
 #include "workerQueue.hpp"
 #include "config.hpp"
 #include "network.hpp"
+#include "responseMessages.hpp"
 
 
 
@@ -40,7 +41,8 @@ class Worker {
         void updateJitter();
 
         // utility functions
-        void addNewNeuronTasks();
+        void addNewNeuronTasks(int layernum);
+        void pushResponse(ResponseMessage m);
 
 };
 

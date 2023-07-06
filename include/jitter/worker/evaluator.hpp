@@ -33,7 +33,11 @@ class Evaluator {
 
         double sample(std::pair<float, float> dist);
 
-}
+        void updateDist(float lossUpdate, float randomChange);
+
+        void updateDist(float lossUpdate, float prevAlpha, torch::Tensor weight, float randomChange);
+
+};
 
 
 #endif

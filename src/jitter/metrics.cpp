@@ -22,7 +22,7 @@ void Metrics::updateDist(std::string uuid, float lossUpdate, float prevAlpha, to
     torch::Tensor avgTen = torch::mean(weight, 0);
     const float avg = avgTen.item<float>();
 
-    const float update = lambda2 * avg * prevAlpha * randomChange;
+    const float update = lambda2 * avg * lossUpdate * randomChange;
     std::pair<float, float>& orig = dist[uuid];
 
     float one = orig.first+update;

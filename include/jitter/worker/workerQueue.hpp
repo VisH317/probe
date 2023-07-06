@@ -14,12 +14,12 @@ class WorkerQueue {
         std::mutex m;
 
     public:
-        WorkerQueue(std::queue<Message>&& queue) : queue(queue) {};
+        WorkerQueue(std::queue<std::unique_ptr<Message>>&& queue) : queue(queue) {};
 
         void push(Message message);
         Message pop();
 
 
-}
+};
 
 #endif
