@@ -32,7 +32,7 @@ class Evaluator {
 
         double updateDist(float lossUpdate, float randomChange);
 
-        double updateDist(float lossUpdate, float prevAlpha, torch::Tensor weight, float randomChange);
+        double updateDist(float lossUpdate, float randomChange, torch::Tensor weight, float randomChange);
 
 };
 

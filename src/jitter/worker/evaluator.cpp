@@ -48,7 +48,7 @@ double Evaluator::updateDist(float lossUpdate, float randomChange) {
 }
 
 
-double Evaluator::updateDist(float lossUpdate, float prevAlpha, torch::Tensor weight, float randomChange) {
+double Evaluator::updateDist(float lossUpdate, float randomChange, torch::Tensor weight) {
     torch::Tensor avgTen = torch::mean(weight, 0);
     const float avg = avgTen.item<float>();
 
