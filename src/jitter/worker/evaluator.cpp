@@ -9,7 +9,11 @@ double Evaluator::jitter(Network currentNet, int layer, std::string id, std::pai
     torch::Tensor netOut;
 
     try {
-        currentNet.getLayer(layer)->getNeuron()
+        auto info = currentNet.getLayer(layer)->getNeuron(id);
+        torch::Tensor update = torch::empty_like(std::get<1>(info));
+        double randomChange = sample(dist);
+        update+=randomChange;
+        currentNet.getLayer(layer)->changeNeuronWeight(id, update);
         netOut = currentNet.forward(this->input);
     } catch(...) {
         throw std::out_of_range("Dimension mismatch: Input and network dimension mismatch");

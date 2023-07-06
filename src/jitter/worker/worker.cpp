@@ -14,7 +14,7 @@ void Worker::addTask(Message m) {
 void Worker::startJitter(StartSearchMessage m) {
     this->netIteration = m.netIteration;
 
-    std::tuple<int, torch::Tensor, torch::Tensor> neuronInfo = net.getLayer(0)->getNeuron(m.neuronID);
+    std::tuple<int, torch::Tensor, torch::Tensor> neuronInfo = m.net.getLayer(0)->getNeuron(m.neuronID);
 
     double randomChange = evaluator.sample(m.dist);
 }
