@@ -20,7 +20,7 @@ class ResponseQueue {
         void push(ResponseMessage m);
 
         std::unique_ptr<ResponseMessage> pop();
-}
+};
 
 
 #endif
