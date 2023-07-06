@@ -18,6 +18,7 @@ class ResponseQueue {
         ResponseQueue() = default;
 
         void push(ResponseMessage m);
+        void push(std::unique_ptr<ResponseMessage> m);
 
         std::unique_ptr<ResponseMessage> pop();
 };
