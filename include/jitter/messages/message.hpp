@@ -20,46 +20,32 @@ enum MessageType {
 struct Message {
     int pid;
     virtual MessageType getType();
-    virtual std::vector getInfo();
 };
 
 struct StartSearchMessage : public virtual Message {
-    SSMInfo content;
-    MessageType getType() override { return START; };
-};
-
-struct UpdateSearchMessage : Message {
-    USMInfo content;
-    MessageType getType() override { return UPDATE; };
-};
-
-
-struct StopMessage : Message {
-    StopInfo content;
-    MessageType getType() override { return STOP; };
-};
-
-// info structs for variant
-
-struct SSMInfo {
     std::string neuronID;
     std::pair<float, float> dist;
     Network net;
     int netIteration;
+    MessageType getType() override { return START; };
 };
 
-struct USMInfo {
+struct UpdateSearchMessage : Message {
     std::string neuronID;
     std::string prevNeuronID;
     std::pair<float, float> dist;
     int layerNum;
     Network net;
     int netIteration;
+    MessageType getType() override { return UPDATE; };
 };
 
-struct StopInfo {
-    bool permanent;
+
+
+struct StopMessage : Message {
+    MessageType getType() override { return STOP; };
 };
+ 
 
 
 #endif

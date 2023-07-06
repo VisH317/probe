@@ -18,7 +18,7 @@ class WorkerQueue {
         WorkerQueue(std::queue<std::unique_ptr<Message>>&& queue) : queue(queue) {};
 
         void push(Message message);
-        Message pop();
+        std::unique_ptr<Message> pop();
         int size();
 
 };

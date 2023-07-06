@@ -43,8 +43,8 @@ class Worker {
         void start();
 
         // case functions
-        void startJitter(StartSearchMessage m);
-        void updateJitter(UpdateSearchMessage m);
+        void startJitter(StartSearchMessage* m);
+        void updateJitter(UpdateSearchMessage* m);
 
         // utility functions
         void addNewNeuronTasks(int layernum);
