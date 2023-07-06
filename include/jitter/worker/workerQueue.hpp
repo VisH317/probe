@@ -14,6 +14,7 @@ class WorkerQueue {
         std::mutex m;
 
     public:
+        WorkerQueue() = default;
         WorkerQueue(std::queue<std::unique_ptr<Message>>&& queue) : queue(queue) {};
 
         void push(Message message);

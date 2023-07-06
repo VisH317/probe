@@ -12,9 +12,6 @@
 
 class Evaluator {
     private: 
-        Network currentNet;
-        
-        int currentNetIteration;
 
         torch::Tensor input;
 
@@ -25,7 +22,7 @@ class Evaluator {
         std::shared_ptr<Config> config;
 
     public:
-        Evaluator(Network net, torch::Tensor input, std::vector<int> outputs);
+        Evaluator(torch::Tensor input, std::vector<int> outputs);
 
         void updateNetParams();
 

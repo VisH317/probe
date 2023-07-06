@@ -2,6 +2,7 @@
 #define __WORKER_H__
 
 #include <memory>
+#include <utility>
 #include "responseQueue.hpp"
 #include "evaluator.hpp"
 #include "workerQueue.hpp"
