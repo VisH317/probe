@@ -38,3 +38,6 @@ Multithreaded design:
    * will record an index at the time of latest network update
  * if successful - will continue on with algorithm but also send a message back to the master process to instill updates in the main network
  * master node will sort out concurrencies etc.
+
+UPDATE:
+ * (layer-1)weight averaged (shows efficacy on future neuron) * randomChange executed * lossUpdate of the change

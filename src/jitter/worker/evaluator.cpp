@@ -3,15 +3,16 @@
 Evaluator::Evaluator(torch::Tensor input, std::vector<int> outputs) : input(input), outputIds(outputs) {}
 
 
-double Evaluator::jitter(Network currentNet, int layer, std::string id, std::pair<float, float> dist, torch::Tensor weight) {
+std::pair<double, double> Evaluator::jitter(Network& currentNet, int layer, std::string id, std::pair<float, float> dist, torch::Tensor weight) {
     
     torch::Tensor initialOutput = currentNet.forward(this->input);
     torch::Tensor netOut;
+    double randomChange;
 
     try {
         auto info = currentNet.getLayer(layer)->getNeuron(id);
         torch::Tensor update = torch::empty_like(std::get<1>(info));
-        double randomChange = sample(dist);
+        randomChange = sample(dist);
         update+=randomChange;
         currentNet.getLayer(layer)->changeNeuronWeight(id, update);
         netOut = currentNet.forward(this->input);
@@ -31,7 +32,7 @@ double Evaluator::jitter(Network currentNet, int layer, std::string id, std::pai
     torch::Tensor differences = torch::sub(out, initialOutput);
     double sum = 0;
     for(int i = 0; i < outputIds.size(); i++) sum+=differences.index({i}).item<double>();
-    return sum/outputIds.size();
+    return {sum/outputIds.size(), randomChange};
 }
 
 double Evaluator::sample(std::pair<float, float> dist) {

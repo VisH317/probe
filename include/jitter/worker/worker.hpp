@@ -3,6 +3,7 @@
 
 #include <memory>
 #include <utility>
+#include <string>
 #include <torch/torch.h>
 #include "responseQueue.hpp"
 #include "evaluator.hpp"
@@ -15,6 +16,8 @@
 
 class Worker {
     private:
+
+        int id;
 
         std::shared_ptr<Config> config;
 
@@ -29,7 +32,7 @@ class Worker {
         int netIteration;
 
     public:
-        Worker(std::shared_ptr<Config> config, std::shared_ptr<ResponseQueue> responseQueue, torch::Tensor input, std::vector<int> outputs);
+        Worker(int id, std::shared_ptr<Config> config, std::shared_ptr<ResponseQueue> responseQueue, torch::Tensor input, std::vector<int> outputs);
         ~Worker() = default;
 
         // queue

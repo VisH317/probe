@@ -1,7 +1,7 @@
 #include "worker.hpp"
 
 
-Worker::Worker(std::shared_ptr<Config> config, std::shared_ptr<ResponseQueue> responseQueue, torch::Tensor input, std::vector<int> outputs) : config(config), responseQueue(responseQueue), netIteration(0) {
+Worker::Worker(int id, std::shared_ptr<Config> config, std::shared_ptr<ResponseQueue> responseQueue, torch::Tensor input, std::vector<int> outputs) : config(config), responseQueue(responseQueue), netIteration(0), id(id) {
     evaluator = Evaluator(input, outputs);
 }
 
@@ -16,5 +16,9 @@ void Worker::startJitter(StartSearchMessage m) {
 
     std::tuple<int, torch::Tensor, torch::Tensor> neuronInfo = m.net.getLayer(0)->getNeuron(m.neuronID);
 
-    double randomChange = evaluator.sample(m.dist);
+    std::pair<double, double> out = evaluator.jitter(m.net, 0, m.neuronID, m.dist, std::get<1>(neuronInfo));
+
+    double update = evaluator.updateDist(out.first, out.second);
+
+    ResponseUpdateMessage res{this->id, };
 }

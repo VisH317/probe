@@ -26,7 +26,7 @@ class Evaluator {
 
         void updateNetParams();
 
-        double jitter(Network net, int layer, std::string id, std::pair<float, float> dist);
+        std::pair<double, double> jitter(Network& net, int layer, std::string id, std::pair<float, float> dist, torch::Tensor weight);
 
         double sample(std::pair<float, float> dist);
 
