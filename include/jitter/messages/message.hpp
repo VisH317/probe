@@ -25,6 +25,7 @@ struct StartSearchMessage : public virtual Message {
     std::string neuronID;
     std::pair<float, float> dist;
     Network net;
+    int netIteration;
     MessageType getType() override { return START; };
 };
 
@@ -33,6 +34,7 @@ struct UpdateSearchMessage : Message {
     std::pair<float, float> dist;
     int layerNum;
     Network net;
+    int netIteration;
     MessageType getType() override { return UPDATE; };
 };
 
