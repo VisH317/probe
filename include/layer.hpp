@@ -66,6 +66,8 @@ class Layer {
          */
         std::tuple<std::string, torch::Tensor, torch::Tensor> getNeuron(int num);
 
+        std::tuple<int, torch::Tensor, torch::Tensor> getNeuron(std::string uuid);
+
         /**
          * @brief Get the dimensions of the layer
          * 
