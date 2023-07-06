@@ -19,7 +19,7 @@ class WorkerQueue {
 
         void push(Message message);
         Message pop();
-
+        int size();
 
 };
 

@@ -11,3 +11,7 @@ std::unique_ptr<Message> WorkerQueue::pop() {
     queue.pop();
     return std::move(ret);
 }
+
+int WorkerQueue::size() {
+    return queue.size();
+}

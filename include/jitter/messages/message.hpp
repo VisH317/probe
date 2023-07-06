@@ -3,13 +3,13 @@
 
 #include <string>
 #include <utility>
+#include <tuple>
 #include "network.hpp"
 
 enum MessageType {
     START,
     UPDATE,
     STOP,
-    VALID
 };
 
 // design question: should new networks be passed through messages each time or can the message calling be centralized to one manager
@@ -20,33 +20,45 @@ enum MessageType {
 struct Message {
     int pid;
     virtual MessageType getType();
+    virtual std::vector getInfo();
 };
 
 struct StartSearchMessage : public virtual Message {
-    std::string neuronID;
-    std::pair<float, float> dist;
-    Network net;
-    int netIteration;
+    SSMInfo content;
     MessageType getType() override { return START; };
 };
 
 struct UpdateSearchMessage : Message {
+    USMInfo content;
+    MessageType getType() override { return UPDATE; };
+};
+
+
+struct StopMessage : Message {
+    StopInfo content;
+    MessageType getType() override { return STOP; };
+};
+
+// info structs for variant
+
+struct SSMInfo {
+    std::string neuronID;
+    std::pair<float, float> dist;
+    Network net;
+    int netIteration;
+};
+
+struct USMInfo {
     std::string neuronID;
     std::string prevNeuronID;
     std::pair<float, float> dist;
     int layerNum;
     Network net;
     int netIteration;
-    MessageType getType() override { return UPDATE; };
 };
 
-struct ValidMessage : Message {
-    std::string neuronID;
-    int layerNum;
-};
-
-struct StopMessage : Message {
-    MessageType getType() override { return STOP; };
+struct StopInfo {
+    bool permanent;
 };
 
 
