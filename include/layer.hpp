@@ -6,6 +6,7 @@
 #include <vector>
 #include <string>
 #include <tuple>
+#include <stdexcept>
 
 /**
  * @brief wrapper around torch::nn::Linear to provide probing mechanisms with uuids for specific neuron analysis
