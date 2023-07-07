@@ -5,6 +5,8 @@
 #include <utility>
 #include <vector>
 #include <thread>
+#include <map>
+#include <mutex>
 #include <torch/torch.h>
 #include "network.hpp"
 #include "worker.hpp"
@@ -31,6 +33,12 @@ class NetManager {
 
         std::thread process;
 
+        // state vars
+
+        int currentNetIteration;
+        std::map<std::pair<std::string, int>, std::pair<float, float>> dist;
+        std::mutex distM;
+
 
     public:
         NetManager(int numWorkers, torch::Tensor input, std::vector<int> outputs, Config config);
@@ -39,6 +47,12 @@ class NetManager {
         void start();
 
         void process();
+
+
+        // dist function
+        std::pair<float float> getDist(std::string id, int layerNum);
+        void addDist(std::string id, int layerNum);
+        void updateDist(std::string id, int layerNum, float update);
 
 
 };
