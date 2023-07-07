@@ -86,7 +86,8 @@ class Network {
          * @return false if dimensions do not match
          */
         bool checkValid();
-        // probe method
+        
+        int getLayerLength();
 };
 
 #endif

@@ -49,3 +49,7 @@ torch::Tensor Network::forward(torch::Tensor input) {
 
     return *cur;
 }
+
+int Network::getLayerLength() {
+    return layers.size();
+}

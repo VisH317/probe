@@ -34,6 +34,7 @@ void Worker::startJitter(StartSearchMessage* m) {
 
     ResponseUpdateMessage res{this->id, m->neuronID, 0, out.first, out.second, update};
 
+    responses[m->neuronID] = std::nullopt;
     responseQueue->push(res);
 
     delete m;
@@ -52,6 +53,7 @@ void Worker::updateJitter(UpdateSearchMessage* m) {
 
     ResponseUpdateMessage res{this->id, m->neuronID, m->layerNum, out.first, out.second, update};
 
+    responses[m->neuronID] = std::nullopt;
     responseQueue->push(res);
 
     delete m;
@@ -76,11 +78,27 @@ void Worker::main() {
             case MessageType::STOP:
                 isEnd = true;
                 break;
+            case MessageType::VALID:
+                setValid(std::move(dynamic_cast<ValidMessage*>(m.get())));
+                break;
+            case MessageType::REJECTED:
+                setReject(std::move(dynamic_cast<RejectedMessage*>(m.get())));
+                break;
             default: break;
         }
 
         if(isEnd) break;
     }
+}
+
+
+void Worker::setValid(ValidMessage* m) {
+    responses[m->neuronID] = true;
+    
+}
+
+void Worker::setReject(ValidMessage* m) {
+    responses[m->neuronID] = false;
 }
 
 

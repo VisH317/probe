@@ -6,6 +6,8 @@
 #include <string>
 #include <torch/torch.h>
 #include <thread>
+#include <map>
+#include <optional>
 #include "responseQueue.hpp"
 #include "evaluator.hpp"
 #include "workerQueue.hpp"
@@ -23,6 +25,8 @@ class Worker {
         std::shared_ptr<Config> config;
 
         std::thread thread;
+
+        std::map<std::string, std::optional<bool>> responses;
 
         std::shared_ptr<ResponseQueue> responseQueue;
 
@@ -48,6 +52,10 @@ class Worker {
         // case functions
         void startJitter(StartSearchMessage* m);
         void updateJitter(UpdateSearchMessage* m);
+
+        // validation functions
+        void setValid(ValidMessage* m);
+        void setReject(ValidMessage* m);
 
         // utility functions
         void addNewNeuronTasks(int layernum);
