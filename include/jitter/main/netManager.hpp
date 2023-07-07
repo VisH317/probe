@@ -16,6 +16,7 @@
 #include "config.hpp"
 #include "responseMessages.hpp"
 #include "lossManager.hpp"
+#include "message.hpp"
 
 
 
@@ -61,6 +62,7 @@ class NetManager {
         std::pair<float, float> getDist(std::string id, int layerNum);
         void addDist(std::string id, int layerNum);
         void updateDist(ResponseUpdateMessage* m);
+        void setDist(std::string uuid, int layerNum, int update);
 
 
 };

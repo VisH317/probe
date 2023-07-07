@@ -8,6 +8,7 @@
 #include <thread>
 #include <map>
 #include <optional>
+#include <tuple>
 #include "responseQueue.hpp"
 #include "evaluator.hpp"
 #include "workerQueue.hpp"

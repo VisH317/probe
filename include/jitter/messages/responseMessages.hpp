@@ -2,6 +2,8 @@
 #define __RESPONSE_MESSAGES_H__
 
 #include <string>
+#include <vector>
+#include <torch/torch.h>
 
 enum ResponseType {
     UPDATE,
@@ -14,13 +16,14 @@ struct ResponseMessage {
 
 struct ResponseUpdateMessage : ResponseMessage {
     int workerId;
-    std::string uuid;
+    std::vector<std::string> uuid;
     int layerNum;
     double loss;
     double randomChange;
     double update;
     int netIteration;
-    ResponseUpdateMessage(int workerId, std::string uuid, int layerNum, double loss, double randomChange, double update) : workerId(workerId), uuid(uuid), layerNum(layerNum), loss(loss), randomChange(randomChange), update(update) {};
+    torch::Tensor update;
+    // ResponseUpdateMessage(int workerId, std::vector<std::string> uuid, int layerNum, double loss, double randomChange, double update) : workerId(workerId), uuid(uuid), layerNum(layerNum), loss(loss), randomChange(randomChange), update(update) {};
     ResponseType getType() override { return ResponseType::UPDATE; };
 };
 
