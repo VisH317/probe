@@ -19,6 +19,7 @@ struct ResponseUpdateMessage : ResponseMessage {
     double loss;
     double randomChange;
     double update;
+    int netIteration;
     ResponseUpdateMessage(int workerId, std::string uuid, int layerNum, double loss, double randomChange, double update) : workerId(workerId), uuid(uuid), layerNum(layerNum), loss(loss), randomChange(randomChange), update(update) {};
     ResponseType getType() override { return ResponseType::UPDATE; };
 };

@@ -32,7 +32,7 @@ void Worker::startJitter(StartSearchMessage* m) {
 
     double update = evaluator.updateDist(out.first, out.second);
 
-    ResponseUpdateMessage res{this->id, m->neuronID, 0, out.first, out.second, update};
+    ResponseUpdateMessage res{this->id, m->neuronID, 0, out.first, out.second, update, m->netIteration};
 
     responses[{m->neuronID}] = std::nullopt;
     responseQueue->push(res);
@@ -49,9 +49,9 @@ void Worker::updateJitter(UpdateSearchMessage* m) {
 
     std::pair<double, double> out = evaluator.jitter(m->net, m->layerNum, m->neurons.back(), m->dist, std::get<1>(neuronInfo));
 
-    double update = evaluator.updateDist(out.first, out.second, std::get<1>(prevNeuronInfo));
+    double update = evaluator.updateDist(out.first, out.second, m->neurons, m->layerNum, m->net);
 
-    ResponseUpdateMessage res{this->id, m->neurons.back(), m->layerNum, out.first, out.second, update};
+    ResponseUpdateMessage res{this->id, m->neurons.back(), m->layerNum, out.first, out.second, update, m->netIteration};
 
     responses[m->neurons] = std::nullopt;
     responseQueue->push(res);

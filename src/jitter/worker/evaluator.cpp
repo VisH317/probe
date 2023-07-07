@@ -48,10 +48,16 @@ double Evaluator::updateDist(float lossUpdate, float randomChange) {
 }
 
 
-double Evaluator::updateDist(float lossUpdate, float randomChange, torch::Tensor weight) {
-    torch::Tensor avgTen = torch::mean(weight, 0);
-    const float avg = avgTen.item<float>();
+double Evaluator::updateDist(float lossUpdate, float randomChange, std::vector<std::string> neuronIds, int layerNum, Network& net) {
 
-    const float update = config.get()->lambda2 * avg * lossUpdate * randomChange;
+    float weights = 1;
+
+    for(int i = 0; i < layerNum; i++) {
+        std::tuple<int, torch::Tensor, torch::Tensor> weight = net.getLayer(i)->getNeuron(neuronIds[i]);
+        torch::Tensor meanTen = torch::mean(std::get<1>(weight), 0);
+        weights*=meanTen.item<float>();
+    } 
+
+    const float update = config.get()->lambda2 * weights * lossUpdate * randomChange;
     return update;
 }

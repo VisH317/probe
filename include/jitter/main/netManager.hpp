@@ -14,6 +14,7 @@
 #include "taskManager.hpp"
 #include "taskUtils.hpp"
 #include "config.hpp"
+#include "responseMessages.hpp"
 
 
 
@@ -39,6 +40,10 @@ class NetManager {
         std::map<std::pair<std::string, int>, std::pair<float, float>> dist;
         std::mutex distM;
 
+        // dependencies
+
+        TaskManager tasks;
+
 
     public:
         NetManager(int numWorkers, torch::Tensor input, std::vector<int> outputs, Config config);
@@ -52,7 +57,7 @@ class NetManager {
         // dist function
         std::pair<float, float> getDist(std::string id, int layerNum);
         void addDist(std::string id, int layerNum);
-        void updateDist(std::string id, int layerNum, float update);
+        void updateDist(ResponseUpdateMessage* m);
 
 
 };

@@ -9,3 +9,20 @@ NetManager::NetManager(int numWorkers, torch::Tensor input, std::vector<int> out
     }
 }
 
+void NetManager::process() {
+    int iterations = 0;
+
+    while(true) {
+        if(responseQueue->size()==0) continue;
+
+        ResponseMessage m = responseQueue->pop();
+
+        switch(m.getType()) {
+            case 
+        }
+    }
+}
+
+void NetManager::updateDist(UpdateSearchMessage* m) {
+    m->
+}
