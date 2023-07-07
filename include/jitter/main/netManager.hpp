@@ -15,6 +15,7 @@
 #include "taskUtils.hpp"
 #include "config.hpp"
 #include "responseMessages.hpp"
+#include "lossManager.hpp"
 
 
 
@@ -43,6 +44,8 @@ class NetManager {
         // dependencies
 
         TaskManager tasks;
+
+        LossManager losses;
 
 
     public:
