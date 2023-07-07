@@ -10,6 +10,8 @@ enum MessageType {
     START,
     UPDATE,
     STOP,
+    VALID,
+    REJECTED
 };
 
 // design question: should new networks be passed through messages each time or can the message calling be centralized to one manager
@@ -40,7 +42,17 @@ struct UpdateSearchMessage : Message {
     MessageType getType() override { return UPDATE; };
 };
 
+struct ValidMessage : Message {
+    std::string neuronID;
+    int layerNum;
+    MessageType getType() override { return VALID; };
+};
 
+struct RejectedMessage : Message {
+    std::string neuronID;
+    int layerNum;
+    MessageType getType() override { return REJECTED; };
+};
 
 struct StopMessage : Message {
     MessageType getType() override { return STOP; };
