@@ -50,7 +50,7 @@ class NetManager {
 
 
         // dist function
-        std::pair<float float> getDist(std::string id, int layerNum);
+        std::pair<float, float> getDist(std::string id, int layerNum);
         void addDist(std::string id, int layerNum);
         void updateDist(std::string id, int layerNum, float update);
 

@@ -16,3 +16,8 @@ std::unique_ptr<ResponseMessage> ResponseQueue::pop() {
     queue.pop();
     return std::move(ret);
 }
+
+int ResponseQueue::size() {
+    std::lock_guard<std::mutex> lock(m);
+    return queue.size();
+}

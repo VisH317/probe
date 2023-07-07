@@ -21,6 +21,8 @@ class ResponseQueue {
         void push(std::unique_ptr<ResponseMessage> m);
 
         std::unique_ptr<ResponseMessage> pop();
+
+        int size();
 };
 
 

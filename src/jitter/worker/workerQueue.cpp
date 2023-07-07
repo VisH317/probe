@@ -18,5 +18,6 @@ std::unique_ptr<Message> WorkerQueue::pop() {
 }
 
 int WorkerQueue::size() {
+    std::lock_guard<std::mutex> lock(m);
     return queue.size();
 }
