@@ -87,6 +87,17 @@ void Worker::main() {
             default: break;
         }
 
+        bool searchFinished = true;
+
+        for(auto it = responses.begin(); it!=responses.end(); it++) {
+            if(!it->second) {
+                searchFinished = false
+                break;
+            }
+        }
+
+        if(searchFinished) responseQueue->push(ResponseDoneMessage{id});
+
         if(isEnd) break;
     }
 }
