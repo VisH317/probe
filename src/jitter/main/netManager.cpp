@@ -25,6 +25,10 @@ void NetManager::process() {
             case ResponseType::UPDATE:
                 updateDist(dynamic_cast<ResponseUpdateMessage*>(m.get()));
                 break;
+            case ResponseType::DONE:
+                createNewSearch(dynamic_cast<ResponseDoneMessage*>(m.get()));
+                break;
+            default: break;
         }
     }
 }
@@ -58,4 +62,10 @@ NetManager::~NetManager() {
     }
     workers.clear();
     thread.join();
+}
+
+void NetManager::createNewSearch(ResponseDoneMessage* m) {
+    std::string id = tasks.setNewProcessSearch(m->workerId);
+    StartSearchMessage message{id};
+    workers[m->workerId].addTask(message);
 }

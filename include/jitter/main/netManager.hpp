@@ -63,6 +63,8 @@ class NetManager {
         void updateDist(ResponseUpdateMessage* m);
         void setDist(std::string uuid, int layerNum, int update);
 
+        void createNewSearch(ResponseDoneMessage* m);
+
 
 };
 

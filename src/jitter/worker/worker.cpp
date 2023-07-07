@@ -102,7 +102,7 @@ void Worker::main() {
     }
 }
 
-
+// setup later
 void Worker::setValid(ValidMessage* m) {
     responses[m->neuronID] = true;
     if(m->layerNum+1<net.getLayerLength()) {
