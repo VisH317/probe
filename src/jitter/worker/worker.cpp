@@ -34,7 +34,7 @@ void Worker::startJitter(StartSearchMessage* m) {
 
     ResponseUpdateMessage res{this->id, m->neuronID, 0, out.first, out.second, update};
 
-    responses[m->neuronID] = std::nullopt;
+    responses[{m->neuronID}] = std::nullopt;
     responseQueue->push(res);
 
     delete m;
@@ -44,16 +44,16 @@ void Worker::updateJitter(UpdateSearchMessage* m) {
     this->netIteration = m->netIteration;
     this->net = m->net;
 
-    std::tuple<int, torch::Tensor, torch::Tensor> neuronInfo = m->net.getLayer(0)->getNeuron(m->neuronID);
-    std::tuple<int, torch::Tensor, torch::Tensor> prevNeuronInfo = m->net.getLayer(0)->getNeuron(m->prevNeuronID);
+    std::tuple<int, torch::Tensor, torch::Tensor> neuronInfo = m->net.getLayer(0)->getNeuron(m->neurons.back());
+    std::tuple<int, torch::Tensor, torch::Tensor> prevNeuronInfo = m->net.getLayer(0)->getNeuron(*(m->neurons.end()-2));
 
-    std::pair<double, double> out = evaluator.jitter(m->net, m->layerNum, m->neuronID, m->dist, std::get<1>(neuronInfo));
+    std::pair<double, double> out = evaluator.jitter(m->net, m->layerNum, m->neurons.back(), m->dist, std::get<1>(neuronInfo));
 
     double update = evaluator.updateDist(out.first, out.second, std::get<1>(prevNeuronInfo));
 
-    ResponseUpdateMessage res{this->id, m->neuronID, m->layerNum, out.first, out.second, update};
+    ResponseUpdateMessage res{this->id, m->neurons.back(), m->layerNum, out.first, out.second, update};
 
-    responses[m->neuronID] = std::nullopt;
+    responses[m->neurons] = std::nullopt;
     responseQueue->push(res);
 
     delete m;
@@ -94,7 +94,14 @@ void Worker::main() {
 
 void Worker::setValid(ValidMessage* m) {
     responses[m->neuronID] = true;
-    
+    if(m->layerNum+1<net.getLayerLength()) {
+        for(std::string& id : net.getLayer(m->layerNum+1)->getAllNeuronIds()) {
+            std::vector v(m->neuronID);
+            v.push_back(id);
+            UpdateSearchMessage message{v, };
+        }
+    }
+
 }
 
 void Worker::setReject(ValidMessage* m) {

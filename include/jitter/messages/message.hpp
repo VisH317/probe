@@ -21,41 +21,41 @@ enum MessageType {
 
 struct Message {
     int pid;
-    virtual MessageType getType();
+    virtual MessageType getType() const;
 };
 
 struct StartSearchMessage : public virtual Message {
     std::string neuronID;
-    std::pair<float, float> dist;
-    Network net;
+    // std::pair<float, float> dist;
+    // Network net;
     int netIteration;
-    MessageType getType() override { return START; };
+    MessageType getType() const override { return START; };
 };
 
 struct UpdateSearchMessage : Message {
-    std::string neuronID;
-    std::string prevNeuronID;
-    std::pair<float, float> dist;
+    std::vector<std::string> neurons;
+    // std::pair<float, float> dist;
     int layerNum;
-    Network net;
+    // Network net;
     int netIteration;
-    MessageType getType() override { return UPDATE; };
+    MessageType getType() const override { return UPDATE; };
 };
 
 struct ValidMessage : Message {
-    std::string neuronID;
+    std::vector<std::string> neuronID;
+    
     int layerNum;
-    MessageType getType() override { return VALID; };
+    MessageType getType() const override { return VALID; };
 };
 
 struct RejectedMessage : Message {
-    std::string neuronID;
+    std::vector<std::string> neuronID;
     int layerNum;
-    MessageType getType() override { return REJECTED; };
+    MessageType getType() const override { return REJECTED; };
 };
 
 struct StopMessage : Message {
-    MessageType getType() override { return STOP; };
+    MessageType getType() const override { return STOP; };
 };
  
 

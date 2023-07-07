@@ -26,7 +26,7 @@ class Worker {
 
         std::thread thread;
 
-        std::map<std::string, std::optional<bool>> responses;
+        std::map<std::vector<std::string>, std::optional<bool>> responses;
 
         std::shared_ptr<ResponseQueue> responseQueue;
 
