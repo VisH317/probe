@@ -23,6 +23,6 @@ void NetManager::process() {
     }
 }
 
-void NetManager::updateDist(UpdateSearchMessage* m) {
+void NetManager::updateDist(ResponseUpdateMessage* m) {
     m->
 }
