@@ -9,6 +9,10 @@ NetManager::NetManager(int numWorkers, torch::Tensor input, std::vector<int> out
     }
 }
 
+void NetManager::start() {
+    thread = std::thread(process);
+}
+
 void NetManager::process() {
     int iterations = 0;
 
@@ -18,7 +22,9 @@ void NetManager::process() {
         std::unique_ptr<ResponseMessage> m = responseQueue->pop();
 
         switch(m.getType()) {
-            case 
+            case ResponseType::UPDATE:
+                updateDist(dynamic_cast<ResponseUpdateMessage*>(m.get()));
+                break;
         }
     }
 }
@@ -44,4 +50,12 @@ void NetManager::setDist(std::string uuid, int layerNum, double update) {
 
     dist[{ uuid, layerNum }] = { x, y };
     
+}
+
+NetManager::~NetManager() {
+    for(Worker& worker : workers) {
+        worker.addTask(StopMessage{});
+    }
+    workers.clear();
+    thread.join();
 }

@@ -34,7 +34,7 @@ class NetManager {
         
         std::vector<int> outputs;
 
-        std::thread process;
+        std::thread thread;
 
         // state vars
 
@@ -60,7 +60,6 @@ class NetManager {
 
         // dist function
         std::pair<float, float> getDist(std::string id, int layerNum);
-        void addDist(std::string id, int layerNum);
         void updateDist(ResponseUpdateMessage* m);
         void setDist(std::string uuid, int layerNum, int update);
 
