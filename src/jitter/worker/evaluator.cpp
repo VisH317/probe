@@ -12,7 +12,7 @@ std::tuple<double, double, torch::Tensor> Evaluator::jitter(Network& currentNet,
 
     try {
         auto info = currentNet.getLayer(layer)->getNeuron(id);
-        update = torch::empty_like(std::get<1>(info));
+        update = torch::zeros_like(std::get<1>(info));
         randomChange = sample(dist);
         update+=randomChange;
         currentNet.getLayer(layer)->changeNeuronWeight(id, update);
