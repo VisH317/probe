@@ -12,8 +12,8 @@ std::unique_ptr<To, Deleter> dynamic_unique_cast(std::unique_ptr<From, Deleter>&
 }
 
 
-Worker::Worker(int id, std::shared_ptr<Config> config, std::shared_ptr<ResponseQueue> responseQueue, torch::Tensor input, std::vector<int> outputs, std::shared_ptr<Net> netManager) : config(config), responseQueue(responseQueue), netIteration(0), id(id), netManager(netManager) {
-    evaluator = Evaluator(input, outputs);
+Worker::Worker(int id, std::shared_ptr<Config> config, std::shared_ptr<ResponseQueue> responseQueue, torch::Tensor input, std::vector<int> outputs, std::shared_ptr<Net> netManager) : config(config), responseQueue(responseQueue), netIteration(0), id(id), netManager(netManager), evaluator(input, outputs) {
+    // evaluator = Evaluator(input, outputs);
 }
 
 
@@ -33,7 +33,10 @@ void Worker::startJitter(StartSearchMessage* m) {
 
     double update = evaluator.updateDist(std::get<0>(out), std::get<1>(out));
 
-    ResponseUpdateMessage res{this->id, {m->neuronID}, 0, std::get<0>(out), std::get<1>(out), update, std::get<2>(info), std::get<2>(out)};
+    std::vector<std::string> ns;
+    ns.push_back(m->neuronID);
+
+    ResponseUpdateMessage res{this->id, ns, 0, std::get<0>(out), std::get<1>(out), update, std::get<2>(out)};
 
     responses[{m->neuronID}] = std::nullopt;
     responseQueue->push(res);
@@ -51,9 +54,9 @@ void Worker::updateJitter(UpdateSearchMessage* m) {
 
     std::tuple<double, double, torch::Tensor> out = evaluator.jitter(std::get<0>(info), m->layerNum, m->neurons.back(), std::get<1>(info), std::get<1>(neuronInfo));
 
-    double update = evaluator.updateDist(std::get<0>(out), std::get<1>(std::get<1>(out), std::get<0>(info).getLayer(m->layerNum)->getNeuron(m->neurons.back())));
+    double update = evaluator.updateDist(std::get<0>(out), std::get<1>(out), m->neurons, m->layerNum, std::get<0>(info));
 
-    ResponseUpdateMessage res{this->id, m->neurons, m->layerNum, std::get<0>(out), std::get<1>(out), update, std::get<2>(info), std::get<2>(out)};
+    ResponseUpdateMessage res{this->id, m->neurons, m->layerNum, std::get<0>(out), std::get<1>(out), update, std::get<2>(out)};
 
     responses[m->neurons] = std::nullopt;
     responseQueue->push(res);

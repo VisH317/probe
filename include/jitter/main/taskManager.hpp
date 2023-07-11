@@ -13,7 +13,7 @@
 
 class TaskManager {
     private: 
-        Layer* inputLayer;
+        Layer inputLayer;
         const int numProcesses;
         int currentSearchIndex;
 
@@ -21,7 +21,7 @@ class TaskManager {
         std::vector<ProcessState> processes;
 
     public:
-        TaskManager(int numProcesses, Layer* inputLayer);
+        TaskManager(int numProcesses, Layer inputLayer);
 
         ProcessState getProcessInfo(int id);
         NeuronState getNeuronInfo(std::string id);

@@ -34,7 +34,7 @@ class Evaluator {
 
         double updateDist(float lossUpdate, float randomChange);
 
-        double updateDist(float lossUpdate, float randomChange, torch::Tensor weight);
+        double updateDist(float lossUpdate, float randomChange, std::vector<std::string> neuronIds, int layerNum, Network& net);
 
 };
 

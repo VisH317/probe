@@ -1,11 +1,11 @@
 #include "netManager.hpp"
 
-NetManager::NetManager(Network& net, int numWorkers, torch::Tensor input, std::vector<int> outputs, Config config) : config(std::make_shared<Config>(std::move(config))), outputs(std::move(outputs)), input(std::move(input)) {
+NetManager::NetManager(Network& network, int numWorkers, torch::Tensor input, std::vector<int> outputs, Config config) : config(std::make_shared<Config>(std::move(config))), outputs(std::move(outputs)), input(std::move(input)), tasks(numWorkers, *network.getLayer(0)) {
     
     responseQueue = std::make_shared<ResponseQueue>();
     
     for(int i=0;i<numWorkers;i++) {
-        workers.push_back(Worker(i, this->config, responseQueue, input, outputs));
+        workers.push_back(Worker(i, this->config, responseQueue, input, outputs, net));
     }
 }
 
@@ -23,10 +23,10 @@ void NetManager::process() {
         std::unique_ptr<ResponseMessage> m = responseQueue->pop();
 
         switch(m->getType()) {
-            case ResponseType::UPDATE:
+            case ResponseType::RES_UPDATE:
                 updateDist(dynamic_cast<ResponseUpdateMessage*>(m.get()));
                 break;
-            case ResponseType::DONE:
+            case ResponseType::RES_DONE:
                 createNewSearch(dynamic_cast<ResponseDoneMessage*>(m.get()));
                 break;
             default: break;

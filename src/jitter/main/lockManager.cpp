@@ -8,7 +8,7 @@ void LockManager::removeLock(std::string id) {
     locks[id] = false;
 }
 
-void LockManager::getLock(std::string id) {
+bool LockManager::checkLock(std::string id) {
     if(locks.find(id)==locks.end()) {
         locks[id] = false;
         return false;

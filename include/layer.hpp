@@ -69,7 +69,7 @@ class Layer {
 
         std::tuple<int, torch::Tensor, torch::Tensor> getNeuron(std::string uuid);
 
-        void Layer::changeNeuronWeight(std::string uuid, torch::Tensor update);
+        void changeNeuronWeight(std::string uuid, torch::Tensor update);
 
         std::vector<std::string> getAllNeuronIds();
 

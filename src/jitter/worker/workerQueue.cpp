@@ -2,11 +2,11 @@
 
 void WorkerQueue::push(Message message) {
     std::lock_guard<std::mutex> lock(m);
-    queue.push(std::make_unique<Message>(message));
+    queue.emplace(std::make_unique<Message>(message));
 }
 
 void WorkerQueue::push(std::unique_ptr<Message> message) {
-    std::lock_guard<std::mutex> lock(m)
+    std::lock_guard<std::mutex> lock(m);
     queue.push(message);
 }
 

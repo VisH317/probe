@@ -1,6 +1,6 @@
 #include "taskManager.hpp"
 
-TaskManager::TaskManager(int numProcesses, Layer* inputLayer) : numProcesses(numProcesses), inputLayer(inputLayer), currentSearchIndex(0) {
+TaskManager::TaskManager(int numProcesses, Layer inputLayer) : numProcesses(numProcesses), inputLayer(inputLayer), currentSearchIndex(0) {
     for(int i=0; i<std::min(numProcesses, inputLayer->getLength()); i++) {
         std::string id = std::get<0>(inputLayer->getNeuron(i));
         processes.push_back(ProcessState{i, 0, id});
