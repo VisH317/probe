@@ -24,7 +24,7 @@ struct ResponseUpdateMessage : ResponseMessage {
     double update;
     int netIteration;
     torch::Tensor updateTen;
-    // ResponseUpdateMessage(int workerId, std::vector<std::string> uuid, int layerNum, double loss, double randomChange, double update, torch::Tensor ten) : workerId(workerId), uuid(uuid), layerNum(layerNum), loss(loss), randomChange(randomChange), update(update), updateTen(ten) {};
+    ResponseUpdateMessage(int workerId, std::vector<std::string> uuid, int layerNum, double loss, double randomChange, double update, torch::Tensor ten) : workerId(workerId), uuid(uuid), layerNum(layerNum), loss(loss), randomChange(randomChange), update(update), updateTen(ten) {};
     ResponseType getType() override { return ResponseType::RES_UPDATE; };
 };
 

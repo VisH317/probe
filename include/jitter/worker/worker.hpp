@@ -57,7 +57,7 @@ class Worker {
 
         // validation functions
         void setValid(ValidMessage* m);
-        void setReject(ValidMessage* m);
+        void setReject(RejectedMessage* m);
 
         // utility functions
         void addNewNeuronTasks(int layernum);

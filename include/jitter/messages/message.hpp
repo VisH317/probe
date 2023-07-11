@@ -25,29 +25,33 @@ struct Message {
 };
 
 struct StartSearchMessage : public virtual Message {
-    std::string neuronID {};
+    std::string neuronID;
     // std::pair<float, float> dist;
     // Network net;
+    StartSearchMessage(std::string neuronID) : neuronID(neuronID) {};
     MessageType getType() const override { return START; };
 };
 
 struct UpdateSearchMessage : Message {
-    std::vector<std::string> neurons {};
+    std::vector<std::string> neurons;
     // std::pair<float, float> dist;
-    int layerNum {};
+    int layerNum;
+    UpdateSearchMessage(std::vector<std::string> neurons, int layerNum) : layerNum(layerNum), neurons(neurons) {};
     // Network net;
     MessageType getType() const override { return UPDATE; };
 };
 
 struct ValidMessage : Message {
-    std::vector<std::string> neuronID {};
-    int layerNum {};
+    std::vector<std::string> neuronID;
+    int layerNum;
+    ValidMessage(std::vector<std::string> neuronID, int layerNum) : neuronID(neuronID), layerNum(layerNum) {};
     MessageType getType() const override { return VALID; };
 };
 
 struct RejectedMessage : Message {
-    std::vector<std::string> neuronID {};
-    int layerNum {};
+    std::vector<std::string> neuronID;
+    int layerNum;
+    RejectedMessage(std::vector<std::string> neuronID, int layerNum) : neuronID(neuronID), layerNum(layerNum) {};
     MessageType getType() const override { return REJECTED; };
 };
 

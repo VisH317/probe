@@ -36,7 +36,7 @@ void Worker::startJitter(StartSearchMessage* m) {
     std::vector<std::string> ns;
     ns.push_back(m->neuronID);
 
-    ResponseUpdateMessage res{this->id, ns, 0, std::get<0>(out), std::get<1>(out), update, std::get<2>(out)};
+    ResponseUpdateMessage res(this->id, ns, 0, std::get<0>(out), std::get<1>(out), update, std::get<2>(out));
 
     responses[{m->neuronID}] = std::nullopt;
     responseQueue->push(res);
@@ -56,7 +56,7 @@ void Worker::updateJitter(UpdateSearchMessage* m) {
 
     double update = evaluator.updateDist(std::get<0>(out), std::get<1>(out), m->neurons, m->layerNum, std::get<0>(info));
 
-    ResponseUpdateMessage res{this->id, m->neurons, m->layerNum, std::get<0>(out), std::get<1>(out), update, std::get<2>(out)};
+    ResponseUpdateMessage res(this->id, m->neurons, m->layerNum, std::get<0>(out), std::get<1>(out), update, std::get<2>(out));
 
     responses[m->neurons] = std::nullopt;
     responseQueue->push(res);
@@ -96,7 +96,7 @@ void Worker::main() {
 
         for(auto it = responses.begin(); it!=responses.end(); it++) {
             if(!it->second) {
-                searchFinished = false
+                searchFinished = false;
                 break;
             }
         }
@@ -109,24 +109,25 @@ void Worker::main() {
 
 // setup later
 void Worker::setValid(ValidMessage* m) {
+    std::tuple<Network, std::pair<float, float>, int> info = netManager->getCurrentInfo(0, m->neuronID.back());
     responses[m->neuronID] = true;
-    if(m->layerNum+1<net.getLayerLength()) {
-        for(std::string& id : net.getLayer(m->layerNum+1)->getAllNeuronIds()) {
+    if(m->layerNum+1<std::get<0>(info).getLayerLength()) {
+        for(std::string& id : std::get<0>(info).getLayer(m->layerNum+1)->getAllNeuronIds()) {
             std::vector v(m->neuronID);
             v.push_back(id);
-            UpdateSearchMessage message{v, };
+            UpdateSearchMessage message{v, m->layerNum+1};
         }
     }
 
 }
 
-void Worker::setReject(ValidMessage* m) {
+void Worker::setReject(RejectedMessage* m) {
     responses[m->neuronID] = false;
 }
 
 
 void Worker::start() {
-    thread = std::thread(main);
+    thread = std::thread(&Worker::main, this);
 }
 
 Worker::~Worker() {

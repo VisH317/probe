@@ -11,7 +11,7 @@ NetManager::NetManager(Network& network, int numWorkers, torch::Tensor input, st
 
 void NetManager::start() {
     for(int i=0;i<workers.size(); i++) workers[i].start();
-    thread = std::thread(process);
+    thread = std::thread(&NetManager::process, this);
 }
 
 void NetManager::process() {
