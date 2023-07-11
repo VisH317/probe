@@ -15,6 +15,7 @@
 #include "config.hpp"
 #include "network.hpp"
 #include "responseMessages.hpp"
+#include "net.hpp"
 
 
 
@@ -31,16 +32,16 @@ class Worker {
 
         std::shared_ptr<ResponseQueue> responseQueue;
 
+        std::shared_ptr<Net> netManager;
+
         WorkerQueue queue;
 
         Evaluator evaluator;
 
-        Network net;
-
         int netIteration;
 
     public:
-        Worker(int id, std::shared_ptr<Config> config, std::shared_ptr<ResponseQueue> responseQueue, torch::Tensor input, std::vector<int> outputs);
+        Worker(int id, std::shared_ptr<Config> config, std::shared_ptr<ResponseQueue> responseQueue, torch::Tensor input, std::vector<int> outputs, std::shared_ptr<Net> net);
         ~Worker();
 
         // queue

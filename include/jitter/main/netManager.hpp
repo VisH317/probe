@@ -60,11 +60,8 @@ class NetManager {
 
         void process();
 
-
         // dist function
-        // std::pair<float, float> getDist(std::string id, int layerNum);
         void updateDist(ResponseUpdateMessage* m);
-        void setDist(std::string uuid, int layerNum, double update);
 
         void createNewSearch(ResponseDoneMessage* m);
 

@@ -12,7 +12,7 @@ std::unique_ptr<To, Deleter> dynamic_unique_cast(std::unique_ptr<From, Deleter>&
 }
 
 
-Worker::Worker(int id, std::shared_ptr<Config> config, std::shared_ptr<ResponseQueue> responseQueue, torch::Tensor input, std::vector<int> outputs) : config(config), responseQueue(responseQueue), netIteration(0), id(id) {
+Worker::Worker(int id, std::shared_ptr<Config> config, std::shared_ptr<ResponseQueue> responseQueue, torch::Tensor input, std::vector<int> outputs, std::shared_ptr<Net> netManager) : config(config), responseQueue(responseQueue), netIteration(0), id(id), netManager(netManager) {
     evaluator = Evaluator(input, outputs);
 }
 
@@ -23,16 +23,17 @@ void Worker::addTask(Message m) {
 
 
 void Worker::startJitter(StartSearchMessage* m) {
-    this->netIteration = m->netIteration;
-    this->net = m->net;
+    std::tuple<Network, std::pair<float, float>, int> info = netManager->getCurrentInfo(0, m->neuronID);
+    this->netIteration = std::get<2>(info);
+    // this->net = m->net;
 
-    std::tuple<int, torch::Tensor, torch::Tensor> neuronInfo = m->net.getLayer(0)->getNeuron(m->neuronID);
+    std::tuple<int, torch::Tensor, torch::Tensor> neuronInfo = std::get<0>(info).getLayer(0)->getNeuron(m->neuronID);
 
-    std::tuple<double, double, torch::Tensor> out = evaluator.jitter(m->net, 0, m->neuronID, m->dist, std::get<1>(neuronInfo));
+    std::tuple<double, double, torch::Tensor> out = evaluator.jitter(std::get<0>(info), 0, m->neuronID, std::get<1>(info), std::get<1>(neuronInfo));
 
     double update = evaluator.updateDist(std::get<0>(out), std::get<1>(out));
 
-    ResponseUpdateMessage res{this->id, {m->neuronID}, 0, std::get<0>(out), std::get<1>(out), update, m->netIteration, std::get<2>(out)};
+    ResponseUpdateMessage res{this->id, {m->neuronID}, 0, std::get<0>(out), std::get<1>(out), update, std::get<2>(info), std::get<2>(out)};
 
     responses[{m->neuronID}] = std::nullopt;
     responseQueue->push(res);
@@ -41,17 +42,18 @@ void Worker::startJitter(StartSearchMessage* m) {
 }
 
 void Worker::updateJitter(UpdateSearchMessage* m) {
-    this->netIteration = m->netIteration;
-    this->net = m->net;
+    std::tuple<Network, std::pair<float, float>, int> info = netManager->getCurrentInfo(0, m->neurons.back());
+    this->netIteration = std::get<2>(info);
+    // this->net = m->net;
 
-    std::tuple<int, torch::Tensor, torch::Tensor> neuronInfo = m->net.getLayer(0)->getNeuron(m->neurons.back());
-    std::tuple<int, torch::Tensor, torch::Tensor> prevNeuronInfo = m->net.getLayer(0)->getNeuron(*(m->neurons.end()-2));
+    std::tuple<int, torch::Tensor, torch::Tensor> neuronInfo = std::get<0>(info).getLayer(0)->getNeuron(m->neurons.back());
+    std::tuple<int, torch::Tensor, torch::Tensor> prevNeuronInfo = std::get<0>(info).getLayer(0)->getNeuron(*(m->neurons.end()-2));
 
-    std::tuple<double, double, torch::Tensor> out = evaluator.jitter(m->net, m->layerNum, m->neurons.back(), m->dist, std::get<1>(neuronInfo));
+    std::tuple<double, double, torch::Tensor> out = evaluator.jitter(std::get<0>(info), m->layerNum, m->neurons.back(), std::get<1>(info), std::get<1>(neuronInfo));
 
-    double update = evaluator.updateDist(std::get<0>(out), std::get<1>(out), m->neurons, m->layerNum, m->net);
+    double update = evaluator.updateDist(std::get<0>(out), std::get<1>(std::get<1>(out), std::get<0>(info).getLayer(m->layerNum)->getNeuron(m->neurons.back())));
 
-    ResponseUpdateMessage res{this->id, m->neurons, m->layerNum, std::get<0>(out), std::get<1>(out), update, m->netIteration, std::get<2>(out)};
+    ResponseUpdateMessage res{this->id, m->neurons, m->layerNum, std::get<0>(out), std::get<1>(out), update, std::get<2>(info), std::get<2>(out)};
 
     responses[m->neurons] = std::nullopt;
     responseQueue->push(res);
