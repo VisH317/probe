@@ -37,7 +37,7 @@ class NetManager {
         
         std::vector<int> outputs;
 
-        std::thread thread;
+        std::thread* thread;
 
         // state vars
 

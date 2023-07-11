@@ -26,7 +26,7 @@ class Worker {
 
         std::shared_ptr<Config> config;
 
-        std::thread thread;
+        std::thread* thread;
 
         std::map<std::vector<std::string>, std::optional<bool>> responses;
 

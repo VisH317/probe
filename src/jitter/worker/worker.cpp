@@ -127,11 +127,12 @@ void Worker::setReject(RejectedMessage* m) {
 
 
 void Worker::start() {
-    thread = std::thread(&Worker::main, this);
+    thread = &(std::thread(&Worker::main, this));
 }
 
 Worker::~Worker() {
     StopMessage stop;
     queue.push(stop);
-    thread.join();
+    thread->join();
+    delete thread;
 }
