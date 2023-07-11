@@ -14,6 +14,8 @@ class ResponseQueue {
         std::queue<std::unique_ptr<ResponseMessage>> queue;
         std::mutex m;
 
+        
+
     public:
         ResponseQueue() = default;
 

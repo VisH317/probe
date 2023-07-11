@@ -7,6 +7,7 @@
 #include <thread>
 #include <map>
 #include <mutex>
+#include <tuple>
 #include <torch/torch.h>
 #include "network.hpp"
 #include "worker.hpp"
@@ -17,18 +18,20 @@
 #include "responseMessages.hpp"
 #include "lossManager.hpp"
 #include "message.hpp"
-
+#include "net.hpp"
 
 
 class NetManager {
     private: 
-        Network mainNet;
+        // Network mainNet;
 
         std::vector<Worker> workers;
 
         std::shared_ptr<Config> config;
 
         std::shared_ptr<ResponseQueue> responseQueue;
+
+        std::shared_ptr<Net> net;
 
         torch::Tensor input;
         
@@ -38,9 +41,9 @@ class NetManager {
 
         // state vars
 
-        int currentNetIteration;
-        std::map<std::pair<std::string, int>, std::pair<float, float>> dist;
-        std::mutex distM;
+        // int currentNetIteration;
+        // std::map<std::pair<std::string, int>, std::pair<float, float>> dist;
+        // std::mutex distM;
 
         // dependencies
 
@@ -50,7 +53,7 @@ class NetManager {
 
 
     public:
-        NetManager(int numWorkers, torch::Tensor input, std::vector<int> outputs, Config config);
+        NetManager(Network& net, int numWorkers, torch::Tensor input, std::vector<int> outputs, Config config);
         ~NetManager();
 
         void start();
@@ -59,9 +62,9 @@ class NetManager {
 
 
         // dist function
-        std::pair<float, float> getDist(std::string id, int layerNum);
+        // std::pair<float, float> getDist(std::string id, int layerNum);
         void updateDist(ResponseUpdateMessage* m);
-        void setDist(std::string uuid, int layerNum, int update);
+        void setDist(std::string uuid, int layerNum, double update);
 
         void createNewSearch(ResponseDoneMessage* m);
 
