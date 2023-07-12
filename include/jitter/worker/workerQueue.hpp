@@ -10,7 +10,7 @@
 
 class WorkerQueue {
     private:
-        std::queue<std::unique_ptr<Message>> queue;
+        std::queue<std::shared_ptr<Message>> queue;
         std::mutex* m;
 
     public:
@@ -18,8 +18,8 @@ class WorkerQueue {
         ~WorkerQueue();
 
         void push(Message message);
-        void push(std::unique_ptr<Message> message);
-        std::unique_ptr<Message> pop();
+        void push(std::shared_ptr<Message> message);
+        std::shared_ptr<Message> pop();
         int size();
 
 };

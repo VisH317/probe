@@ -43,6 +43,8 @@ class Worker {
     public:
         Worker(int id, std::shared_ptr<Config> config, std::shared_ptr<ResponseQueue> responseQueue, torch::Tensor input, std::vector<int> outputs, std::shared_ptr<Net> net);
         ~Worker();
+        // Worker(Worker&&) {};
+        // Worker(Worker&) {};
 
         // queue
         void addTask(Message m);

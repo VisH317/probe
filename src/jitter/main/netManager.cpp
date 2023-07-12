@@ -6,7 +6,7 @@ NetManager::NetManager(Network& network, int numWorkers, torch::Tensor input, st
     
     for(int i=0;i<numWorkers;i++) {
         Worker worker(i, this->config, responseQueue, input, outputs, net);
-        workers.push_back(worker);
+        workers.push_back(std::move(worker));
     }
 }
 

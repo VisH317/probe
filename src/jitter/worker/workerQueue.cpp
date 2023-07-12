@@ -13,14 +13,14 @@ void WorkerQueue::push(Message message) {
     queue.push(std::make_unique<Message>(message));
 }
 
-void WorkerQueue::push(std::unique_ptr<Message> message) {
+void WorkerQueue::push(std::shared_ptr<Message> message) {
     std::lock_guard<std::mutex> lock(*m);
     queue.push(std::move(message));
 }
 
-std::unique_ptr<Message> WorkerQueue::pop() {
+std::shared_ptr<Message> WorkerQueue::pop() {
     std::lock_guard<std::mutex> lock(*m);
-    std::unique_ptr<Message> ret = std::move(queue.front());
+    std::shared_ptr<Message> ret = std::move(queue.front());
     queue.pop();
     return std::move(ret);
 }
