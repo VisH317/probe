@@ -5,7 +5,8 @@ NetManager::NetManager(Network& network, int numWorkers, torch::Tensor input, st
     responseQueue = std::make_shared<ResponseQueue>();
     
     for(int i=0;i<numWorkers;i++) {
-        workers.push_back(Worker(i, this->config, responseQueue, input, outputs, net));
+        Worker worker(i, this->config, responseQueue, input, outputs, net);
+        workers.push_back(worker);
     }
 }
 

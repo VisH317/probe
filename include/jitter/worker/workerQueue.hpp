@@ -11,11 +11,11 @@
 class WorkerQueue {
     private:
         std::queue<std::unique_ptr<Message>> queue;
-        std::mutex m;
+        std::mutex* m;
 
     public:
-        WorkerQueue() = default;
-        WorkerQueue(WorkerQueue& q);
+        WorkerQueue();
+        ~WorkerQueue();
 
         void push(Message message);
         void push(std::unique_ptr<Message> message);
