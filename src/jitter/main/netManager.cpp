@@ -5,14 +5,13 @@ NetManager::NetManager(Network& network, int numWorkers, torch::Tensor input, st
     responseQueue = std::make_shared<ResponseQueue>();
     
     for(int i=0;i<numWorkers;i++) {
-        Worker worker(i, this->config, responseQueue, input, outputs, net)
-        workers.push_back(worker);
+        workers.push_back(Worker(i, this->config, responseQueue, input, outputs, net));
     }
 }
 
 void NetManager::start() {
     for(int i=0;i<workers.size(); i++) workers[i].start();
-    thread = &(std::thread(&NetManager::process, this));
+    thread = new std::thread(&NetManager::process, this);
 }
 
 void NetManager::process() {

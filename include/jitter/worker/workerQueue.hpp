@@ -15,7 +15,7 @@ class WorkerQueue {
 
     public:
         WorkerQueue() = default;
-        WorkerQueue(std::queue<std::unique_ptr<Message>>&& queue) : queue(queue) {};
+        WorkerQueue(WorkerQueue& q);
 
         void push(Message message);
         void push(std::unique_ptr<Message> message);

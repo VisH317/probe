@@ -12,9 +12,7 @@ std::unique_ptr<To, Deleter> dynamic_unique_cast(std::unique_ptr<From, Deleter>&
 }
 
 
-Worker::Worker(int id, std::shared_ptr<Config> config, std::shared_ptr<ResponseQueue> responseQueue, torch::Tensor input, std::vector<int> outputs, std::shared_ptr<Net> netManager) : config(config), responseQueue(responseQueue), netIteration(0), id(id), netManager(netManager), evaluator(input, outputs) {
-    // evaluator = Evaluator(input, outputs);
-}
+Worker::Worker(int id, std::shared_ptr<Config> config, std::shared_ptr<ResponseQueue> responseQueue, torch::Tensor input, std::vector<int> outputs, std::shared_ptr<Net> netManager) : config(config), responseQueue(responseQueue), netIteration(0), id(id), netManager(netManager), evaluator(input, outputs) {}
 
 
 void Worker::addTask(Message m) {
@@ -127,7 +125,7 @@ void Worker::setReject(RejectedMessage* m) {
 
 
 void Worker::start() {
-    thread = &(std::thread(&Worker::main, this));
+    thread = new std::thread(&Worker::main, this);
 }
 
 Worker::~Worker() {

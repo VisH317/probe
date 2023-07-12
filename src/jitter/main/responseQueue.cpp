@@ -7,7 +7,7 @@ void ResponseQueue::push(ResponseMessage message) {
 
 void ResponseQueue::push(std::unique_ptr<ResponseMessage> message) {
     std::lock_guard<std::mutex> lock(m);
-    queue.push(message);
+    queue.push(std::move(message));
 }
 
 std::unique_ptr<ResponseMessage> ResponseQueue::pop() {
