@@ -24,7 +24,7 @@ enum MessageType
 struct Message
 {
     // int pid;
-    virtual MessageType getType() { return PARENT; };
+    virtual MessageType getType() = 0;
 };
 
 struct StartSearchMessage : public virtual Message

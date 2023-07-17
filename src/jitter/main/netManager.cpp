@@ -3,15 +3,12 @@
 NetManager::NetManager(Network &network, int numWorkers, torch::Tensor input, std::vector<int> outputs, Config config, double desiredLoss) : config(std::make_shared<Config>(std::move(config))), outputs(std::move(outputs)), input(std::move(input)), tasks(numWorkers, *network.getLayer(0)), desiredLoss(desiredLoss)
 {
 
-    std::cout<<"entering constructor"<<std::endl;
-
     responseQueue = std::make_shared<ResponseQueue>();
 
     for (int i = 0; i < numWorkers; i++)
     {
         Worker worker(i, this->config, responseQueue, input, outputs, net);
-        workers.emplace_back(std::move(worker));
-        std::cout<<"pushed back!"<<std::endl;
+        workers.emplace_back(worker);
     }
 
     std::cout<<"Initialized!"<<std::endl;
@@ -19,8 +16,13 @@ NetManager::NetManager(Network &network, int numWorkers, torch::Tensor input, st
 
 void NetManager::start()
 {
-    for (int i = 0; i < workers.size(); i++)
+    for (int i = 0; i < workers.size(); i++) {
+        ProcessState state = tasks.getProcessInfo(i);
+        std::shared_ptr<Message> m;
+        m = std::make_shared<StartSearchMessage>(state.currentState);
+        workers[i].addTask(m);
         workers[i].start();
+    }
     thread =  std::make_shared<std::thread>(&NetManager::process, this);
     std::cout<<"main thread started!"<<std::endl;
 }
@@ -56,21 +58,27 @@ void NetManager::updateDist(ResponseUpdateMessage *m)
     if (!shouldUpdate)
     {
         RejectedMessage rejected{m->uuid, m->layerNum};
-        workers[m->workerId].addTask(std::make_shared<Message>(rejected));
+        std::shared_ptr<Message> mes;
+        mes = std::make_shared<RejectedMessage>(rejected);
+        workers[m->workerId].addTask(mes);
         return;
     }
 
     net->updateDist(m->uuid.back(), m->layerNum, m->update, m->updateTen);
 
+    std::shared_ptr<Message> mes;
     ValidMessage valid{m->uuid, m->layerNum};
-    workers[m->workerId].addTask(std::make_shared<Message>(valid));
+    mes = std::make_shared<ValidMessage>(m->uuid, m->layerNum);
+    workers[m->workerId].addTask(mes);
 }
 
 NetManager::~NetManager()
 {
     for (Worker &worker : workers)
     {
-        worker.addTask(std::make_shared<Message>(StopMessage{}));
+        std::shared_ptr<Message> m;
+        m = std::make_shared<StopMessage>();
+        worker.addTask(m);
     }
     workers.clear();
     thread->join();
@@ -79,6 +87,8 @@ NetManager::~NetManager()
 void NetManager::createNewSearch(ResponseDoneMessage *m)
 {
     std::string id = tasks.setNewProcessState(m->workerId);
-    StartSearchMessage message{id};
-    workers[m->workerId].addTask(std::make_shared<Message>(message));
+    // StartSearchMessage message{id};
+    std::shared_ptr<Message> mes;
+    mes = std::make_shared<StartSearchMessage>(id);
+    workers[m->workerId].addTask(mes);
 }

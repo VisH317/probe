@@ -74,21 +74,27 @@ void Worker::main() {
         if(queue.size()==0) continue;
 
         std::shared_ptr<Message> m = queue.pop();
+        std::cout<<"Message: "<<m->getType()<<std::endl;
 
-        switch(m.get()->getType()) {
+        switch(m->getType()) {
             case MessageType::START:
+                std::cout<<"START MESSAGE RECEIVED"<<std::endl;
                 startJitter(std::move(dynamic_cast<StartSearchMessage*>(m.get())));
                 break;
             case MessageType::UPDATE:
+                std::cout<<"UPDATE MESSAGE RECEIVED"<<std::endl;
                 updateJitter(std::move(dynamic_cast<UpdateSearchMessage*>(m.get())));
                 break;
             case MessageType::STOP:
+                std::cout<<"STOP MESSAGE RECEIVED"<<std::endl;
                 isEnd = true;
                 break;
             case MessageType::VALID:
+                std::cout<<"VALID MESSAGE RECEIVED"<<std::endl;
                 setValid(std::move(dynamic_cast<ValidMessage*>(m.get())));
                 break;
             case MessageType::REJECTED:
+                std::cout<<"REJECTED MESSAGE RECEIVED"<<std::endl;
                 setReject(std::move(dynamic_cast<RejectedMessage*>(m.get())));
                 break;
             default: break;

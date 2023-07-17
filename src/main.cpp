@@ -24,5 +24,5 @@ int main() {
 
     std::cout<<"netmanager initialized!"<<std::endl;
 
-    // m.start();
+    m.start();
 }

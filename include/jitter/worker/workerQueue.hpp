@@ -5,16 +5,19 @@
 #include <thread>
 #include <mutex>
 #include <memory>
+#include <iostream>
 #include <utility>
 #include "message.hpp"
 
 class WorkerQueue {
     private:
         std::queue<std::shared_ptr<Message>> queue;
-        std::mutex* m;
+        std::mutex m;
 
     public:
         WorkerQueue();
+        WorkerQueue(const WorkerQueue& q);
+        WorkerQueue(WorkerQueue&& q) = default;
         ~WorkerQueue();
 
         // void push(Message message);
