@@ -3,6 +3,8 @@
 NetManager::NetManager(Network &network, int numWorkers, torch::Tensor input, std::vector<int> outputs, Config config, double desiredLoss) : config(std::make_shared<Config>(std::move(config))), outputs(std::move(outputs)), input(std::move(input)), tasks(numWorkers, *network.getLayer(0)), desiredLoss(desiredLoss)
 {
 
+    std::cout<<"entering constructor"<<std::endl;
+
     responseQueue = std::make_shared<ResponseQueue>();
 
     for (int i = 0; i < numWorkers; i++)

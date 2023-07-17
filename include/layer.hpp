@@ -6,6 +6,7 @@
 #include <vector>
 #include <string>
 #include <tuple>
+#include <iostream>
 #include <stdexcept>
 
 /**

@@ -22,6 +22,7 @@ torch::nn::Linear& Layer::getLayer() {
 }
 
 std::tuple<std::string, torch::Tensor, torch::Tensor> Layer::getNeuron(int num) {
+    std::cout<<num<<std::endl;
     if(num>=out || num<0) throw std::out_of_range("The neuron you selected to probe was out of range of the layer's neurons"); 
 
     torch::Tensor neuronWeights = layer->weight;
@@ -56,7 +57,7 @@ std::pair<int, int> Layer::getDims() {
 }
 
 int Layer::getLength() {
-    return layer->weight.sizes()[1];
+    return layer->weight.sizes()[0];
 }
 
 std::vector<std::string> Layer::getAllNeuronIds() {
