@@ -27,7 +27,7 @@ class Worker {
 
         std::shared_ptr<Config> config;
 
-        std::thread* thread;
+        std::shared_ptr<std::thread> thread;
 
         std::map<std::vector<std::string>, std::optional<bool>> responses;
 
@@ -45,7 +45,7 @@ class Worker {
         Worker(int id, std::shared_ptr<Config> config, std::shared_ptr<ResponseQueue> responseQueue, torch::Tensor input, std::vector<int> outputs, std::shared_ptr<Net> net);
         ~Worker();
         // Worker(Worker&&) {};
-        // Worker(Worker&) {};
+        // Worker(const Worker&) = delete;
 
         // queue
         void addTask(std::shared_ptr<Message> m);

@@ -40,7 +40,7 @@ class NetManager {
 
         double desiredLoss;
 
-        std::thread* thread;
+        std::shared_ptr<std::thread> thread;
 
         // state vars
 

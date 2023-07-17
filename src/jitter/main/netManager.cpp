@@ -10,7 +10,8 @@ NetManager::NetManager(Network &network, int numWorkers, torch::Tensor input, st
     for (int i = 0; i < numWorkers; i++)
     {
         Worker worker(i, this->config, responseQueue, input, outputs, net);
-        workers.push_back(std::move(worker));
+        workers.emplace_back(std::move(worker));
+        std::cout<<"pushed back!"<<std::endl;
     }
 
     std::cout<<"Initialized!"<<std::endl;
@@ -20,7 +21,7 @@ void NetManager::start()
 {
     for (int i = 0; i < workers.size(); i++)
         workers[i].start();
-    thread = new std::thread(&NetManager::process, this);
+    thread =  std::make_shared<std::thread>(&NetManager::process, this);
     std::cout<<"main thread started!"<<std::endl;
 }
 
@@ -73,7 +74,6 @@ NetManager::~NetManager()
     }
     workers.clear();
     thread->join();
-    delete thread;
 }
 
 void NetManager::createNewSearch(ResponseDoneMessage *m)

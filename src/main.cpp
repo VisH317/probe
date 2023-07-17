@@ -22,7 +22,7 @@ int main() {
 
     NetManager m(n, numWorkers, input, outputs, config, desiredLoss);
 
-    std::cout<<"initialized!"<<std::endl;
+    std::cout<<"netmanager initialized!"<<std::endl;
 
-    m.start();
+    // m.start();
 }

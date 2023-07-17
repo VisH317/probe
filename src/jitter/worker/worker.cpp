@@ -129,12 +129,13 @@ void Worker::setReject(RejectedMessage* m) {
 
 
 void Worker::start() {
-    thread = new std::thread(&Worker::main, this);
+    thread = std::make_shared<std::thread>(&Worker::main, this);
 }
 
 Worker::~Worker() {
-    StopMessage stop;
+    // StopMessage stop;
+    std::cout<<"Stopping?"<<std::endl;
     // queue.push(std::make_shared<Message>(stop));
-    thread->join();
-    delete thread;
+    if(thread != nullptr) thread->join();
+    // delete thread;
 }
