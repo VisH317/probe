@@ -6,7 +6,12 @@
                 "${workspaceFolder}/**",
                 "${workspaceFolder}/lib/libtorch/include",
                 "${workspaceFolder}/lib/libtorch/include/torch/csrc/api/include",
-                "${workspaceFolder}/lib/boost_1_82_0/boost"
+                "${workspaceFolder}/lib/boost_1_82_0/boost",
+                "${workspaceFolder}/include",
+                "${workspaceFolder}/include/jitter",
+                "${workspaceFolder}/include/jitter/main",
+                "${workspaceFolder}/include/jitter/messages",
+                "${workspaceFolder}/include/jitter/worker"
             ],
             "defines": [],
             "compilerPath": "/usr/bin/clang",

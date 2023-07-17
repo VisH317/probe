@@ -37,6 +37,8 @@ class NetManager {
         
         std::vector<int> outputs;
 
+        double desiredLoss;
+
         std::thread* thread;
 
         // state vars
@@ -53,7 +55,7 @@ class NetManager {
 
 
     public:
-        NetManager(Network& net, int numWorkers, torch::Tensor input, std::vector<int> outputs, Config config);
+        NetManager(Network& net, int numWorkers, torch::Tensor input, std::vector<int> outputs, Config config, double desiredLoss);
         ~NetManager();
 
         void start();
