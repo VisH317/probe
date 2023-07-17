@@ -7,6 +7,7 @@
 #include <thread>
 #include <map>
 #include <mutex>
+#include <iostream>
 #include <tuple>
 #include <torch/torch.h>
 #include "network.hpp"

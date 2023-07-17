@@ -17,7 +17,7 @@ class WorkerQueue {
         WorkerQueue();
         ~WorkerQueue();
 
-        void push(Message message);
+        // void push(Message message);
         void push(std::shared_ptr<Message> message);
         std::shared_ptr<Message> pop();
         int size();

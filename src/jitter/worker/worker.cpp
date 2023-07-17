@@ -13,10 +13,11 @@ std::unique_ptr<To, Deleter> dynamic_unique_cast(std::unique_ptr<From, Deleter>&
 
 
 Worker::Worker(int id, std::shared_ptr<Config> config, std::shared_ptr<ResponseQueue> responseQueue, torch::Tensor input, std::vector<int> outputs, std::shared_ptr<Net> netManager) : config(config), responseQueue(responseQueue), netIteration(0), id(id), netManager(netManager), evaluator(input, outputs) {
+    std::cout<<"worked initialized!"<<std::endl;
 }
 
 
-void Worker::addTask(Message m) {
+void Worker::addTask(std::shared_ptr<Message> m) {
     queue.push(m);
 }
 
@@ -38,7 +39,7 @@ void Worker::startJitter(StartSearchMessage* m) {
     ResponseUpdateMessage res(this->id, ns, 0, std::get<0>(out), std::get<1>(out), update, std::get<2>(out));
 
     responses[{m->neuronID}] = std::nullopt;
-    responseQueue->push(res);
+    responseQueue->push(std::make_unique<ResponseMessage>(res));
 
     delete m;
 }
@@ -58,12 +59,14 @@ void Worker::updateJitter(UpdateSearchMessage* m) {
     ResponseUpdateMessage res(this->id, m->neurons, m->layerNum, std::get<0>(out), std::get<1>(out), update, std::get<2>(out));
 
     responses[m->neurons] = std::nullopt;
-    responseQueue->push(res);
+    responseQueue->push(std::make_unique<ResponseMessage>(res));
 
     delete m;
 }
 
 void Worker::main() {
+
+    std::cout<<"starting worker thread..."<<std::endl;
 
     bool isEnd = false;
 
@@ -100,7 +103,7 @@ void Worker::main() {
             }
         }
 
-        if(searchFinished) responseQueue->push(ResponseDoneMessage{id});
+        if(searchFinished) responseQueue->push(std::make_unique<ResponseMessage>(ResponseDoneMessage{id}));
 
         if(isEnd) break;
     }
@@ -131,7 +134,7 @@ void Worker::start() {
 
 Worker::~Worker() {
     StopMessage stop;
-    queue.push(stop);
+    // queue.push(std::make_shared<Message>(stop));
     thread->join();
     delete thread;
 }

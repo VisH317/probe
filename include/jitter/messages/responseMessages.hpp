@@ -6,16 +6,20 @@
 #include <memory>
 #include <torch/torch.h>
 
-enum ResponseType {
+enum ResponseType
+{
     RES_UPDATE,
-    RES_DONE
+    RES_DONE,
+    RES_PARENT
 };
 
-struct ResponseMessage {
-    virtual ResponseType getType();
+struct ResponseMessage
+{
+    virtual ResponseType getType() { return RES_PARENT; };
 };
 
-struct ResponseUpdateMessage : ResponseMessage {
+struct ResponseUpdateMessage : ResponseMessage
+{
     int workerId;
     std::vector<std::string, std::allocator<std::string>> uuid;
     int layerNum;
@@ -24,15 +28,15 @@ struct ResponseUpdateMessage : ResponseMessage {
     double update;
     int netIteration;
     torch::Tensor updateTen;
-    ResponseUpdateMessage(int workerId, std::vector<std::string> uuid, int layerNum, double loss, double randomChange, double update, torch::Tensor ten) : workerId(workerId), uuid(uuid), layerNum(layerNum), loss(loss), randomChange(randomChange), update(update), updateTen(ten) {};
+    ResponseUpdateMessage(int workerId, std::vector<std::string> uuid, int layerNum, double loss, double randomChange, double update, torch::Tensor ten) : workerId(workerId), uuid(uuid), layerNum(layerNum), loss(loss), randomChange(randomChange), update(update), updateTen(ten){};
     ResponseType getType() override { return ResponseType::RES_UPDATE; };
 };
 
-struct ResponseDoneMessage : ResponseMessage {
+struct ResponseDoneMessage : ResponseMessage
+{
     int workerId;
-    ResponseDoneMessage(int workerId) : workerId(workerId) {};
+    ResponseDoneMessage(int workerId) : workerId(workerId){};
     ResponseType getType() override { return ResponseType::RES_DONE; };
 };
-
 
 #endif

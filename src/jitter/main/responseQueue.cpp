@@ -1,9 +1,9 @@
 #include "responseQueue.hpp"
 
-void ResponseQueue::push(ResponseMessage message) {
-    std::lock_guard<std::mutex> lock(m);
-    queue.push(std::make_unique<ResponseMessage>(message));
-}
+// void ResponseQueue::push(ResponseMessage message) {
+//     std::lock_guard<std::mutex> lock(m);
+//     queue.push(std::make_unique<ResponseMessage>(message));
+// }
 
 void ResponseQueue::push(std::unique_ptr<ResponseMessage> message) {
     std::lock_guard<std::mutex> lock(m);

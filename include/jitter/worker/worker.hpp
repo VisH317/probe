@@ -9,6 +9,7 @@
 #include <map>
 #include <optional>
 #include <tuple>
+#include <iostream>
 #include "responseQueue.hpp"
 #include "evaluator.hpp"
 #include "workerQueue.hpp"
@@ -47,7 +48,7 @@ class Worker {
         // Worker(Worker&) {};
 
         // queue
-        void addTask(Message m);
+        void addTask(std::shared_ptr<Message> m);
 
         // main process
         void main();
@@ -63,7 +64,7 @@ class Worker {
 
         // utility functions
         void addNewNeuronTasks(int layernum);
-        void pushResponse(ResponseMessage m);
+        // void pushResponse(std::shared_ptr<ResponseMessage> m);
 
 };
 

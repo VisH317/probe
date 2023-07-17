@@ -6,12 +6,14 @@
 #include <tuple>
 #include "network.hpp"
 
-enum MessageType {
+enum MessageType
+{
     START,
     UPDATE,
     STOP,
     VALID,
-    REJECTED
+    REJECTED,
+    PARENT
 };
 
 // design question: should new networks be passed through messages each time or can the message calling be centralized to one manager
@@ -19,46 +21,50 @@ enum MessageType {
 // // important to have separate copies to prevent updates being run while a worker is running a forward on the thing
 // centralized manager has to manage both and both have similar memory requirements, since each worker still has to hold their own copy of the network
 
-struct Message {
+struct Message
+{
     // int pid;
-    virtual MessageType getType() const;
+    virtual MessageType getType() { return PARENT; };
 };
 
-struct StartSearchMessage : public virtual Message {
+struct StartSearchMessage : public virtual Message
+{
     std::string neuronID;
     // std::pair<float, float> dist;
     // Network net;
-    StartSearchMessage(std::string neuronID) : neuronID(neuronID) {};
-    MessageType getType() const override { return START; };
+    StartSearchMessage(std::string neuronID) : neuronID(neuronID){};
+    MessageType getType() override { return START; };
 };
 
-struct UpdateSearchMessage : Message {
+struct UpdateSearchMessage : Message
+{
     std::vector<std::string> neurons;
     // std::pair<float, float> dist;
     int layerNum;
-    UpdateSearchMessage(std::vector<std::string> neurons, int layerNum) : layerNum(layerNum), neurons(neurons) {};
+    UpdateSearchMessage(std::vector<std::string> neurons, int layerNum) : layerNum(layerNum), neurons(neurons){};
     // Network net;
-    MessageType getType() const override { return UPDATE; };
+    MessageType getType() override { return UPDATE; };
 };
 
-struct ValidMessage : Message {
+struct ValidMessage : Message
+{
     std::vector<std::string> neuronID;
     int layerNum;
-    ValidMessage(std::vector<std::string> neuronID, int layerNum) : neuronID(neuronID), layerNum(layerNum) {};
-    MessageType getType() const override { return VALID; };
+    ValidMessage(std::vector<std::string> neuronID, int layerNum) : neuronID(neuronID), layerNum(layerNum){};
+    MessageType getType() override { return VALID; };
 };
 
-struct RejectedMessage : Message {
+struct RejectedMessage : Message
+{
     std::vector<std::string> neuronID;
     int layerNum;
-    RejectedMessage(std::vector<std::string> neuronID, int layerNum) : neuronID(neuronID), layerNum(layerNum) {};
-    MessageType getType() const override { return REJECTED; };
+    RejectedMessage(std::vector<std::string> neuronID, int layerNum) : neuronID(neuronID), layerNum(layerNum){};
+    MessageType getType() override { return REJECTED; };
 };
 
-struct StopMessage : Message {
-    MessageType getType() const override { return STOP; };
+struct StopMessage : Message
+{
+    MessageType getType() override { return STOP; };
 };
- 
-
 
 #endif

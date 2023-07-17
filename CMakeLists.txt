@@ -5,7 +5,7 @@ include(CTest)
 find_package(Torch REQUIRED)
 find_package(Boost COMPONENTS program_options REQUIRED)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${TORCH_CXX_FLAGS}")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${TORCH_CXX_FLAGS} -pthread")
 
 file(GLOB SOURCES CONFIGURE_DEPENDS "src/*.cpp" "src/jitter/*.cpp", "src/jitter/main/*.cpp", "src/jitter/worker/*.cpp")
 
@@ -31,6 +31,19 @@ target_include_directories(torch-probe PRIVATE include/jitter)
 target_include_directories(torch-probe PRIVATE include/jitter/main)
 target_include_directories(torch-probe PRIVATE include/jitter/messages)
 target_include_directories(torch-probe PRIVATE include/jitter/worker)
+
+add_executable(probe-test ${SOURCES})
+set_target_properties(probe-test PROPERTIES SOVERSION 1)
+set_target_properties(probe-test PROPERTIES LINKER_LANGUAGE CXX)
+set_property(TARGET probe-test PROPERTY CXX_STANDARD 17)
+
+target_link_libraries(probe-test Boost::program_options)
+target_link_libraries(probe-test "${TORCH_LIBRARIES}")
+target_include_directories(probe-test PRIVATE include)
+target_include_directories(probe-test PRIVATE include/jitter)
+target_include_directories(probe-test PRIVATE include/jitter/main)
+target_include_directories(probe-test PRIVATE include/jitter/messages)
+target_include_directories(probe-test PRIVATE include/jitter/worker)
 
 
 # setup installation

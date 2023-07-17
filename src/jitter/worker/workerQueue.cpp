@@ -8,10 +8,10 @@ WorkerQueue::~WorkerQueue() {
     delete m;
 }
 
-void WorkerQueue::push(Message message) {
-    std::lock_guard<std::mutex> lock(*m);
-    queue.push(std::make_unique<Message>(message));
-}
+// void WorkerQueue::push(Message message) {
+//     std::lock_guard<std::mutex> lock(*m);
+//     queue.push(std::make_unique<Message>(message));
+// }
 
 void WorkerQueue::push(std::shared_ptr<Message> message) {
     std::lock_guard<std::mutex> lock(*m);

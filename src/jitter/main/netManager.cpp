@@ -10,6 +10,8 @@ NetManager::NetManager(Network &network, int numWorkers, torch::Tensor input, st
         Worker worker(i, this->config, responseQueue, input, outputs, net);
         workers.push_back(std::move(worker));
     }
+
+    std::cout<<"Initialized!"<<std::endl;
 }
 
 void NetManager::start()
@@ -17,6 +19,7 @@ void NetManager::start()
     for (int i = 0; i < workers.size(); i++)
         workers[i].start();
     thread = new std::thread(&NetManager::process, this);
+    std::cout<<"main thread started!"<<std::endl;
 }
 
 void NetManager::process()
@@ -50,21 +53,21 @@ void NetManager::updateDist(ResponseUpdateMessage *m)
     if (!shouldUpdate)
     {
         RejectedMessage rejected{m->uuid, m->layerNum};
-        workers[m->workerId].addTask(rejected);
+        workers[m->workerId].addTask(std::make_shared<Message>(rejected));
         return;
     }
 
     net->updateDist(m->uuid.back(), m->layerNum, m->update, m->updateTen);
 
     ValidMessage valid{m->uuid, m->layerNum};
-    workers[m->workerId].addTask(valid);
+    workers[m->workerId].addTask(std::make_shared<Message>(valid));
 }
 
 NetManager::~NetManager()
 {
     for (Worker &worker : workers)
     {
-        worker.addTask(StopMessage{});
+        worker.addTask(std::make_shared<Message>(StopMessage{}));
     }
     workers.clear();
     thread->join();
@@ -75,5 +78,5 @@ void NetManager::createNewSearch(ResponseDoneMessage *m)
 {
     std::string id = tasks.setNewProcessState(m->workerId);
     StartSearchMessage message{id};
-    workers[m->workerId].addTask(message);
+    workers[m->workerId].addTask(std::make_shared<Message>(message));
 }
