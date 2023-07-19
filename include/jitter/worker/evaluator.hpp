@@ -7,6 +7,7 @@
 #include <memory>
 #include <utility>
 #include <tuple>
+#include <iostream>
 #include <torch/torch.h>
 #include "network.hpp"
 #include "config.hpp"

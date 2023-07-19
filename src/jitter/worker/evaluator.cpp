@@ -5,6 +5,7 @@ Evaluator::Evaluator(torch::Tensor input, std::vector<int> outputs) : input(inpu
 
 std::tuple<double, double, torch::Tensor> Evaluator::jitter(Network& currentNet, int layer, std::string id, std::pair<float, float> dist, torch::Tensor weight) {
     
+    std::cout<<"EVALUATOR: jitter: "<<this->input<<std::endl;
     torch::Tensor initialOutput = currentNet.forward(this->input);
     torch::Tensor netOut;
     torch::Tensor update;

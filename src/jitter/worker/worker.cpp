@@ -23,11 +23,14 @@ void Worker::addTask(std::shared_ptr<Message> m) {
 
 
 void Worker::startJitter(StartSearchMessage* m) {
+    std::cout<<"WORKER: Starting Jitter Algo"<<std::endl;
     std::tuple<Network, std::pair<float, float>, int> info = netManager->getCurrentInfo(0, m->neuronID);
     this->netIteration = std::get<2>(info);
     // this->net = m->net;
 
     std::tuple<int, torch::Tensor, torch::Tensor> neuronInfo = std::get<0>(info).getLayer(0)->getNeuron(m->neuronID);
+
+    std::cout<<"WORKER: Start Jitter: initialized"<<std::endl;
 
     std::tuple<double, double, torch::Tensor> out = evaluator.jitter(std::get<0>(info), 0, m->neuronID, std::get<1>(info), std::get<1>(neuronInfo));
 

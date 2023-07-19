@@ -2,13 +2,12 @@
 
 NetManager::NetManager(Network &network, int numWorkers, torch::Tensor input, std::vector<int> outputs, Config config, double desiredLoss) : config(std::make_shared<Config>(std::move(config))), outputs(std::move(outputs)), input(std::move(input)), tasks(numWorkers, *network.getLayer(0)), desiredLoss(desiredLoss)
 {
-
     responseQueue = std::make_shared<ResponseQueue>();
     net = std::make_shared<Net>(network);
 
     for (int i = 0; i < numWorkers; i++)
     {
-        Worker worker(i, this->config, responseQueue, input, outputs, net);
+        Worker worker(i, this->config, responseQueue, this->input, outputs, net);
         workers.emplace_back(worker);
     }
 
