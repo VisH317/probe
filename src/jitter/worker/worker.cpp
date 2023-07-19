@@ -12,8 +12,8 @@ std::unique_ptr<To, Deleter> dynamic_unique_cast(std::unique_ptr<From, Deleter>&
 }
 
 
-Worker::Worker(int id, std::shared_ptr<Config> config, std::shared_ptr<ResponseQueue> responseQueue, torch::Tensor input, std::vector<int> outputs, std::shared_ptr<Net> netManager) : config(config), responseQueue(responseQueue), netIteration(0), id(id), netManager(netManager), evaluator(input, outputs) {
-    std::cout<<"WORKER: initialized!"<<std::endl;
+Worker::Worker(int id, std::shared_ptr<Config> config, std::shared_ptr<ResponseQueue> responseQueue, torch::Tensor input, std::vector<int> outputs, std::shared_ptr<Net> netManager) : config(config), responseQueue(responseQueue), netIteration(0), id(id), netManager(netManager), evaluator(input, outputs, config) {
+    std::cout<<"WORKER: initialized! "<<std::endl;
 }
 
 
@@ -75,6 +75,10 @@ void Worker::main() {
     std::cout<<"WORKER: starting worker thread..."<<std::endl;
 
     bool isEnd = false;
+
+    double r = std::rand() / double(RAND_MAX);
+    boost::math::beta_distribution<> dist(50.0, 50.0);
+    double randFromDist = boost::math::quantile(dist, r);
 
     while(true) {
         if(queue.size()==0) continue;

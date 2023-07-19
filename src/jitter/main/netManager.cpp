@@ -5,6 +5,8 @@ NetManager::NetManager(Network &network, int numWorkers, torch::Tensor input, st
     responseQueue = std::make_shared<ResponseQueue>();
     net = std::make_shared<Net>(network);
 
+    std::cout<<"CONFIG:"<<this->config->temperature<<std::endl;
+
     for (int i = 0; i < numWorkers; i++)
     {
         Worker worker(i, this->config, responseQueue, this->input, outputs, net);

@@ -11,7 +11,7 @@
 #include <torch/torch.h>
 #include "network.hpp"
 #include "config.hpp"
-#include <boost/math/distributions/beta.hpp>
+#include <boost/math/distributions.hpp>
 
 class Evaluator {
     private: 
@@ -25,7 +25,7 @@ class Evaluator {
         std::shared_ptr<Config> config;
 
     public:
-        Evaluator(torch::Tensor input, std::vector<int> outputs);
+        Evaluator(torch::Tensor input, std::vector<int> outputs, std::shared_ptr<Config> config);
 
         void updateNetParams();
 

@@ -17,7 +17,7 @@
 #include "network.hpp"
 #include "responseMessages.hpp"
 #include "net.hpp"
-
+#include "boost/math/distributions.hpp"
 
 
 class Worker {

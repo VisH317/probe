@@ -3,6 +3,10 @@
 #include "config.hpp"
 #include <vector>
 #include <torch/torch.h>
+#include <iostream>
+#include <boost/math/distributions.hpp>
+using namespace boost::math;
+
 
 int main() {
     Layer l1(100, 50);
@@ -18,9 +22,10 @@ int main() {
     double desiredLoss = 5;
     Config config(0.15, 0.07, 1);
 
-    // test
-    torch::Tensor output = n.forward(input);
-    std::cout<<"DIDITWORK: "<<output<<std::endl;
+    // double r = std::rand() / double(RAND_MAX);
+    // beta_distribution<> dist(50.0, 50.0);
+    // double randFromDist = quantile(dist, r);
+    // std::cout<<randFromDist<<std::endl;
 
     std::cout<<"MAIN: initializing..."<<std::endl;
 

@@ -1,6 +1,7 @@
 #include "evaluator.hpp"
+using namespace boost::math;
 
-Evaluator::Evaluator(torch::Tensor input, std::vector<int> outputs) : input(input), outputIds(outputs) {}
+Evaluator::Evaluator(torch::Tensor input, std::vector<int> outputs, std::shared_ptr<Config> config) : input(input), outputIds(outputs), config(config) {}
 
 
 std::tuple<double, double, torch::Tensor> Evaluator::jitter(Network& currentNet, int layer, std::string id, std::pair<float, float> dist, torch::Tensor weight) {
@@ -10,7 +11,6 @@ std::tuple<double, double, torch::Tensor> Evaluator::jitter(Network& currentNet,
     torch::Tensor netOut;
     torch::Tensor update;
     double randomChange;
-    std::cout<<"EVALUATOR: run initial output complete!"<<std::endl;
 
     // try {
         auto info = currentNet.getLayer(layer)->getNeuron(id);
@@ -42,9 +42,9 @@ std::tuple<double, double, torch::Tensor> Evaluator::jitter(Network& currentNet,
 
 double Evaluator::sample(std::pair<float, float> dist) {
     double r = std::rand() / double(RAND_MAX);
-    boost::math::beta_distribution d(dist.first, dist.second);
-    double rand = boost::math::quantile(d, r);
-    return config.get()->temperature * static_cast<float>(rand);
+    boost::math::beta_distribution<double> distr(50.0, 50.0);
+    double randFromDist = boost::math::quantile(distr, r);
+    return randFromDist * this->config->temperature;
 }
 
 double Evaluator::updateDist(float lossUpdate, float randomChange) {
