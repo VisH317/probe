@@ -3,6 +3,7 @@
 
 #include <map>
 #include <mutex>
+#include <iostream>
 #include <torch/torch.h>
 #include "network.hpp"
 

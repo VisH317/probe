@@ -12,7 +12,7 @@ NetManager::NetManager(Network &network, int numWorkers, torch::Tensor input, st
         workers.emplace_back(worker);
     }
 
-    std::cout<<"Initialized!"<<std::endl;
+    std::cout<<"MAIN PROCESS: Initialized!"<<std::endl;
 }
 
 void NetManager::start()
@@ -25,7 +25,7 @@ void NetManager::start()
         workers[i].start();
     }
     thread =  std::make_shared<std::thread>(&NetManager::process, this);
-    std::cout<<"main thread started!"<<std::endl;
+    std::cout<<"MAIN PROCESS: main thread started!"<<std::endl;
 }
 
 void NetManager::process()

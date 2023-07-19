@@ -13,7 +13,7 @@ std::unique_ptr<To, Deleter> dynamic_unique_cast(std::unique_ptr<From, Deleter>&
 
 
 Worker::Worker(int id, std::shared_ptr<Config> config, std::shared_ptr<ResponseQueue> responseQueue, torch::Tensor input, std::vector<int> outputs, std::shared_ptr<Net> netManager) : config(config), responseQueue(responseQueue), netIteration(0), id(id), netManager(netManager), evaluator(input, outputs) {
-    std::cout<<"worked initialized!"<<std::endl;
+    std::cout<<"WORKER: initialized!"<<std::endl;
 }
 
 
@@ -66,7 +66,7 @@ void Worker::updateJitter(UpdateSearchMessage* m) {
 
 void Worker::main() {
 
-    std::cout<<"starting worker thread..."<<std::endl;
+    std::cout<<"WORKER: starting worker thread..."<<std::endl;
 
     bool isEnd = false;
 
@@ -74,27 +74,27 @@ void Worker::main() {
         if(queue.size()==0) continue;
 
         std::shared_ptr<Message> m = queue.pop();
-        std::cout<<"Message: "<<m->getType()<<std::endl;
+        std::cout<<"WORKER: Message - "<<m->getType()<<std::endl;
 
         switch(m->getType()) {
             case MessageType::START:
-                std::cout<<"START MESSAGE RECEIVED"<<std::endl;
+                std::cout<<"WORKER: START MESSAGE RECEIVED"<<std::endl;
                 startJitter(std::move(dynamic_cast<StartSearchMessage*>(m.get())));
                 break;
             case MessageType::UPDATE:
-                std::cout<<"UPDATE MESSAGE RECEIVED"<<std::endl;
+                std::cout<<"WORKER: UPDATE MESSAGE RECEIVED"<<std::endl;
                 updateJitter(std::move(dynamic_cast<UpdateSearchMessage*>(m.get())));
                 break;
             case MessageType::STOP:
-                std::cout<<"STOP MESSAGE RECEIVED"<<std::endl;
+                std::cout<<"WORKER: STOP MESSAGE RECEIVED"<<std::endl;
                 isEnd = true;
                 break;
             case MessageType::VALID:
-                std::cout<<"VALID MESSAGE RECEIVED"<<std::endl;
+                std::cout<<"WORKER: VALID MESSAGE RECEIVED"<<std::endl;
                 setValid(std::move(dynamic_cast<ValidMessage*>(m.get())));
                 break;
             case MessageType::REJECTED:
-                std::cout<<"REJECTED MESSAGE RECEIVED"<<std::endl;
+                std::cout<<"WORKER: REJECTED MESSAGE RECEIVED"<<std::endl;
                 setReject(std::move(dynamic_cast<RejectedMessage*>(m.get())));
                 break;
             default: break;
@@ -140,7 +140,7 @@ void Worker::start() {
 
 Worker::~Worker() {
     // StopMessage stop;
-    std::cout<<"Stopping?"<<std::endl;
+    std::cout<<"WORKER: Stopping..."<<std::endl;
     // queue.push(std::make_shared<Message>(stop));
     if(thread != nullptr) thread->join();
     // delete thread;

@@ -18,11 +18,11 @@ int main() {
     double desiredLoss = 5;
     Config config(0.15, 0.07, 1);
 
-    std::cout<<"initializing..."<<std::endl;
+    std::cout<<"MAIN: initializing..."<<std::endl;
 
     NetManager m(n, numWorkers, input, outputs, config, desiredLoss);
 
-    std::cout<<"netmanager initialized!"<<std::endl;
+    std::cout<<"MAIN: process initialized!"<<std::endl;
 
     m.start();
 }

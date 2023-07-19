@@ -19,18 +19,16 @@ WorkerQueue::~WorkerQueue() {
 // }
 
 void WorkerQueue::push(std::shared_ptr<Message> message) {
-    std::cout<<"PUSHING MESSAGE :)"<<std::endl;
+    std::cout<<"QUEUE WORKER: pushing message..."<<std::endl;
     std::lock_guard<std::mutex> lock(m);
     queue.push(std::move(message));
-    std::cout<<"NEW QUEUE SIZE :) "<<queue.size()<<std::endl;
 }
 
 std::shared_ptr<Message> WorkerQueue::pop() {
-    std::cout<<"GETTING NEXT"<<std::endl;
+    std::cout<<"QUEUE WORKER: popping message..."<<std::endl;
     std::lock_guard<std::mutex> lock(m);
     std::shared_ptr<Message> ret = std::move(queue.front());
     queue.pop();
-    std::cout<<"Got next"<<std::endl;
     return std::move(ret);
 }
 
