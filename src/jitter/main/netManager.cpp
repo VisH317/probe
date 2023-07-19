@@ -4,6 +4,7 @@ NetManager::NetManager(Network &network, int numWorkers, torch::Tensor input, st
 {
 
     responseQueue = std::make_shared<ResponseQueue>();
+    net = std::make_shared<Net>(network);
 
     for (int i = 0; i < numWorkers; i++)
     {
