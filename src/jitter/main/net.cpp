@@ -2,6 +2,7 @@
 
 std::tuple<Network, std::pair<float, float>, int> Net::getCurrentInfo(int layerNum, std::string uuid) {
     std::lock_guard<std::mutex> lock(m);
+    if(dist.find({ uuid, layerNum }) == dist.end()) dist[{ uuid, layerNum }] = { 50.0, 50.0 };
     std::pair<float, float> d = dist[{uuid, layerNum}];
     std::cout<<"Network Manager: Getting current info..."<<std::endl;
     // std::lock_guard<std::mutex> lock2(m);

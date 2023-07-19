@@ -28,6 +28,9 @@ void Worker::startJitter(StartSearchMessage* m) {
     this->netIteration = std::get<2>(info);
     // this->net = m->net;
 
+    // testing net receiving
+    std::cout<<"NETWORK STUFF: "<<std::get<0>(info).getLayerLength()<<std::endl;
+
     std::tuple<int, torch::Tensor, torch::Tensor> neuronInfo = std::get<0>(info).getLayer(0)->getNeuron(m->neuronID);
 
     std::cout<<"WORKER: Start Jitter: initialized"<<std::endl;

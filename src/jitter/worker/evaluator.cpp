@@ -5,22 +5,25 @@ Evaluator::Evaluator(torch::Tensor input, std::vector<int> outputs) : input(inpu
 
 std::tuple<double, double, torch::Tensor> Evaluator::jitter(Network& currentNet, int layer, std::string id, std::pair<float, float> dist, torch::Tensor weight) {
     
-    std::cout<<"EVALUATOR: jitter: "<<this->input<<std::endl;
+    std::cout<<"EVALUATOR: jitter: "<<std::endl;
     torch::Tensor initialOutput = currentNet.forward(this->input);
     torch::Tensor netOut;
     torch::Tensor update;
     double randomChange;
+    std::cout<<"EVALUATOR: run initial output complete!"<<std::endl;
 
-    try {
+    // try {
         auto info = currentNet.getLayer(layer)->getNeuron(id);
         update = torch::zeros_like(std::get<1>(info));
         randomChange = sample(dist);
         update+=randomChange;
         currentNet.getLayer(layer)->changeNeuronWeight(id, update);
+        std::cout<<"dims: "<<currentNet.getLayer(layer)->getDims().first<<std::endl;
         netOut = currentNet.forward(this->input);
-    } catch(...) {
-        throw std::out_of_range("Dimension mismatch: Input and network dimension mismatch");
-    }
+        std::cout<<"MORE TESTING :)"<<std::endl;
+    // } catch(...) {
+    //     throw std::out_of_range("Dimension mismatch: Input and network dimension mismatch");
+    // }
 
     std::vector<torch::Tensor> tensors;
     try {

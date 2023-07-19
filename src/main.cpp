@@ -18,6 +18,10 @@ int main() {
     double desiredLoss = 5;
     Config config(0.15, 0.07, 1);
 
+    // test
+    torch::Tensor output = n.forward(input);
+    std::cout<<"DIDITWORK: "<<output<<std::endl;
+
     std::cout<<"MAIN: initializing..."<<std::endl;
 
     NetManager m(n, numWorkers, input, outputs, config, desiredLoss);
