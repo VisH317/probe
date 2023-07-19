@@ -12,29 +12,27 @@ std::tuple<double, double, torch::Tensor> Evaluator::jitter(Network& currentNet,
     torch::Tensor update;
     double randomChange;
 
-    // try {
+    try {
         auto info = currentNet.getLayer(layer)->getNeuron(id);
         update = torch::zeros_like(std::get<1>(info));
         randomChange = sample(dist);
         update+=randomChange;
         currentNet.getLayer(layer)->changeNeuronWeight(id, update);
-        std::cout<<"dims: "<<currentNet.getLayer(layer)->getDims().first<<std::endl;
         netOut = currentNet.forward(this->input);
-        std::cout<<"MORE TESTING :)"<<std::endl;
-    // } catch(...) {
-    //     throw std::out_of_range("Dimension mismatch: Input and network dimension mismatch");
-    // }
-
-    std::vector<torch::Tensor> tensors;
-    try {
-        for(int& idx : outputIds) tensors.push_back(netOut.index({idx}));
     } catch(...) {
-        throw std::out_of_range("Torch Index out of bounds - choose index values within the boundaries of the output tensor");
+        throw std::out_of_range("Dimension mismatch: Input and network dimension mismatch");
     }
-    
-    torch::Tensor out = torch::stack(tensors);
 
-    torch::Tensor differences = torch::sub(out, initialOutput);
+    // std::vector<torch::Tensor> tensors;
+    // try {
+    //     for(int& idx : outputIds) tensors.push_back(netOut.index({idx}));
+    // } catch(...) {
+    //     throw std::out_of_range("Torch Index out of bounds - choose index values within the boundaries of the output tensor");
+    // }
+    
+    // torch::Tensor out = torch::stack(tensors);
+
+    torch::Tensor differences = torch::sub(netOut, initialOutput);
     double sum = 0;
     for(int i = 0; i < outputIds.size(); i++) sum+=differences.index({i}).item<double>();
     return {sum/outputIds.size(), randomChange, update};

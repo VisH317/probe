@@ -55,12 +55,12 @@ class Worker {
         void start();
 
         // case functions
-        void startJitter(StartSearchMessage* m);
-        void updateJitter(UpdateSearchMessage* m);
+        void startJitter(std::shared_ptr<StartSearchMessage> m);
+        void updateJitter(std::shared_ptr<UpdateSearchMessage> m);
 
         // validation functions
-        void setValid(ValidMessage* m);
-        void setReject(RejectedMessage* m);
+        void setValid(std::shared_ptr<ValidMessage> m);
+        void setReject(std::shared_ptr<RejectedMessage> m);
 
         // utility functions
         void addNewNeuronTasks(int layernum);

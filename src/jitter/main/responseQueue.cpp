@@ -7,11 +7,13 @@
 
 void ResponseQueue::push(std::unique_ptr<ResponseMessage> message) {
     std::lock_guard<std::mutex> lock(m);
+    std::cout<<"RESPONSE QUEUE: pushing message"<<std::endl;
     queue.push(std::move(message));
 }
 
 std::unique_ptr<ResponseMessage> ResponseQueue::pop() {
     std::lock_guard<std::mutex> lock(m);
+    std::cout<<"RESPONSE QUEUE: getting message"<<std::endl;
     std::unique_ptr<ResponseMessage> ret = std::move(queue.front());
     queue.pop();
     return std::move(ret);

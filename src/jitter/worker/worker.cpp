@@ -22,18 +22,14 @@ void Worker::addTask(std::shared_ptr<Message> m) {
 }
 
 
-void Worker::startJitter(StartSearchMessage* m) {
+void Worker::startJitter(std::shared_ptr<StartSearchMessage> m) {
     std::cout<<"WORKER: Starting Jitter Algo"<<std::endl;
     std::tuple<Network, std::pair<float, float>, int> info = netManager->getCurrentInfo(0, m->neuronID);
     this->netIteration = std::get<2>(info);
     // this->net = m->net;
 
-    // testing net receiving
-    std::cout<<"NETWORK STUFF: "<<std::get<0>(info).getLayerLength()<<std::endl;
-
     std::tuple<int, torch::Tensor, torch::Tensor> neuronInfo = std::get<0>(info).getLayer(0)->getNeuron(m->neuronID);
 
-    std::cout<<"WORKER: Start Jitter: initialized"<<std::endl;
 
     std::tuple<double, double, torch::Tensor> out = evaluator.jitter(std::get<0>(info), 0, m->neuronID, std::get<1>(info), std::get<1>(neuronInfo));
 
@@ -42,15 +38,17 @@ void Worker::startJitter(StartSearchMessage* m) {
     std::vector<std::string> ns;
     ns.push_back(m->neuronID);
 
-    ResponseUpdateMessage res(this->id, ns, 0, std::get<0>(out), std::get<1>(out), update, std::get<2>(out));
+    std::unique_ptr<ResponseMessage> res;
+    res = std::make_unique<ResponseUpdateMessage>(this->id, ns, 0, std::get<0>(out), std::get<1>(out), update, std::get<2>(out));
 
     responses[{m->neuronID}] = std::nullopt;
-    responseQueue->push(std::make_unique<ResponseMessage>(res));
+    responseQueue->push(std::move(res));
 
-    delete m;
+    // std::cout<<"TESTING: "<<m->getType()<<std::endl;
+    // delete m;
 }
 
-void Worker::updateJitter(UpdateSearchMessage* m) {
+void Worker::updateJitter(std::shared_ptr<UpdateSearchMessage> m) {
     std::tuple<Network, std::pair<float, float>, int> info = netManager->getCurrentInfo(0, m->neurons.back());
     this->netIteration = std::get<2>(info);
     // this->net = m->net;
@@ -66,8 +64,6 @@ void Worker::updateJitter(UpdateSearchMessage* m) {
 
     responses[m->neurons] = std::nullopt;
     responseQueue->push(std::make_unique<ResponseMessage>(res));
-
-    delete m;
 }
 
 void Worker::main() {
@@ -89,11 +85,11 @@ void Worker::main() {
         switch(m->getType()) {
             case MessageType::START:
                 std::cout<<"WORKER: START MESSAGE RECEIVED"<<std::endl;
-                startJitter(std::move(dynamic_cast<StartSearchMessage*>(m.get())));
+                startJitter(std::move(std::dynamic_pointer_cast<StartSearchMessage>(m)));
                 break;
             case MessageType::UPDATE:
                 std::cout<<"WORKER: UPDATE MESSAGE RECEIVED"<<std::endl;
-                updateJitter(std::move(dynamic_cast<UpdateSearchMessage*>(m.get())));
+                updateJitter(std::move(std::dynamic_pointer_cast<UpdateSearchMessage>(m)));
                 break;
             case MessageType::STOP:
                 std::cout<<"WORKER: STOP MESSAGE RECEIVED"<<std::endl;
@@ -101,11 +97,11 @@ void Worker::main() {
                 break;
             case MessageType::VALID:
                 std::cout<<"WORKER: VALID MESSAGE RECEIVED"<<std::endl;
-                setValid(std::move(dynamic_cast<ValidMessage*>(m.get())));
+                setValid(std::move(std::dynamic_pointer_cast<ValidMessage>(m)));
                 break;
             case MessageType::REJECTED:
                 std::cout<<"WORKER: REJECTED MESSAGE RECEIVED"<<std::endl;
-                setReject(std::move(dynamic_cast<RejectedMessage*>(m.get())));
+                setReject(std::move(std::dynamic_pointer_cast<RejectedMessage>(m)));
                 break;
             default: break;
         }
@@ -126,7 +122,7 @@ void Worker::main() {
 }
 
 // setup later
-void Worker::setValid(ValidMessage* m) {
+void Worker::setValid(std::shared_ptr<ValidMessage> m) {
     std::tuple<Network, std::pair<float, float>, int> info = netManager->getCurrentInfo(0, m->neuronID.back());
     responses[m->neuronID] = true;
     if(m->layerNum+1<std::get<0>(info).getLayerLength()) {
@@ -139,7 +135,7 @@ void Worker::setValid(ValidMessage* m) {
 
 }
 
-void Worker::setReject(RejectedMessage* m) {
+void Worker::setReject(std::shared_ptr<RejectedMessage> m) {
     responses[m->neuronID] = false;
 }
 
