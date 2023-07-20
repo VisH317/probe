@@ -34,20 +34,17 @@ void Worker::startJitter(std::shared_ptr<StartSearchMessage> m) {
     std::tuple<double, double, torch::Tensor> out = evaluator.jitter(std::get<0>(info), 0, m->neuronID, std::get<1>(info), std::get<1>(neuronInfo));
 
     double update = evaluator.updateDist(std::get<0>(out), std::get<1>(out));
-    std::cout<<"TESTING UPDATE: "<<update<<std::endl;
 
     std::vector<std::string> ns;
     ns.push_back(m->neuronID);
 
     std::unique_ptr<ResponseMessage> res;
     std::unique_ptr<ResponseUpdateMessage> rum = std::make_unique<ResponseUpdateMessage>(this->id, ns, 0, std::get<0>(out), std::get<1>(out), update, std::get<2>(out));
-    std::cout<<"TESTINGGGG: "<<rum->uuid<<std::endl;
     res = std::move(rum);
 
     responses[{m->neuronID}] = std::nullopt;
     responseQueue->push(std::move(res));
 
-    // std::cout<<"TESTING: "<<m->getType()<<std::endl;
     // delete m;
 }
 
