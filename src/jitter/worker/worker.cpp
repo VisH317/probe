@@ -36,7 +36,6 @@ void Worker::startJitter(std::shared_ptr<StartSearchMessage> m) {
 
     std::vector<std::string> ns;
     ns.push_back(m->neuronID);
-    std::cout<<"UPDATING?: "<<m->neuronID<<std::endl;
 
     std::unique_ptr<ResponseMessage> res;
     std::unique_ptr<ResponseUpdateMessage> rum = std::make_unique<ResponseUpdateMessage>(this->id, ns, 0, std::get<0>(out), std::get<1>(out), update, this->netIteration, std::get<2>(out));
@@ -61,7 +60,7 @@ void Worker::updateJitter(std::shared_ptr<UpdateSearchMessage> m) {
     double update = evaluator.updateDist(std::get<0>(out), std::get<1>(out), m->neurons, m->layerNum, std::get<0>(info));
 
     std::unique_ptr<ResponseMessage> res;
-    res = std::make_unique<ResponseUpdateMessage>(this->id, m->neurons, m->layerNum, std::get<0>(out), std.get<1>(out), update, this->netIteration, std::get<2>(out));
+    res = std::make_unique<ResponseUpdateMessage>(this->id, m->neurons, m->layerNum, std::get<0>(out), std::get<1>(out), update, this->netIteration, std::get<2>(out));
     // ResponseUpdateMessage res(this->id, m->neurons, m->layerNum, std::get<0>(out), std::get<1>(out), update, std::get<2>(out));
 
     responses[m->neurons] = std::nullopt;
@@ -138,6 +137,7 @@ void Worker::setValid(std::shared_ptr<ValidMessage> m) {
             // UpdateSearchMessage message{v, m->layerNum+1};
             std::shared_ptr<Message> message;
             message = std::make_shared<UpdateSearchMessage>(v, m->layerNum+1);
+            addTask(message);
         }
     }
 

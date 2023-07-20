@@ -39,7 +39,6 @@ std::tuple<double, double, torch::Tensor> Evaluator::jitter(Network& currentNet,
         torch::Tensor diff = differences.index({i});
         sum += diff.item<double>();
     }
-    std::cout<<"SUM: "<<sum<<", "<<outputIds.size()<<std::endl;
     return {sum/outputIds.size(), randomChange, update};
 }
 

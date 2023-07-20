@@ -110,7 +110,6 @@ void NetManager::createNewSearch(std::unique_ptr<ResponseDoneMessage> m)
     std::string id = tasks.setNewProcessState(m->workerId);
     // StartSearchMessage message{id};
     std::shared_ptr<Message> mes;
-    std::cout<<"TESTTT: "<<id<<std::endl;
     mes = std::make_shared<StartSearchMessage>(id);
     workers[m->workerId].addTask(mes);
 }
