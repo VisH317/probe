@@ -22,6 +22,12 @@
 #include "net.hpp"
 
 
+// util function for casting unique_ptr to derived (sadge that std doesnt have this)
+// link: https://stackoverflow.com/questions/26377430/how-to-perform-a-dynamic-cast-with-a-unique-ptr
+template <typename To, typename From, typename Deleter>
+std::unique_ptr<To, Deleter> dynamic_unique_cast(std::unique_ptr<From, Deleter>&& p);
+
+
 class NetManager {
     private: 
         // Network mainNet;
@@ -64,9 +70,9 @@ class NetManager {
         void process();
 
         // dist function
-        void updateDist(ResponseUpdateMessage* m);
+        void updateDist(std::unique_ptr<ResponseUpdateMessage> m);
 
-        void createNewSearch(ResponseDoneMessage* m);
+        void createNewSearch(std::unique_ptr<ResponseDoneMessage> m);
 
 
 };

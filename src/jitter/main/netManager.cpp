@@ -1,5 +1,17 @@
 #include "netManager.hpp"
 
+// dynamic_unique_cast util
+template <typename To, typename From, typename Deleter>
+std::unique_ptr<To, Deleter> dynamic_unique_cast(std::unique_ptr<From, Deleter>&& p) {
+    if(To* cast = dynamic_cast<To*>(p.get())) {
+        std::unique_ptr<To, Deleter> result(cast, std::move(p.get_deleter()));
+        p.release();
+        return result;
+    }
+    throw std::bad_cast();
+}
+
+
 NetManager::NetManager(Network &network, int numWorkers, torch::Tensor input, std::vector<int> outputs, Config config, double desiredLoss) : config(std::make_shared<Config>(std::move(config))), outputs(std::move(outputs)), input(std::move(input)), tasks(numWorkers, *network.getLayer(0)), desiredLoss(desiredLoss)
 {
     responseQueue = std::make_shared<ResponseQueue>();
@@ -43,10 +55,10 @@ void NetManager::process()
         switch (m->getType())
         {
         case ResponseType::RES_UPDATE:
-            updateDist(dynamic_cast<ResponseUpdateMessage *>(m.get()));
+            updateDist(std::dynamic_pointer_cast<ResponseUpdateMessage>(m));
             break;
         case ResponseType::RES_DONE:
-            createNewSearch(dynamic_cast<ResponseDoneMessage *>(m.get()));
+            createNewSearch(std::dynamic_pointer_cast<ResponseDoneMessage>(m));
             break;
         default:
             break;
@@ -54,7 +66,7 @@ void NetManager::process()
     }
 }
 
-void NetManager::updateDist(ResponseUpdateMessage *m)
+void NetManager::updateDist(std::unique_ptr<ResponseUpdateMessage> m)
 {
     bool shouldUpdate = losses.shouldUpdate(m->loss, m->netIteration);
     if (!shouldUpdate)
@@ -86,7 +98,7 @@ NetManager::~NetManager()
     thread->join();
 }
 
-void NetManager::createNewSearch(ResponseDoneMessage *m)
+void NetManager::createNewSearch(std::unique_ptr<ResponseDoneMessage> m)
 {
     std::string id = tasks.setNewProcessState(m->workerId);
     // StartSearchMessage message{id};
