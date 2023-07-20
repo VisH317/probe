@@ -57,7 +57,7 @@ void NetManager::process()
         switch (m->getType())
         {
         case ResponseType::RES_UPDATE:
-            std::cout<<dynamic_cast<ResponseUpdateMessage*>(m.get())->uuid<<std::endl;
+            // std::cout<<dynamic_cast<ResponseUpdateMessage*>(m.get())->uuid<<std::endl;
             updateDist(dynamic_unique_cast<ResponseUpdateMessage>(std::move(m)));
             break;
         case ResponseType::RES_DONE:
