@@ -51,7 +51,6 @@ double Evaluator::sample(std::pair<float, float> dist) {
 }
 
 double Evaluator::updateDist(float lossUpdate, float randomChange) {
-    std::cout<<"CALCULATING NEW DIST PARAMS: "<<lossUpdate<<", "<<randomChange<<std::endl;
     const float update = lossUpdate * randomChange * this->config->lambda1;
     return update;
 }

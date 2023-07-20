@@ -23,7 +23,6 @@ void Worker::addTask(std::shared_ptr<Message> m) {
 
 
 void Worker::startJitter(std::shared_ptr<StartSearchMessage> m) {
-    std::cout<<"WORKER: Starting Jitter Algo"<<std::endl;
     std::tuple<Network, std::pair<float, float>, int> info = netManager->getCurrentInfo(0, m->neuronID);
     this->netIteration = std::get<2>(info);
     // this->net = m->net;
@@ -37,6 +36,7 @@ void Worker::startJitter(std::shared_ptr<StartSearchMessage> m) {
 
     std::vector<std::string> ns;
     ns.push_back(m->neuronID);
+    std::cout<<"UPDATING?: "<<m->neuronID<<std::endl;
 
     std::unique_ptr<ResponseMessage> res;
     std::unique_ptr<ResponseUpdateMessage> rum = std::make_unique<ResponseUpdateMessage>(this->id, ns, 0, std::get<0>(out), std::get<1>(out), update, std::get<2>(out));
@@ -115,7 +115,11 @@ void Worker::main() {
             }
         }
 
-        if(searchFinished) responseQueue->push(std::make_unique<ResponseMessage>(ResponseDoneMessage{id}));
+        if(searchFinished) {
+            std::unique_ptr<ResponseMessage> rm;
+            rm = std::make_unique<ResponseDoneMessage>(id);
+            responseQueue->push(std::move(rm));
+        }
 
         if(isEnd) break;
     }
@@ -129,7 +133,9 @@ void Worker::setValid(std::shared_ptr<ValidMessage> m) {
         for(std::string& id : std::get<0>(info).getLayer(m->layerNum+1)->getAllNeuronIds()) {
             std::vector v(m->neuronID);
             v.push_back(id);
-            UpdateSearchMessage message{v, m->layerNum+1};
+            // UpdateSearchMessage message{v, m->layerNum+1};
+            std::shared_ptr<Message> message;
+            message = std::make_shared<UpdateSearchMessage>(v, m->layerNum+1);
         }
     }
 

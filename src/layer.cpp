@@ -3,18 +3,22 @@
 long long Layer::curId = 0;
 
 Layer::Layer(int in, int out) {
+    std::cout<<"CONSTRUCTOR?"<<std::endl;
     this->in = in;
     this->out = out;
     layer = torch::nn::Linear(in, out);
     for(int i=0;i<in;i++) {
-        std::string uuid = generateId();
+        std::string uuid = std::to_string(curId);
+        curId++;
+        std::cout<<uuid<<std::endl;
         id.push_back(uuid);
     }
 }
 
 std::string Layer::generateId() {
+    return std::to_string(curId);
+    std::cout<<"curId?"<<std::endl;
     curId++;
-    return std::to_string(--curId);
 }
 
 torch::nn::Linear& Layer::getLayer() {

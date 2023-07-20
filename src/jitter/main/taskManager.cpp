@@ -16,11 +16,14 @@ TaskManager::TaskManager(int numProcesses, Layer inputLayer) : numProcesses(numP
 
 std::string TaskManager::setNewProcessState(int pid) {
     std::cout<<"TASK MANAGER: setting new process state";
-    std::string id = std::get<0>(inputLayer.getNeuron(currentSearchIndex));
+    std::tuple<std::string, torch::Tensor, torch::Tensor> info = inputLayer.getNeuron(currentSearchIndex);
+    std::string id = std::get<0>(info);
     processes[pid].currentState = id;
     processes[pid].currentSearchlayer = 0;
     currentSearchIndex++;
-    if(currentSearchIndex>=inputLayer.getLength()) currentSearchIndex=0;
+    if(currentSearchIndex>=inputLayer.getLength()) {
+        currentSearchIndex=0;
+    }
     return id;
 }
 
