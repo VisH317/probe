@@ -33,8 +33,13 @@ std::tuple<double, double, torch::Tensor> Evaluator::jitter(Network& currentNet,
     // torch::Tensor out = torch::stack(tensors);
 
     torch::Tensor differences = torch::sub(netOut, initialOutput);
+    // std::cout<<"DIFF: "<<netOut<<", INITIAL: "<<initialOutput<<", DUFFERECES: "<<differences<<std::endl;
     double sum = 0;
-    for(int i = 0; i < outputIds.size(); i++) sum+=differences.index({i}).item<double>();
+    for(int i = 0; i < outputIds.size(); i++) {
+        torch::Tensor diff = differences.index({i});
+        sum += diff.item<double>();
+    }
+    std::cout<<"SUM: "<<sum<<", "<<outputIds.size()<<std::endl;
     return {sum/outputIds.size(), randomChange, update};
 }
 
@@ -46,7 +51,8 @@ double Evaluator::sample(std::pair<float, float> dist) {
 }
 
 double Evaluator::updateDist(float lossUpdate, float randomChange) {
-    const float update = lossUpdate * randomChange * config.get()->lambda1;
+    std::cout<<"CALCULATING NEW DIST PARAMS: "<<lossUpdate<<", "<<randomChange<<std::endl;
+    const float update = lossUpdate * randomChange * this->config->lambda1;
     return update;
 }
 
@@ -61,6 +67,6 @@ double Evaluator::updateDist(float lossUpdate, float randomChange, std::vector<s
         weights*=meanTen.item<float>();
     } 
 
-    const float update = config.get()->lambda2 * weights * lossUpdate * randomChange;
+    const float update = this->config->lambda2 * weights * lossUpdate * randomChange;
     return update;
 }

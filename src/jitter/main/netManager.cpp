@@ -21,7 +21,7 @@ NetManager::NetManager(Network &network, int numWorkers, torch::Tensor input, st
 
     for (int i = 0; i < numWorkers; i++)
     {
-        Worker worker(i, this->config, responseQueue, this->input, outputs, net);
+        Worker worker(i, this->config, responseQueue, this->input, this->outputs, net);
         workers.emplace_back(worker);
     }
 

@@ -18,7 +18,6 @@ void Net::updateDist(std::string uuid, int layerNum, double update, torch::Tenso
     std::pair<float, float> orig = dist[{ uuid, layerNum }];
     float x = orig.first+update>=99 ? orig.first+update-1 : orig.first+update<=1 ? orig.first+update+1 : orig.first+update; 
     float y = orig.second-update>=99 ? orig.second-update-1 : orig.second-update<=1 ? orig.second-update-1 : orig.second-update; 
-    std::cout<<"NETWORK MANAGER: updating network..."<<x<<", "<<y<<", "<<update<<std::endl;
 
     dist[{ uuid, layerNum }] = { x, y };
 }
