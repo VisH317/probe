@@ -19,9 +19,10 @@ WorkerQueue::~WorkerQueue() {
 // }
 
 void WorkerQueue::push(std::shared_ptr<Message> message) {
-    std::cout<<"QUEUE WORKER: pushing message... "<<message->getType()<<std::endl;
+    std::cout<<"QUEUE WORKER: pushing message... "<<message->getType()<<", "<<queue.size()<<std::endl;
     std::lock_guard<std::mutex> lock(m);
-    queue.push(std::move(message));
+    queue.push(message);
+    std::cout<<"PUSHED!"<<std::endl;
 }
 
 std::shared_ptr<Message> WorkerQueue::pop() {

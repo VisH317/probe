@@ -37,8 +37,9 @@ void NetManager::start()
         workers[i].addTask(m);
         workers[i].start();
     }
-    thread =  std::make_shared<std::thread>(&NetManager::process, this);
+    // thread =  std::make_shared<std::thread>(&NetManager::process, this);
     std::cout<<"MAIN PROCESS: main thread started!"<<std::endl;
+    process();
 }
 
 void NetManager::process()
@@ -87,7 +88,6 @@ void NetManager::updateDist(std::unique_ptr<ResponseUpdateMessage> m)
     net->updateDist(m->uuid.back(), m->layerNum, m->update, m->updateTen);
 
     std::shared_ptr<Message> mes;
-    ValidMessage valid{m->uuid, m->layerNum};
     mes = std::make_shared<ValidMessage>(m->uuid, m->layerNum);
     workers[m->workerId].addTask(mes);
 }
@@ -100,6 +100,7 @@ NetManager::~NetManager()
         m = std::make_shared<StopMessage>();
         worker.addTask(m);
     }
+    std::cout<<"ENDING :)"<<std::endl;
     workers.clear();
     thread->join();
 }
