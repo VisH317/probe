@@ -4,7 +4,7 @@ std::tuple<Network, std::pair<float, float>, int> Net::getCurrentInfo(int layerN
     std::lock_guard<std::mutex> lock(m);
     if(dist.find({ uuid, layerNum }) == dist.end()) dist[{ uuid, layerNum }] = { 50.0, 50.0 };
     std::pair<float, float> d = dist[{uuid, layerNum}];
-    std::cout<<"Network Manager: Getting current info..."<<std::endl;
+    std::cout<<"NETWORK MANAGER: Getting current info..."<<std::endl;
     // std::lock_guard<std::mutex> lock2(m);
     return { mainNet, d, currentNetIteration };
 }
@@ -14,10 +14,11 @@ void Net::updateDist(std::string uuid, int layerNum, double update, torch::Tenso
     mainNet.getLayer(layerNum)->changeNeuronWeight(uuid, up);
 
     // std::lock_guard<std::mutex> distLock(distM);
-    if(dist.find({ uuid, layerNum })==dist.end()) dist[{ uuid, layerNum }] = { 50.0+update, 50.0-update };
+    if(dist.find({ uuid, layerNum })==dist.end()) dist[{ uuid, layerNum }] = { 50.0, 50.0 };
     std::pair<float, float> orig = dist[{ uuid, layerNum }];
     float x = orig.first+update>=99 ? orig.first+update-1 : orig.first+update<=1 ? orig.first+update+1 : orig.first+update; 
     float y = orig.second-update>=99 ? orig.second-update-1 : orig.second-update<=1 ? orig.second-update-1 : orig.second-update; 
+    std::cout<<"NETWORK MANAGER: updating network..."<<x<<", "<<y<<", "<<update<<std::endl;
 
     dist[{ uuid, layerNum }] = { x, y };
 }

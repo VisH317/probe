@@ -1,10 +1,10 @@
 #include "netManager.hpp"
 
 // dynamic_unique_cast util
-template <typename To, typename From, typename Deleter>
-std::unique_ptr<To, Deleter> dynamic_unique_cast(std::unique_ptr<From, Deleter>&& p) {
+template <typename To, typename From>
+std::unique_ptr<To> dynamic_unique_cast(std::unique_ptr<From>&& p) {
     if(To* cast = dynamic_cast<To*>(p.get())) {
-        std::unique_ptr<To, Deleter> result(cast, std::move(p.get_deleter()));
+        std::unique_ptr<To> result(cast);
         p.release();
         return result;
     }
@@ -52,13 +52,16 @@ void NetManager::process()
 
         std::unique_ptr<ResponseMessage> m = responseQueue->pop();
 
+        std::cout<<"MAIN: message: "<<m->getType()<<std::endl;
+
         switch (m->getType())
         {
         case ResponseType::RES_UPDATE:
-            updateDist(std::dynamic_pointer_cast<ResponseUpdateMessage>(m));
+            std::cout<<dynamic_cast<ResponseUpdateMessage*>(m.get())->uuid<<std::endl;
+            updateDist(dynamic_unique_cast<ResponseUpdateMessage>(std::move(m)));
             break;
         case ResponseType::RES_DONE:
-            createNewSearch(std::dynamic_pointer_cast<ResponseDoneMessage>(m));
+            createNewSearch(dynamic_unique_cast<ResponseDoneMessage>(std::move(m)));
             break;
         default:
             break;
@@ -68,9 +71,11 @@ void NetManager::process()
 
 void NetManager::updateDist(std::unique_ptr<ResponseUpdateMessage> m)
 {
+    std::cout<<"MAIN: updating parameters..."<<std::endl;
     bool shouldUpdate = losses.shouldUpdate(m->loss, m->netIteration);
     if (!shouldUpdate)
     {
+        std::cout<<"MAIN: update rejected"<<std::endl;
         RejectedMessage rejected{m->uuid, m->layerNum};
         std::shared_ptr<Message> mes;
         mes = std::make_shared<RejectedMessage>(rejected);
@@ -78,6 +83,7 @@ void NetManager::updateDist(std::unique_ptr<ResponseUpdateMessage> m)
         return;
     }
 
+    std::cout<<"MAIN: update applied..."<<m->update<<", "<<m->uuid<<std::endl;
     net->updateDist(m->uuid.back(), m->layerNum, m->update, m->updateTen);
 
     std::shared_ptr<Message> mes;
