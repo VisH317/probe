@@ -48,9 +48,11 @@ void Worker::startJitter(std::shared_ptr<StartSearchMessage> m) {
 }
 
 void Worker::updateJitter(std::shared_ptr<UpdateSearchMessage> m) {
-    std::tuple<Network, std::pair<float, float>, int> info = netManager->getCurrentInfo(0, m->neurons.back());
+    std::tuple<Network, std::pair<float, float>, int> info = netManager->getCurrentInfo(m->layerNum, m->neurons.back());
     this->netIteration = std::get<2>(info);
     // this->net = m->net;
+
+    std::cout<<"TESTINGGGG: "<<m->layerNum<<std::endl;
 
     std::tuple<int, torch::Tensor, torch::Tensor> neuronInfo = std::get<0>(info).getLayer(0)->getNeuron(m->neurons.back());
     std::tuple<int, torch::Tensor, torch::Tensor> prevNeuronInfo = std::get<0>(info).getLayer(0)->getNeuron(*(m->neurons.end()-2));
