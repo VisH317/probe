@@ -52,10 +52,9 @@ void Worker::updateJitter(std::shared_ptr<UpdateSearchMessage> m) {
     this->netIteration = std::get<2>(info);
     // this->net = m->net;
 
-    std::cout<<"TESTINGGGG: "<<m->layerNum<<std::endl;
 
-    std::tuple<int, torch::Tensor, torch::Tensor> neuronInfo = std::get<0>(info).getLayer(0)->getNeuron(m->neurons.back());
-    std::tuple<int, torch::Tensor, torch::Tensor> prevNeuronInfo = std::get<0>(info).getLayer(0)->getNeuron(*(m->neurons.end()-2));
+    std::tuple<int, torch::Tensor, torch::Tensor> neuronInfo = std::get<0>(info).getLayer(m->layerNum)->getNeuron(m->neurons.back());
+    std::tuple<int, torch::Tensor, torch::Tensor> prevNeuronInfo = std::get<0>(info).getLayer(m->layerNum-1)->getNeuron(*(m->neurons.end()-2));
 
     std::tuple<double, double, torch::Tensor> out = evaluator.jitter(std::get<0>(info), m->layerNum, m->neurons.back(), std::get<1>(info), std::get<1>(neuronInfo));
 
@@ -130,7 +129,7 @@ void Worker::main() {
 
 // setup later
 void Worker::setValid(std::shared_ptr<ValidMessage> m) {
-    std::tuple<Network, std::pair<float, float>, int> info = netManager->getCurrentInfo(0, m->neuronID.back());
+    std::tuple<Network, std::pair<float, float>, int> info = netManager->getCurrentInfo(m->layerNum, m->neuronID.back());
     responses[m->neuronID] = true;
     if(m->layerNum+1<std::get<0>(info).getLayerLength()) {
         for(std::string& id : std::get<0>(info).getLayer(m->layerNum+1)->getAllNeuronIds()) {
