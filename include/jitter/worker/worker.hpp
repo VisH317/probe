@@ -22,7 +22,7 @@
 
 class Worker {
     private:
-
+        
         int id;
 
         std::shared_ptr<Config> config;
