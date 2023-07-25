@@ -38,7 +38,7 @@ std::tuple<std::string, torch::Tensor, torch::Tensor> Layer::getNeuron(int num) 
 
 std::tuple<int, torch::Tensor, torch::Tensor> Layer::getNeuron(std::string uuid) {
     std::cout<<"UUID: "<<uuid<<std::endl;
-    // for(auto it = id.begin(); it!=id.end(); it++) std::cout<<"TET: "<<*it<<std::endl;
+    for(auto it = id.begin(); it!=id.end(); it++) std::cout<<"TET: "<<*it<<std::endl;
     auto it = std::find(id.begin(), id.end(), uuid);
     if(it==id.end()) throw std::runtime_error("Neuron with matching uuid not found: " + uuid);
     int idx = it - id.begin();

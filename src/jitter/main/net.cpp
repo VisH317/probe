@@ -20,4 +20,5 @@ void Net::updateDist(std::string uuid, int layerNum, double update, torch::Tenso
     float y = orig.second-update>=99 ? orig.second-update-1 : orig.second-update<=1 ? orig.second-update-1 : orig.second-update; 
 
     dist[{ uuid, layerNum }] = { x, y };
+    currentNetIteration++;
 }
