@@ -87,6 +87,8 @@ void NetManager::updateDist(std::unique_ptr<ResponseUpdateMessage> m)
     std::cout<<"MAIN: update applied..."<<m->update<<", "<<m->uuid<<std::endl;
     net->updateDist(m->uuid.back(), m->layerNum, m->update, m->updateTen);
 
+    logger.writeUpdate(m->layerNum, m->uuid.back(), m->update, m->loss);
+
     std::shared_ptr<Message> mes;
     mes = std::make_shared<ValidMessage>(m->uuid, m->layerNum);
     workers[m->workerId].addTask(mes);

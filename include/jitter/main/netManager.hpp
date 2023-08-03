@@ -20,6 +20,7 @@
 #include "lossManager.hpp"
 #include "message.hpp"
 #include "net.hpp"
+#include "logger.hpp"
 
 
 // util function for casting unique_ptr to derived (sadge that std doesnt have this)
@@ -64,6 +65,9 @@ class NetManager {
 
         /** Loss manager object */
         LossManager losses;
+
+        /** Logger */
+        Logger logger;
 
 
     public:
