@@ -6,6 +6,9 @@ find_package(Torch REQUIRED)
 find_package(Boost COMPONENTS program_options REQUIRED)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${TORCH_CXX_FLAGS} -pthread -fsanitize=address")
+set(CMAKE_C_COMPILER "/usr/bin/clang")
+set(CMAKE_CXX_COMPILER "/usr/bin/clang++")
+
 
 file(GLOB SOURCES CONFIGURE_DEPENDS "src/*.cpp" "src/jitter/*.cpp", "src/jitter/main/*.cpp", "src/jitter/worker/*.cpp")
 
