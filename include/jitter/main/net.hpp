@@ -41,9 +41,16 @@ class Net {
          * 
          * @param layerNum - layer that the desired neuron is in
          * @param uuid - ID of the neuron whose information is required
-         * @return std::tuple<Network, std::pair<float, float>, int> - returns the network, a pair of the distribution for the specific neuron, and the current net iteration
+         * @return std::tuple<Network, std::pair<float, float>, int>
          */
         std::tuple<Network, std::pair<float, float>, int> getCurrentInfo(int layerNum, std::string uuid);
+
+        /**
+         * @brief Get current iteration of network
+         * 
+         * @return int
+         */
+        int getIteration();
 
         /**
          * @brief Updates the dist object for a specific neuron and alters the distribution parameters + network based on the update

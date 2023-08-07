@@ -89,9 +89,12 @@ void NetManager::updateDist(std::unique_ptr<ResponseUpdateMessage> m)
 
     logger.writeUpdate(m->layerNum, m->uuid.back(), m->update, m->loss);
 
+
     std::shared_ptr<Message> mes;
     mes = std::make_shared<ValidMessage>(m->uuid, m->layerNum);
     workers[m->workerId].addTask(mes);
+
+    if(config->maxIterations<net->getIteration()) delete this; // ik this is bad practice but ill fix it later i promise :)
 }
 
 NetManager::~NetManager()
@@ -102,7 +105,7 @@ NetManager::~NetManager()
         m = std::make_shared<StopMessage>();
         worker.addTask(m);
     }
-    std::cout<<"ENDING :)"<<std::endl;
+    std::cout<<"Jitter ending..."<<std::endl;
     workers.clear();
     thread->join();
 }

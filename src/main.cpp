@@ -2,13 +2,14 @@
 #include "netManager.hpp"
 #include "config.hpp"
 #include <vector>
+#include <string>
 #include <torch/torch.h>
 #include <iostream>
 #include <boost/math/distributions.hpp>
 using namespace boost::math;
 
 
-int main() {
+int main(int argc, char* argv[]) {
     Layer l1(100, 50);
     Layer l2(50, 1);
 
@@ -20,7 +21,7 @@ int main() {
     torch::Tensor input = torch::rand(100);
     std::vector<int> outputs = { 0 };
     double desiredLoss = 5;
-    Config config(0.15, 0.07, 1);
+    Config config(0.15, 0.07, 1, std::stoi(std::string(argv[0])));
 
     // double r = std::rand() / double(RAND_MAX);
     // beta_distribution<> dist(50.0, 50.0);
