@@ -1,0 +1,41 @@
+stages:
+  - install
+  - build
+  - release
+
+install-job:
+  stage: install
+  image: registry.gitlab.com/gitlab-org/release-cli:latest
+  script:
+    - sudo apt-get update -qq
+    - sudo apt-get install -y gcc-multilib curl zip unzip gzip
+    - sudo apt-get install -y build-essential libboost-system-dev libboost-thread-dev libboost-program-options-dev libboost-test-dev libboost-filesystem-dev
+    - sudo wget -qO /usr/local/bin/ninja.gz https://github.com/ninja-build/ninja/releases/latest/download/ninja-linux.zip
+    - sudo gzip -d /usr/local/bin/ninja.gz
+    - sudo chmod a+x /usr/local/bin/ninja
+    - curl https://download.pytorch.org/libtorch/nightly/cpu/libtorch-shared-with-deps-latest.zip --create-dirs -o ./lib/torch.zip
+    - unzip ${{github.workspace}}/lib/torch.zip -d ${{ github.workspace }}/lib
+    - rm -rf ${{github.workspace}}/lib/torch.zip
+    - mkdir build
+
+build-job:
+  stage: build
+  script:
+    - cmake -DCMAKE_PREFIX_PATH=./lib/libtorch/shared/cmake ../ -GNinja -DCMAKE_BUILD_TYPE=Release -Wno-dev
+    - cd build
+    - ninja
+  artifacts:
+    paths:
+      - build/
+
+release-job:
+  stage: release
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANC
+  script: 
+    - echo "CREATING RELEASE"
+  release:                                         # See https://docs.gitlab.com/ee/ci/yaml/#release for available properties
+    tag_name: 'v0.$CI_PIPELINE_IID'                # The version is incremented per pipeline.
+    description: 'v0.$CI_PIPELINE_IID'
+    ref: '$CI_COMMIT_SHA'   
+  
