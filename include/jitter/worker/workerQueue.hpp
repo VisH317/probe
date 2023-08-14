@@ -18,7 +18,7 @@ class WorkerQueue {
         /** Main queue */
         std::queue<std::shared_ptr<Message>> queue;
         /** queue lock */
-        std::mutex m;
+        mutable std::mutex m;
 
     public:
         /**

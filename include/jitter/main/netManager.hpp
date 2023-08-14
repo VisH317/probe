@@ -20,7 +20,7 @@
 #include "lossManager.hpp"
 #include "message.hpp"
 #include "net.hpp"
-#include "logger.hpp"
+#include "logs.hpp"
 
 
 // util function for casting unique_ptr to derived (sadge that std doesnt have this)

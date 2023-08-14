@@ -6,12 +6,8 @@ include(FetchContent)
 find_package(Torch REQUIRED)
 find_package(Boost COMPONENTS program_options REQUIRED)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${TORCH_CXX_FLAGS} -pthread -fsanitize=address")
-set(CMAKE_C_COMPILER "/usr/bin/clang")
-set(CMAKE_CXX_COMPILER "/usr/bin/clang++")
 
-
-file(GLOB SOURCES CONFIGURE_DEPENDS "src/*.cpp" "src/jitter/*.cpp", "src/jitter/main/*.cpp", "src/jitter/worker/*.cpp")
+file(GLOB SOURCES CONFIGURE_DEPENDS "src/*.cpp" "src/jitter/*.cpp" "src/jitter/main/*.cpp" "src/jitter/worker/*.cpp")
 
 FetchContent_Declare(
   googletest
@@ -20,6 +16,10 @@ FetchContent_Declare(
 
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(googletest)
+
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${TORCH_CXX_FLAGS} -pthread -fsanitize=address")
+set(CMAKE_C_COMPILER "/usr/bin/clang")
+set(CMAKE_CXX_COMPILER "/usr/bin/clang++")
 
 # old test executable (not needed anymore)
 # add_executable(torch-uuid ${SOURCES})
@@ -46,12 +46,15 @@ target_include_directories(torch-probe PRIVATE include/jitter/worker)
 
 enable_testing()
 
+file(GLOB TEST_SOURCES CONFIGURE_DEPENDS "test/*.cpp" "test/*.hpp")
+
 # original test
-add_executable(probe-test ${SOURCES})
+add_executable(probe-test ${TEST_SOURCES})
 set_target_properties(probe-test PROPERTIES SOVERSION 1)
 set_target_properties(probe-test PROPERTIES LINKER_LANGUAGE CXX)
 set_property(TARGET probe-test PROPERTY CXX_STANDARD 17)
 
+target_link_libraries(probe-test torch-probe)
 target_link_libraries(probe-test Boost::program_options)
 target_link_libraries(probe-test "${TORCH_LIBRARIES}")
 target_link_libraries(probe-test GTest::gtest_main)
