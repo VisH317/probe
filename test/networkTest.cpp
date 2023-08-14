@@ -1,12 +1,12 @@
 #include "test.hpp"
 
-TEST(NetworkConstructor, BasicAssertions) {
+TEST(Network, Constructor) {
     std::vector<Layer> v = {Layer(100, 50), Layer(50, 1)};
     Network n(v);
 }
 
 
-TEST(NetworkForward, BasicAssertions) {
+TEST(Network, Forward) {
     std::vector<Layer> v = {Layer(100, 50), Layer(50, 1)};
     Network n(v);
     torch::Tensor input = torch::ones(100);
@@ -15,13 +15,13 @@ TEST(NetworkForward, BasicAssertions) {
 }
 
 
-TEST(NetworkValid, BasicAssertions) {
+TEST(Network, CheckValid) {
     std::vector<Layer> v = {Layer(100, 50), Layer(50, 1)};
     Network n(v);
     bool one = n.checkValid();
 
-    std::vector<Layer> v{Layer(100, 50), Layer(51, 1)};
-    Network n2(v);
+    std::vector<Layer> v2 = {Layer(100, 50), Layer(51, 1)};
+    Network n2(v2);
     
     bool two = n2.checkValid();
 
@@ -29,7 +29,7 @@ TEST(NetworkValid, BasicAssertions) {
 }
 
 
-TEST(NetworkDims, BasicAssertions) {
+TEST(Network, DimensionAssertion) {
     std::vector<Layer> v = {Layer(100, 50), Layer(50, 1)};
     Network n(v);
     torch::Tensor input = torch::ones(110);
@@ -37,7 +37,7 @@ TEST(NetworkDims, BasicAssertions) {
 
     try {
         out = n.forward(input);
-    } catch() {
+    } catch(...) {
         FAIL() << "Network forward failed";
     }
 }

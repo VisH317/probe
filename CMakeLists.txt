@@ -46,10 +46,10 @@ target_include_directories(torch-probe PRIVATE include/jitter/worker)
 
 enable_testing()
 
-file(GLOB TEST_SOURCES CONFIGURE_DEPENDS "test/*.cpp" "test/*.hpp")
+# file(GLOB TEST_SOURCES CONFIGURE_DEPENDS "test/*.cpp" "test/*.hpp")
 
 # original test
-add_executable(probe-test ${TEST_SOURCES})
+add_executable(probe-test "test/main.cpp")
 set_target_properties(probe-test PROPERTIES SOVERSION 1)
 set_target_properties(probe-test PROPERTIES LINKER_LANGUAGE CXX)
 set_property(TARGET probe-test PROPERTY CXX_STANDARD 17)

@@ -5,8 +5,6 @@
 #include <network.hpp>
 #include <gtest/gtest.h>
 #include <stdexcept>
-#include "layerTest.cpp"
-#include "networkTest.cpp"
 
 // im gonna organize the test suite better later but for now its just a namespace
 

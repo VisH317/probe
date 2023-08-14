@@ -4,7 +4,7 @@ WorkerQueue::WorkerQueue() {
 
 }
 
-WorkerQueue::WorkerQueue(const WorkerQueue& q) {
+WorkerQueue::WorkerQueue(const WorkerQueue& q) : m() {
     // std::lock_guard<std::mutex> guard(q.m);
     queue = q.queue;
     // m = q.m;

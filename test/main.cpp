@@ -1,4 +1,6 @@
 #include "test.hpp"
+#include "layerTest.cpp"
+#include "networkTest.cpp"
 
 int main(int argc, char **argv) {
     ::testing::InitGoogleTest(&argc, argv);

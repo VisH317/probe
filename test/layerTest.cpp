@@ -1,19 +1,19 @@
 #include "test.hpp"
 
-TEST(LayerConstructor, BasicAssertions) {
+TEST(Layer, Constructor) {
     Layer l(100, 50);
     Layer l2(50, 1);
 }
 
 
-TEST(LayerUUID, BasicAssertions) {
+TEST(Layer, UUID) {
     Layer l(100, 50);
     std::tuple<std::string, torch::Tensor, torch::Tensor> info = l.getNeuron(0);
     EXPECT_EQ(std::get<1>(info).squeeze().size(0)==100 && std::get<2>(info).squeeze().size(0)==1, true);
 }
 
 
-TEST(LayerDiffUUID, BasicAssertions) {
+TEST(Layer, DiffUUID) {
     Layer l(100, 50);
     auto info = l.getNeuron(0);
     auto info2 = l.getNeuron(1);
@@ -21,7 +21,7 @@ TEST(LayerDiffUUID, BasicAssertions) {
 }
 
 
-TEST(DiffLayerDiffUUID, BasicAssertions) {
+TEST(Layer, DiffLayerUUID) {
     Layer l(100, 50);
     Layer l2(50, 5);
     auto info = l.getNeuron(0);
@@ -30,7 +30,7 @@ TEST(DiffLayerDiffUUID, BasicAssertions) {
 }
 
 
-TEST(LayerOOB, BasicAssertions) {
+TEST(Layer, OutOfRangeCheck) {
     Layer l(100, 50);
     try {
         auto info = l.getNeuron(52);

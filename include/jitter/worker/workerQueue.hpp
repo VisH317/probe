@@ -32,14 +32,14 @@ class WorkerQueue {
          * 
          * @param q reference
          */
-        WorkerQueue(const WorkerQueue& q);
+        explicit WorkerQueue(const WorkerQueue& q);
 
         /**
          * @brief Construct a new Worker Queue object
          * 
          * @param q moveable
          */
-        WorkerQueue(WorkerQueue&& q) = default;
+        WorkerQueue(WorkerQueue&& q) = delete;
 
         /**
          * @brief Destroy the Worker Queue object
