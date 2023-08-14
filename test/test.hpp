@@ -1,10 +1,12 @@
 #ifndef __TEST__
 #define __TEST__
 
-#include "layer.hpp"
-#include "network.hpp"
+#include <torch-probe/layer.hpp>
+#include <torch-probe/network.hpp>
 #include <gtest/gtest.h>
 #include <stdexcept>
+#include "layerTest.cpp"
+#include "networkTest.cpp"
 
 // im gonna organize the test suite better later but for now its just a namespace
 
