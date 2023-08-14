@@ -1,42 +1,46 @@
 #include "test.hpp"
 
-int Test::layerConstructor() {
-    Layer l(100, 50);
-    Layer l2(50, 1);
-    return 0;
+void Test::layerConstructor() {
+    TEST(LayerConstructor, BasicAssertions) {
+        Layer l(100, 50);
+        Layer l2(50, 1);
+    }
 }
 
-int Test::layerUUID() {
-    Layer l(100, 50);
-    std::tuple<std::string, torch::Tensor, torch::Tensor> info = l.getNeuron(0);
-    if(std::get<1>(info).squeeze().size(0)==100 && std::get<2>(info).squeeze().size(0)==1) return 0;
-    return 1;
+void Test::layerUUID() {
+    TEST(LayerUUID, BasicAssertions) {
+        Layer l(100, 50);
+        std::tuple<std::string, torch::Tensor, torch::Tensor> info = l.getNeuron(0);
+        EXPECT_EQ(std::get<1>(info).squeeze().size(0)==100 && std::get<2>(info).squeeze().size(0)==1, true);
+    }
 }
 
-int Test::layerDiffUUID() {
-    Layer l(100, 50);
-    auto info = l.getNeuron(0);
-    auto info2 = l.getNeuron(1);
-    if(std::strcmp(std::get<0>(info).c_str(), std::get<0>(info2).c_str())==0) return 1;
-    return 0;
+void Test::layerDiffUUID() {
+    TEST(LayerDiffUUID, BasicAssertions) {
+        Layer l(100, 50);
+        auto info = l.getNeuron(0);
+        auto info2 = l.getNeuron(1);
+        EXPECT_EQ(std::strcmp(std::get<0>(info).c_str(), std::get<0>(info2).c_str())==0, false);
+    }
 }
 
-int Test::diffLayerDiffUUID() {
-    Layer l(100, 50);
-    Layer l2(50, 5);
-    auto info = l.getNeuron(0);
-    auto info2 = l2.getNeuron(0);
-    if(std::strcmp(std::get<0>(info).c_str(), std::get<0>(info2).c_str())==0) return 1;
-    return 0;
+void Test::diffLayerDiffUUID() {
+    TEST(DiffLayerDiffUUID, BasicAssertions) {
+        Layer l(100, 50);
+        Layer l2(50, 5);
+        auto info = l.getNeuron(0);
+        auto info2 = l2.getNeuron(0);
+        EXPECT_EQ(std::strcmp(std::get<0>(info).c_str(), std::get<0>(info2).c_str())==0, false)1;
+    }
 }
 
-int Test::layerOutOfBoundsTest() {
+void Test::layerOutOfBoundsTest() {
     Layer l(100, 50);
     try {
         auto info = l.getNeuron(52);
-    } catch (...) {
-        return 0;
-    }
-
-    return 1;
+    } catch (std::out_of_range const & err) {
+        EXPECT_EQ(err.what(), "The neuron you selected to probe was out of range of the layer's neurons");
+    } catch(...) {
+        FAIL() << "Expected std::out_of_range";
+    };  
 }

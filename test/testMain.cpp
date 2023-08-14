@@ -1,6 +1,6 @@
 #include "test.hpp"
 
-int main() {
+int main(int argc, char **argv) {
     Test::layerConstructor();
     Test::layerUUID();
     Test::layerDiffUUID();
@@ -11,4 +11,7 @@ int main() {
     Test::networkForward();
     Test::networkValid();
     Test::networkDimensionMismatch();
+
+    ::testing::InitGoogleTest(&argc, argv);
+    return RUN_ALL_TESTS();
 }

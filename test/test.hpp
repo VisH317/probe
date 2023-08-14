@@ -3,22 +3,24 @@
 
 #include "layer.hpp"
 #include "network.hpp"
+#include <gtest/gtest.h>
+#include <stdexcept>
 
 // im gonna organize the test suite better later but for now its just a namespace
 
 namespace Test {
     // layer tests
-    int layerConstructor();
-    int layerUUID();
-    int layerDiffUUID();
-    int diffLayerDiffUUID();
-    int layerOutOfBoundsTest();
+    void layerConstructor();
+    void layerUUID();
+    void layerDiffUUID();
+    void diffLayerDiffUUID();
+    void layerOutOfBoundsTest();
 
     // network
-    int networkConstructor();
-    int networkForward();
-    int networkValid();
-    int networkDimensionMismatch();
+    void networkConstructor();
+    void networkForward();
+    void networkValid();
+    void networkDimensionMismatch();
 }
 
 
