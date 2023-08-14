@@ -26,7 +26,7 @@ TEST(DiffLayerDiffUUID, BasicAssertions) {
     Layer l2(50, 5);
     auto info = l.getNeuron(0);
     auto info2 = l2.getNeuron(0);
-    EXPECT_EQ(std::strcmp(std::get<0>(info).c_str(), std::get<0>(info2).c_str())==0, false)1;
+    EXPECT_EQ(std::strcmp(std::get<0>(info).c_str(), std::get<0>(info2).c_str())==0, false);
 }
 
 

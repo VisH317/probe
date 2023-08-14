@@ -1,9 +1,4 @@
-#include <torch-probe/layer.hpp>
-#include <torch-probe/network.hpp>
-#include <gtest/gtest.h>
-#include <stdexcept>
-#include "layerTest.cpp"
-#include "networkTest.cpp
+#include "test.hpp"
 
 int main(int argc, char **argv) {
     ::testing::InitGoogleTest(&argc, argv);
