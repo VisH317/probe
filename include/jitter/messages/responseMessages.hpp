@@ -10,7 +10,8 @@ enum ResponseType
 {
     RES_UPDATE,
     RES_DONE,
-    RES_PARENT
+    RES_PARENT,
+    RES_END
 };
 
 struct ResponseMessage
@@ -84,6 +85,10 @@ struct ResponseDoneMessage : ResponseMessage
      * @return ResponseType::RES_DONE
      */
     ResponseType getType() override { return ResponseType::RES_DONE; };
+};
+
+struct ResponseEndMessage : ResponseMessage {
+    ResponseType getType override { return ResponseType::RES_END; };
 };
 
 #endif

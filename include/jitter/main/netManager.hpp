@@ -110,6 +110,8 @@ class NetManager {
          */
         void createNewSearch(std::unique_ptr<ResponseDoneMessage> m);
 
+        void end();
+
 
 };
 

@@ -51,6 +51,8 @@ void NetManager::process()
         if (responseQueue->size() == 0)
             continue;
 
+        bool shouldBreak = false;
+
         std::unique_ptr<ResponseMessage> m = responseQueue->pop();
 
         std::cout<<"MAIN: message: "<<m->getType()<<std::endl;
@@ -64,9 +66,15 @@ void NetManager::process()
         case ResponseType::RES_DONE:
             createNewSearch(dynamic_unique_cast<ResponseDoneMessage>(std::move(m)));
             break;
+        case ResponseType::RES_END:
+            end();
+            shouldBreak = true;
+            break;
         default:
             break;
         }
+
+        if(shouldBreak) break;
     }
 }
 
@@ -94,7 +102,9 @@ void NetManager::updateDist(std::unique_ptr<ResponseUpdateMessage> m)
     mes = std::make_shared<ValidMessage>(m->uuid, m->layerNum);
     workers[m->workerId].addTask(mes);
 
-    if(config->maxIterations<net->getIteration()) delete this; // ik this is bad practice but ill fix it later i promise :)
+    if(config->maxIterations<net->getIteration()) {
+        responseQueue->push(std::make_unique<ResponseEndMessage>());
+    } 
 }
 
 NetManager::~NetManager()
@@ -107,7 +117,7 @@ NetManager::~NetManager()
     }
     std::cout<<"Jitter ending..."<<std::endl;
     workers.clear();
-    thread->join();
+    if(thread->joinable()) thread->join();
 }
 
 void NetManager::createNewSearch(std::unique_ptr<ResponseDoneMessage> m)
@@ -117,4 +127,15 @@ void NetManager::createNewSearch(std::unique_ptr<ResponseDoneMessage> m)
     std::shared_ptr<Message> mes;
     mes = std::make_shared<StartSearchMessage>(id);
     workers[m->workerId].addTask(mes);
+}
+
+void NetManager::end() {
+    for (Worker &worker : workers)
+    {
+        std::shared_ptr<Message> m;
+        m = std::make_shared<StopMessage>();
+        worker.addTask(m);
+    }
+    std::cout<<"Jitter ending..."<<std::endl;
+    workers.clear();
 }
