@@ -83,6 +83,7 @@ void Worker::main() {
 
         std::shared_ptr<Message> m = queue.pop();
         std::cout<<"WORKER: Message - "<<m->getType()<<std::endl;
+        std::unique_ptr<ResponseMessage> up;
 
         switch(m->getType()) {
             case MessageType::START:
@@ -95,6 +96,8 @@ void Worker::main() {
                 break;
             case MessageType::STOP:
                 std::cout<<"WORKER: STOP MESSAGE RECEIVED"<<std::endl;
+                up = std::make_unique<ResponseStopMessage>();
+                responseQueue->push(std::move(up));
                 isEnd = true;
                 break;
             case MessageType::VALID:
@@ -154,9 +157,5 @@ void Worker::start() {
 }
 
 Worker::~Worker() {
-    std::cout<<"WORKER: Stopping..."<<std::endl;
-    queue.clear();
-    queue.push(std::make_shared<StopMessage>());
-    std::cout<<"stopped"<<std::endl;
     // delete thread;
 }

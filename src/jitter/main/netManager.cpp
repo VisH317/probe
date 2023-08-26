@@ -68,6 +68,8 @@ void NetManager::process()
             break;
         case ResponseType::RES_END:
             end();
+            break;
+        case ResponseType::RES_STOP:
             shouldBreak = true;
             break;
         default:
