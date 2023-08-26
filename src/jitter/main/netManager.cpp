@@ -119,7 +119,7 @@ NetManager::~NetManager()
     // }
     // std::cout<<"Jitter ending..."<<std::endl;
     // workers.clear();
-    // if(thread->joinable()) thread->join();
+    // thread->join();
 }
 
 void NetManager::createNewSearch(std::unique_ptr<ResponseDoneMessage> m)

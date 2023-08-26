@@ -158,4 +158,5 @@ void Worker::start() {
 
 Worker::~Worker() {
     // delete thread;
+    // thread->join();
 }
