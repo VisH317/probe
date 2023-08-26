@@ -21,7 +21,8 @@ int main(int argc, char* argv[]) {
     torch::Tensor input = torch::rand(100);
     std::vector<int> outputs = { 0 };
     double desiredLoss = 5;
-    Config config(0.15, 0.07, 1, argc == 0 ? 100 : std::atoi(argv[0]));
+    // std::cout<<"argc: "<<argc<<", argv: "<<argv[1]<<std::endl;
+    Config config(0.15, 0.07, 1, argc == 0 ? 100 : std::atoi(argv[1]));
 
     // double r = std::rand() / double(RAND_MAX);
     // beta_distribution<> dist(50.0, 50.0);
