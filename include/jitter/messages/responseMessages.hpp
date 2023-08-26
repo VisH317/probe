@@ -88,7 +88,7 @@ struct ResponseDoneMessage : ResponseMessage
 };
 
 struct ResponseEndMessage : ResponseMessage {
-    ResponseType getType override { return ResponseType::RES_END; };
+    ResponseType getType() override { return ResponseType::RES_END; };
 };
 
 #endif

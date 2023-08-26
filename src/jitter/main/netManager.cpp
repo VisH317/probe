@@ -102,6 +102,8 @@ void NetManager::updateDist(std::unique_ptr<ResponseUpdateMessage> m)
     mes = std::make_shared<ValidMessage>(m->uuid, m->layerNum);
     workers[m->workerId].addTask(mes);
 
+    std::cout<<"Maxiter "<<config->maxIterations<<std::endl;
+
     if(config->maxIterations<net->getIteration()) {
         responseQueue->push(std::make_unique<ResponseEndMessage>());
     } 
@@ -117,7 +119,7 @@ NetManager::~NetManager()
     }
     std::cout<<"Jitter ending..."<<std::endl;
     workers.clear();
-    if(thread->joinable()) thread->join();
+    // if(thread->joinable()) thread->join();
 }
 
 void NetManager::createNewSearch(std::unique_ptr<ResponseDoneMessage> m)
