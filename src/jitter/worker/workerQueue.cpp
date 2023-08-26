@@ -37,3 +37,7 @@ int WorkerQueue::size() {
     // std::cout<<"CALLED SIZE"<<std::endl;
     return queue.size();
 }
+
+void WorkerQueue::clear() {
+    queue = std::queue<std::shared_ptr<Message>>();
+}

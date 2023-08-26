@@ -154,9 +154,9 @@ void Worker::start() {
 }
 
 Worker::~Worker() {
-    // StopMessage stop;
     std::cout<<"WORKER: Stopping..."<<std::endl;
-    // queue.push(std::make_shared<Message>(stop));
-    if(thread != nullptr) thread->join();
+    queue.clear();
+    queue.push(std::make_shared<StopMessage>());
+    std::cout<<"stopped"<<std::endl;
     // delete thread;
 }

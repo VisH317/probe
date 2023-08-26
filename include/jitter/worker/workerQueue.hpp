@@ -68,6 +68,8 @@ class WorkerQueue {
          */
         int size();
 
+        void clear();
+
 };
 
 #endif

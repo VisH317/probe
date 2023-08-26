@@ -78,6 +78,7 @@
         "slist": "cpp",
         "future": "cpp",
         "scoped_allocator": "cpp",
-        "*.ipp": "cpp"
+        "*.ipp": "cpp",
+        "cuchar": "cpp"
     }
 }

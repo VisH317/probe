@@ -11,5 +11,5 @@ Logger::~Logger() {
 }
 
 void Logger::writeUpdate(int layer, std::string id, double update, double loss) {
-    file << layer << ", " << ", " << id << ", " << update << ", " << loss << "\n";
+    file << layer << ", " << id << ", " << update << ", " << loss << "\n";
 }
