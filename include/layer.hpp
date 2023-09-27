@@ -8,6 +8,7 @@
 #include <tuple>
 #include <iostream>
 #include <stdexcept>
+#include <memory>
 
 /**
  * @brief wrapper around torch::nn::Linear to provide probing mechanisms with uuids for specific neuron analysis
@@ -17,6 +18,10 @@ class Layer {
     private:
         /** torch linear layer that the Layer object wraps around */
         torch::nn::Linear layer = nullptr;
+
+        /** aux parts, like activation functions, etc. */
+
+        torch::nn::Sequential aux = nullptr;
 
         /** list of uuids for each neuron in the layer */
         std::vector<std::string> id;
@@ -45,7 +50,7 @@ class Layer {
          * @param in (int) of input features
          * @param out (int) Number of output features
          */
-        Layer(int in, int out); // divide by out features: determines how much of each in feature
+        Layer(int in, int out, torch::nn::Sequential& aux); // divide by out features: determines how much of each in feature
 
         /**
          * @brief Destroy the Layer object
@@ -59,6 +64,8 @@ class Layer {
          * @return torch::nn::Linear& to torch layer representation under the wrappper 
          */
         torch::nn::Linear& getLayer();
+
+        torch::Tensor forward(torch::Tensor input);
 
         /**
          * @brief Get a specific neuron, its weights and bias for one specific feature in the layer

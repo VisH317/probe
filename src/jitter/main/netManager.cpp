@@ -139,4 +139,6 @@ void NetManager::end() {
         worker.addTask(m);
     }
     std::cout<<"Jitter ending..."<<std::endl;
+
+    torch::nn::Sequential
 }

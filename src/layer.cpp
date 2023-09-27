@@ -2,10 +2,11 @@
 
 long long Layer::curId = 0;
 
-Layer::Layer(int in, int out) {
+Layer::Layer(int in, int out, torch::nn::Sequential& aux) {
     this->in = in;
     this->out = out;
     layer = torch::nn::Linear(in, out);
+    this->aux = aux;
     for(int i=0;i<in;i++) {
         std::string uuid = std::to_string(curId);
         curId++;
@@ -65,4 +66,9 @@ int Layer::getLength() {
 
 std::vector<std::string> Layer::getAllNeuronIds() {
     return id;
+}
+
+torch::Tensor Layer::forward(torch::Tensor input) {
+    torch::Tensor intermediate = layer->forward(input);
+    return aux->forward(intermediate);
 }
