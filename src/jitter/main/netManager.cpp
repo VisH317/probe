@@ -140,5 +140,5 @@ void NetManager::end() {
     }
     std::cout<<"Jitter ending..."<<std::endl;
 
-    torch::nn::Sequential
+    // torch::nn::Sequential
 }

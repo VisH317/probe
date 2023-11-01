@@ -50,7 +50,7 @@ class Layer {
          * @param in (int) of input features
          * @param out (int) Number of output features
          */
-        Layer(int in, int out, torch::nn::Sequential& aux); // divide by out features: determines how much of each in feature
+        Layer(int in, int out); // divide by out features: determines how much of each in feature
 
         /**
          * @brief Destroy the Layer object

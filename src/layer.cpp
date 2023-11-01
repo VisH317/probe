@@ -2,11 +2,11 @@
 
 long long Layer::curId = 0;
 
-Layer::Layer(int in, int out, torch::nn::Sequential& aux) {
+Layer::Layer(int in, int out) {
     this->in = in;
     this->out = out;
     layer = torch::nn::Linear(in, out);
-    this->aux = aux;
+    // this->aux = aux;
     for(int i=0;i<in;i++) {
         std::string uuid = std::to_string(curId);
         curId++;
