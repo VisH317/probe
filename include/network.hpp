@@ -21,7 +21,7 @@ class Network {
         /** List of layers in the network */
         std::vector<Layer> layers;
 
-        std::vector<std::shared_ptr<torch::nn::Module>> initModules;
+        std::vector<std::shared_ptr<torch::nn::AnyModule>> initModules;
 
     public:
         /**

@@ -35,7 +35,7 @@ Network::Network(std::vector<Layer>&& l) {
 Network::Network(std::shared_ptr<torch::nn::Module>& mod) {
     auto initLayers = getLayers(mod);
     bool firstLinear = false;
-    std::vector<std::shared_ptr<torch::nn::Module>> currentAux;
+    std::vector<std::shared_ptr<torch::nn::AnyModule>> currentAux;
     std::shared_ptr<torch::nn::Module> currentLinear;
     for(std::shared_ptr<torch::nn::Module>& layer : initLayers) {
         if(layer->name() == "Linear") {
@@ -48,7 +48,7 @@ Network::Network(std::shared_ptr<torch::nn::Module>& mod) {
             layers.push_back(Layer(std::dynamic_pointer_cast<torch::nn::Linear>(currentLinear), currentAux));
             currentLinear = layer;
             currentAux.clear();
-        } else currentAux.push_back(layer);
+        } else currentAux.push_back(std::shared_ptr<torch::nn::AnyModule>(layer->as<torch::nn::AnyModule>()));
     }
 }
 
