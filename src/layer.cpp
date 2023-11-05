@@ -69,5 +69,9 @@ std::vector<std::string> Layer::getAllNeuronIds() {
 
 torch::Tensor Layer::forward(torch::Tensor input) {
     torch::Tensor intermediate = layer->get()->forward(input);
-    return aux->get()->forward(intermediate);
+    torch::nn::Sequential nn;
+    for(std::shared_ptr<torch::nn::Module>& item: aux) {
+        nn->push_back(item);
+    }
+    return nn->forward(intermediate);
 }

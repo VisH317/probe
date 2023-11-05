@@ -21,6 +21,8 @@ class Network {
         /** List of layers in the network */
         std::vector<Layer> layers;
 
+        std::vector<std::shared_ptr<torch::nn::Module>> initModules;
+
     public:
         /**
          * @brief Construct an empty Network object
@@ -28,7 +30,7 @@ class Network {
          */
         Network() {};
 
-        Network(torch::nn::Module& mod);
+        Network(std::shared_ptr<torch::nn::Module>& mod);
 
         /**
          * @brief Construct a new Network object from a vector of layers
