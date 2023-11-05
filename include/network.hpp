@@ -13,6 +13,9 @@
  * @brief Network of Layer wrappers to run forward processes and probe specific parts of each layer
  * 
  */
+
+std::vector<std::shared_ptr<torch::nn::Module>> getLayers(torch::nn::Module mod);
+
 class Network {
     private:
         /** List of layers in the network */
@@ -24,6 +27,8 @@ class Network {
          * 
          */
         Network() {};
+
+        Network(torch::nn::Module& mod);
 
         /**
          * @brief Construct a new Network object from a vector of layers

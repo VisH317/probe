@@ -1,5 +1,23 @@
 #include "network.hpp"
 
+
+std::vector<std::shared_ptr<torch::nn::Module>> getLayers(std::shared_ptr<torch::nn::Module>& mod) {
+    std::vector<std::shared_ptr<torch::nn::Module>> children = mod->children();
+    std::vector<std::shared_ptr<torch::nn::Module>> ret;
+    if(children.size() == 0) {
+        ret.push_back(mod);
+        return ret;
+    }
+
+    for(std::shared_ptr<torch::nn::Module>& child: children) {
+        auto values = getLayers(child);
+        ret.insert(ret.end(), values.begin(), values.end());
+    }
+
+    return ret;
+}
+
+
 Network::Network(std::vector<Layer>& l) {
     std::vector<Layer>::iterator ptr;
     for(ptr = l.begin(); ptr<l.end(); ptr++) {
@@ -11,6 +29,13 @@ Network::Network(std::vector<Layer>&& l) {
     std::vector<Layer>::iterator ptr;
     for(ptr = l.begin(); ptr<l.end(); ptr++) {
         layers.push_back(*ptr);
+    }
+}
+
+Network::Network(torch::nn::Module mod) {
+    std::vector<std::shared_ptr<torch::nn::Module>> children = mod.children();
+    for(std::shared_ptr<torch::nn::Module>& module : children) {
+        
     }
 }
 

@@ -5,7 +5,7 @@ long long Layer::curId = 0;
 Layer::Layer(int in, int out) {
     this->in = in;
     this->out = out;
-    layer = torch::nn::Linear(in, out);
+    layer = std::make_shared<torch::nn::Linear>(in, out);
     // this->aux = aux;
     for(int i=0;i<in;i++) {
         std::string uuid = std::to_string(curId);
@@ -20,16 +20,15 @@ std::string Layer::generateId() {
 }
 
 torch::nn::Linear& Layer::getLayer() {
-    return layer;
+    return *layer;
 }
 
 std::tuple<std::string, torch::Tensor, torch::Tensor> Layer::getNeuron(int num) {
     if(num>=in || num<0) throw std::out_of_range("The neuron you selected to probe was out of range of the layer's neurons"); 
-
-    torch::Tensor neuronWeights = layer->weight;
+    torch::Tensor neuronWeights = layer->get()->weight;
     torch::Tensor ret = neuronWeights.select(1, num);
     
-    torch::Tensor neuronBiases = layer->bias;
+    torch::Tensor neuronBiases = layer->get()->bias;
     torch::Tensor b = neuronBiases.select(0, 0);
 
     std::string uuid = id[num];
@@ -50,7 +49,7 @@ std::tuple<int, torch::Tensor, torch::Tensor> Layer::getNeuron(std::string uuid)
 
 void Layer::changeNeuronWeight(std::string uuid, torch::Tensor update) {
     torch::autograd::GradMode::set_enabled(false);
-    torch::Tensor* neuronWeight = &(layer->weight);
+    torch::Tensor* neuronWeight = &(layer->get()->weight);
     std::tuple<int, torch::Tensor, torch::Tensor> neuron = getNeuron(uuid);
     neuronWeight->index_put_({"...", std::get<0>(neuron)}, update);
     torch::autograd::GradMode::set_enabled(true);
@@ -61,7 +60,7 @@ std::pair<int, int> Layer::getDims() {
 }
 
 int Layer::getLength() {
-    return layer->weight.sizes()[1];
+    return layer->get()->weight.sizes()[1];
 }
 
 std::vector<std::string> Layer::getAllNeuronIds() {
@@ -69,6 +68,6 @@ std::vector<std::string> Layer::getAllNeuronIds() {
 }
 
 torch::Tensor Layer::forward(torch::Tensor input) {
-    torch::Tensor intermediate = layer->forward(input);
-    return aux->forward(intermediate);
+    torch::Tensor intermediate = layer->get()->forward(input);
+    return aux->get()->forward(intermediate);
 }

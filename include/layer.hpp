@@ -17,11 +17,11 @@
 class Layer {
     private:
         /** torch linear layer that the Layer object wraps around */
-        torch::nn::Linear layer = nullptr;
+        std::shared_ptr<torch::nn::Linear> layer = nullptr;
 
         /** aux parts, like activation functions, etc. */
 
-        torch::nn::Sequential aux = nullptr;
+        std::shared_ptr<torch::nn::Sequential> aux;
 
         /** list of uuids for each neuron in the layer */
         std::vector<std::string> id;
@@ -51,6 +51,8 @@ class Layer {
          * @param out (int) Number of output features
          */
         Layer(int in, int out); // divide by out features: determines how much of each in feature
+
+        Layer(std::shared_ptr<torch::nn::Linear> layer, std::shared_ptr<torch::nn::Sequential> aux) : layer(layer), aux(aux) {};
 
         /**
          * @brief Destroy the Layer object
