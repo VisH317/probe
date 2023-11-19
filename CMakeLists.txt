@@ -3,9 +3,12 @@ project(torch-uuid)
 include(CTest)
 include(FetchContent)
 
+# find_package(ROOT REQUIRED COMPONENTS Core Tree)
 find_package(Torch REQUIRED)
 find_package(Boost COMPONENTS program_options REQUIRED)
 
+# root + root libs setup
+# include(${ROOT_USE_FILE})
 
 file(GLOB SOURCES CONFIGURE_DEPENDS "src/*.cpp" "src/jitter/*.cpp" "src/jitter/main/*.cpp" "src/jitter/worker/*.cpp")
 
@@ -38,11 +41,13 @@ set_property(TARGET torch-probe PROPERTY CXX_STANDARD 17)
 
 target_link_libraries(torch-probe Boost::program_options)
 target_link_libraries(torch-probe "${TORCH_LIBRARIES}")
+# target_link_libraries(torch-probe ROOT::Core ROOT::Tree)
 target_include_directories(torch-probe PRIVATE include)
 target_include_directories(torch-probe PRIVATE include/jitter)
 target_include_directories(torch-probe PRIVATE include/jitter/main)
 target_include_directories(torch-probe PRIVATE include/jitter/messages)
 target_include_directories(torch-probe PRIVATE include/jitter/worker)
+target_include_directories(torch-probe PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
 
 enable_testing()
 
@@ -56,11 +61,14 @@ set_property(TARGET probe-test PROPERTY CXX_STANDARD 17)
 
 target_link_libraries(probe-test Boost::program_options)
 target_link_libraries(probe-test "${TORCH_LIBRARIES}")
+# target_link_libraries(probe-test ROOT::Core ROOT::Tree)
 target_include_directories(probe-test PRIVATE include)
 target_include_directories(probe-test PRIVATE include/jitter)
 target_include_directories(probe-test PRIVATE include/jitter/main)
 target_include_directories(probe-test PRIVATE include/jitter/messages)
 target_include_directories(probe-test PRIVATE include/jitter/worker)
+target_include_directories(probe-test PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
+
 
 # include(GoogleTest)
 # gtest_discover_tests(probe-test)

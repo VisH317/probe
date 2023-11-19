@@ -32,6 +32,8 @@ class Network {
 
         Network(std::shared_ptr<torch::nn::Module>& mod);
 
+        Network(std::shared_ptr<torch::nn::Module>&& mod) : Network(mod) {};
+
         /**
          * @brief Construct a new Network object from a vector of layers
          * 

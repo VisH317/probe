@@ -3,7 +3,10 @@
 
 #include <fstream>
 #include <iostream>
+#include <memory>
 #include <string>
+// #include "RDataFrame.h"
+// #include "TFile.h"
 
 class Logger {
     private:
@@ -13,6 +16,10 @@ class Logger {
 
         /** iteration log file (currently unused) */
         std::ofstream runtimeFile;
+
+        // std::unique_ptr<TFile> rootFile;
+
+        // std::unique_ptr<ROOT::RDataFrame>
 
     public:
 

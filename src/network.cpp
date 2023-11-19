@@ -38,7 +38,8 @@ Network::Network(std::shared_ptr<torch::nn::Module>& mod) {
     std::vector<std::shared_ptr<torch::nn::AnyModule>> currentAux;
     std::shared_ptr<torch::nn::Module> currentLinear;
     for(std::shared_ptr<torch::nn::Module>& layer : initLayers) {
-        if(layer->name() == "Linear") {
+        std::cout<<"name: "<<layer->name()<<std::endl;
+        if(layer->name() == "torch::nn::LinearImpl") {
             if(!firstLinear) {
                 initModules = currentAux;
                 currentAux.clear();

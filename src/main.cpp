@@ -10,11 +10,20 @@ using namespace boost::math;
 
 
 int main(int argc, char* argv[]) {
-    Layer l1(100, 50);
-    Layer l2(50, 1);
+    
+    torch::nn::Sequential net(
+        torch::nn::Linear(100, 50),
+        torch::nn::ReLU(),
+        torch::nn::Linear(50, 25),
+        torch::nn::ReLU(),
+        torch::nn::Linear(25, 5),
+        torch::nn::Sigmoid()
+    );
 
-    std::vector<Layer> layers = { l1, l2 };
-    Network n(layers);
+    std::shared_ptr<torch::nn::Module> mod(net->as<torch::nn::Module>());
+
+
+    Network n(mod);
 
     // config
     int numWorkers = 1;
