@@ -6,6 +6,7 @@
 #include <vector>
 #include <string>
 #include <tuple>
+#include <string>
 #include <iostream>
 #include <stdexcept>
 #include <memory>
@@ -17,7 +18,7 @@
 class Layer {
     private:
         /** torch linear layer that the Layer object wraps around */
-        std::shared_ptr<torch::nn::Linear> layer = nullptr;
+        std::shared_ptr<torch::nn::LinearImpl> layer = nullptr;
 
         /** aux parts, like activation functions, etc. */
 
@@ -52,7 +53,7 @@ class Layer {
          */
         Layer(int in, int out); // divide by out features: determines how much of each in feature
 
-        Layer(std::shared_ptr<torch::nn::Linear> layer, std::vector<std::shared_ptr<torch::nn::AnyModule>> aux) : layer(layer), aux(aux) {};
+        Layer(std::shared_ptr<torch::nn::LinearImpl> layer, std::vector<std::shared_ptr<torch::nn::AnyModule>> aux);
 
         /**
          * @brief Destroy the Layer object
@@ -65,7 +66,7 @@ class Layer {
          * 
          * @return torch::nn::Linear& to torch layer representation under the wrappper 
          */
-        torch::nn::Linear& getLayer();
+        std::shared_ptr<torch::nn::LinearImpl>& getLayer();
 
         torch::Tensor forward(torch::Tensor input);
 

@@ -22,7 +22,7 @@ std::string TaskManager::setNewProcessState(int pid) {
     processes[pid].currentSearchlayer = 0;
     currentSearchIndex++;
     if(currentSearchIndex>=inputLayer.getLength()) {
-        currentSearchIndex=0;
+        currentSearchIndex = 0;
     }
     return id;
 }

@@ -38,16 +38,15 @@ Network::Network(std::shared_ptr<torch::nn::Module>& mod) {
     std::vector<std::shared_ptr<torch::nn::AnyModule>> currentAux;
     std::shared_ptr<torch::nn::Module> currentLinear;
     for(std::shared_ptr<torch::nn::Module>& layer : initLayers) {
-        std::cout<<"name: "<<layer->name()<<std::endl;
         if(layer->name() == "torch::nn::LinearImpl") {
             if(!firstLinear) {
                 initModules = currentAux;
                 currentAux.clear();
-                currentLinear = layer;
                 firstLinear = true;
             }
-            layers.push_back(Layer(std::dynamic_pointer_cast<torch::nn::Linear>(currentLinear), currentAux));
             currentLinear = layer;
+            std::shared_ptr<torch::nn::LinearImpl> lin(currentLinear->as<torch::nn::LinearImpl>());
+            layers.push_back(Layer(lin, currentAux));
             currentAux.clear();
         } else currentAux.push_back(std::shared_ptr<torch::nn::AnyModule>(layer->as<torch::nn::AnyModule>()));
     }
@@ -69,6 +68,7 @@ std::optional<Layer> Network::getLayer(int idx) {
 bool Network::checkValid() {
     if(layers.size()==1) return true;
     bool check = true;
+    std::cout<<"SIZE: "<<layers.size()<<std::endl;
     for(int i=0;i<layers.size()-1;i++) {
         check = check && layers[i].getDims().second == layers[i+1].getDims().first;
     }
